@@ -1,8 +1,8 @@
 import os
-import tensorflow as tf
-from transformers import AutoTokenizer, TFAutoModelForCausalLM
-
-print(tf.config.list_physical_devices("GPU"))  # Check if GPU is available
+import torch
+from transformers import AutoTokenizer, AutoModelForCausalLM
+import torch
+import math
 
 model_name = 'microsoft/DialoGPT-large'
 cache_dir = './pretrained_models'
@@ -10,18 +10,23 @@ cache_dir = './pretrained_models'
 tokenizer = AutoTokenizer.from_pretrained(model_name, cache_dir=cache_dir, padding_side='left')
 
 try:
-    model = TFAutoModelForCausalLM.from_pretrained(model_name, cache_dir=cache_dir)
+    model = AutoModelForCausalLM.from_pretrained(model_name, cache_dir=cache_dir)
     print("The model is already downloaded.")
 except OSError:
     # If model is not downloaded, download it
     print("ERROR: THE MODEL IS NOT DOWNLOADED.")
     print("DOWNLOADING " + model_name + " NOW!")
-    model = TFAutoModelForCausalLM.from_pretrained(model_name, cache_dir=cache_dir)
+    model = AutoModelForCausalLM.from_pretrained(model_name, cache_dir=cache_dir)
 
-device = "GPU" if tf.config.list_physical_devices("GPU") else "CPU"
-print("Using", device)
+device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+if torch.cuda.is_available():
+    torch.cuda.set_device(torch.cuda.current_device())
+    print("Using GPU:", torch.cuda.get_device_name())
+else:
+    print("Using CPU")
+model.to(device)
 
-MAX_HISTORY_LENGTH = 5
+MAX_HISTORY_LENGTH = 20
 chat_history_ids = None
 
 while True:
@@ -41,14 +46,15 @@ while True:
         continue
 
     # Encode the new user input and add eos_token
-    user_input_ids = tokenizer.encode(user_input + tokenizer.eos_token, return_tensors='tf')
+    user_input_ids = tokenizer.encode(user_input + tokenizer.eos_token, return_tensors='pt')
 
     # Update the chat history with the new user input
-    chat_history_ids = tf.concat([chat_history_ids, user_input_ids], axis=-1) if chat_history_ids is not None else user_input_ids
+    chat_history_ids = torch.cat([chat_history_ids, user_input_ids], dim=-1) if chat_history_ids is not None else user_input_ids
 
     # Generate a response
-    model.config.encoder_no_repeat_ngram_size = None  # Disable encoder_no_repeat_ngram_size
-    response_ids = model.generate(chat_history_ids, max_length=1000, pad_token_id=tokenizer.eos_token_id)
+    with torch.no_grad():
+        model.config.encoder_no_repeat_ngram_size = None  # Disable encoder_no_repeat_ngram_size
+        response_ids = model.generate(chat_history_ids.to(device), max_length=1000, pad_token_id=tokenizer.eos_token_id)
 
     # Decode and print the response
     response = tokenizer.decode(response_ids[:, chat_history_ids.shape[-1]:][0], skip_special_tokens=True)
