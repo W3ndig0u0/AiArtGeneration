@@ -1,11 +1,12 @@
 import os
 import torch
+import math
 from transformers import AutoTokenizer, AutoModelForCausalLM
 
 class VirtualTuber:
     def __init__(self):
         self.model_name = 'microsoft/DialoGPT-large'
-        self.cache_dir = './pretrained_models'
+        self.cache_dir = './languageModel'
         self.device = torch.device(
             "cuda" if torch.cuda.is_available() else "cpu")
         self.chat_history_ids = None
@@ -47,9 +48,9 @@ class VirtualTuber:
             response = ""
             for file_name in file_list:
                 file_path = os.path.join(self.cache_dir, file_name)
-                if os.path.isfile(file_path):
-                    file_size = os.path.getsize(file_path)
-                    response += f"- {file_name} ({file_size} bytes)"
+                if os.path.isdir(file_path):
+                    file_size = get_folder_size(file_path)
+                    response += f"{file_name} ({file_size})"
         else:
             response = "No models found in the cache directory."
         return response
@@ -69,3 +70,20 @@ if __name__ == '__main__':
     virtual_tuber = VirtualTuber()
     print(f"Using device: {virtual_tuber.device}")
     virtual_tuber.run()
+
+def get_folder_size(folder_path):
+    total_size = 0
+    for path, dirs, files in os.walk(folder_path):
+        for file in files:
+            file_path = os.path.join(path, file)
+            total_size += os.path.getsize(file_path)
+    return convert_size(total_size)
+
+def convert_size(size_bytes):
+    if size_bytes == 0:
+        return "0B"
+    size_name = ("B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB")
+    i = int(math.floor(math.log(size_bytes, 1024)))
+    p = math.pow(1024, i)
+    size = round(size_bytes / p, 2)
+    return f"{size} {size_name[i]}"

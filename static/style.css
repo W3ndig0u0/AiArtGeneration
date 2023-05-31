@@ -1,21 +1,125 @@
 body {
   font-family: Arial, sans-serif;
   margin: 20px;
+  background-color: #1d1d1d;
+  color: #ffffff;
 }
 
 h1 {
   text-align: center;
+  font-size: 4rem;
+  color: #ffffff;
 }
 
-#chat-history {
+.chat-container {
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-end;
   margin-bottom: 20px;
+  padding: 1rem;
+}
+
+.user-message,
+.ai-message {
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.user-message .message-bubble,
+.ai-message .message-bubble {
+  display: flex;
+  align-items: center;
+  padding: 10px;
+  border-radius: 10px;
+  max-width: 60%;
+}
+
+.user-message .avatar,
+.ai-message .avatar {
+  width: 70px;
+  height: 70px;
+  border-radius: 50%;
+  margin-right: 20px;
+}
+
+.user-message .message-bubble {
+  background-color: #2ecc71;
+  color: #ffffff;
+  margin-left: auto;
+  margin-right: 20px;
+  font-size: 20px;
+  align-self: flex-end;
+}
+
+.ai-message .message-bubble {
+  background-color: #3498db;
+  color: #ffffff;
+  margin-right: auto;
+  margin-left: 20px;
+  font-size: 20px;
+  align-self: flex-start;
+}
+
+.chat-history {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.container {
+  background-color: rgba(0, 0, 0, 0.3);
+  border-radius: 10px;
+  margin-bottom: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin: 0 auto;
+  padding: 2rem;
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  width: 70vw;
+  height: 75vh;
+}
+
+.chat-history {
+  height: 120vh;
+  overflow-y: auto;
+  margin-bottom: 10px;
+}
+
+.chat-controls {
+  display: flex;
+  align-items: flex-end;
+  justify-content: space-between;
+  width: 100%;
 }
 
 input[type="text"] {
-  width: 100%;
-  padding: 10px;
+  flex-grow: 1;
+  height: 1rem;
+  padding: 1.5rem 10px;
+  border: none;
+  border-radius: 5px;
+  outline: none;
+  font-size: 18px;
+  margin-right: 10px;
 }
 
 button {
-  padding: 10px;
+  padding: 16px;
+  background-color: #3498db;
+  border: none;
+  border-radius: 5px;
+  color: #ffffff;
+  cursor: pointer;
+  font-size: 28px;
+}
+
+.slider {
+  width: 100px;
+  height: 5px;
+  background-color: #ffffff;
+  margin: 0 auto;
 }

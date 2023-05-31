@@ -10,11 +10,11 @@ def process_input():
     response = virtual_tuber.run(user_input)
     return jsonify({'response': response})
 
+
+
 @app.route('/')
 def home():
     return render_template('index.html')
-    virtual_tuber.run()
 
 if __name__ == '__main__':
-    virtual_tuber.run()
     app.run(debug=True)

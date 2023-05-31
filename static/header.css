@@ -1,0 +1,41 @@
+.header {
+  background-color: #2ecc71;
+  color: #ffffff;
+  padding: 20px;
+  text-align: center;
+}
+
+.header-content {
+  max-width: 600px;
+  margin: 0 auto;
+}
+
+.header-title {
+  font-size: 36px;
+  margin-bottom: 10px;
+}
+
+.header-nav {
+  margin-top: 20px;
+}
+
+.header-links {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.header-links li {
+  margin: 0 10px;
+}
+
+.header-links li a {
+  color: #ffffff;
+  text-decoration: none;
+  font-size: 18px;
+}
+
+.header-links li a:hover {
+  text-decoration: underline;
+}

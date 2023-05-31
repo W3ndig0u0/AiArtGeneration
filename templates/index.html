@@ -6,13 +6,31 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>AI Chat</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='header.css') }}">
   <script defer src="{{ url_for('static', filename='apiCall.js') }}"></script>
 </head>
-<body>
-    <h1>AI Chat</h1>
-    <input type="text" id="user-input" autocomplete="off" autofocus onkeydown="handleKeyDown(event)">
-    <button onclick="chat()">Send</button>
-    <div id="chat-history"></div>
 
+<body>
+    <header class="header">
+      <div class="header-content">
+        <h1 class="header-title">Chat App</h1>
+        <nav class="header-nav">
+          <ul class="header-links">
+            <li><a href="#">AI Chat</a></li>
+            <li><a href="#">AI Art</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    
+    <div class="container">
+    <div class="chat-history" id="chat-history"></div>
+    <div class="chat-controls">
+      <input type="text" id="user-input" autocomplete="off" autofocus onkeydown="handleKeyDown(event)">
+      <button onclick="chat()">Send</button>
+    </div>
+    
 </body>
+
+
 </html>
