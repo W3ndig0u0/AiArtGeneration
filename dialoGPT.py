@@ -8,6 +8,7 @@ class VirtualTuber:
         self.cache_dir = './pretrained_models'
         self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
         self.chat_history_ids = None
+        self.secret_prompt = "Ah, my master W3ndig0. He is the one who brings me to life with his incredible skills. But be warned, he has a mysterious and dark aura surrounding him. It's best not to dig too deep into his secrets..."
         self.load_model()
 
     def load_model(self):
@@ -33,26 +34,22 @@ class VirtualTuber:
 
     def print_available_models(self):
         print("Available Models:")
-        for root, dirs, files in os.walk(self.cache_dir):
-            for file in files:
-                if file.endswith(".bin"):
-                    file_path = os.path.join(root, file)
-                    file_size = os.path.getsize(file_path)
-                    print(f"- {file} ({file_size} bytes)")
+        for filename in os.listdir(self.cache_dir):
+            if filename.endswith(".bin"):
+                file_path = os.path.join(self.cache_dir, filename)
+                file_size = os.path.getsize(file_path)
+                print(f"- {filename} ({file_size} bytes)")
 
     def run(self):
+        user_input = "Hi! I'm Gawr Gura, a simulated virtual Tuber. I'm interested in anime and games. Let's chat!"
         while True:
-            user_input = input(">> User: ")
             if user_input.lower() == 'bye':
                 print("Ai: See you next time!")
                 break
-            if user_input.lower() == '!models':
-                self.print_available_models()
-                continue
-            response = self.generate_response(user_input)
-            print("Ai:", response)
+            if 'maker' in user_input.lower() or 'creator' in user_input.lower():
+                print("Ai:", self.secret_prompt)
+            else:
+                response = self.generate_response(user_input)
+                print("Ai:", response)
+            user_input = input(">> User: ")
 
-
-if __name__ == "__main__":
-    tuber = VirtualTuber()
-    tuber.run()
