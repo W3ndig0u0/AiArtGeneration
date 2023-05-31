@@ -1,4 +1,3 @@
-import os
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
 
@@ -15,4 +14,5 @@ def load_model(model_name, cache_dir, device):
         model = AutoModelForCausalLM.from_pretrained(
             model_name, cache_dir=cache_dir)
     model.to(device)
+    model = torch.jit.script(model)
     return model, tokenizer
