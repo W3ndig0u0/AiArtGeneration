@@ -11,7 +11,7 @@ function chat() {
     
     .then(response => response.json())
     .then(data => {
-      const response = data?.response; // Add null check here
+      const response = data?.response;
       const chatHistory = document.getElementById('chat-history');
       chatHistory.innerHTML += "<p><strong>You:</strong> " + user_input + "</p>";
       chatHistory.innerHTML += "<p><strong>AI:</strong> " + (response || "") + "</p>"; // Use empty string if response is null
@@ -21,5 +21,11 @@ function chat() {
     .catch(error => {
       console.log(error);
     });
+  }
+}
+
+function handleKeyDown(event) {
+  if (event.keyCode === 13) {
+    chat();
   }
 }

@@ -10,8 +10,9 @@
 </head>
 <body>
     <h1>AI Chat</h1>
-    <div id="chat-history"></div>
-    <input type="text" id="user-input" autocomplete="off" autofocus>
+    <input type="text" id="user-input" autocomplete="off" autofocus onkeydown="handleKeyDown(event)">
     <button onclick="chat()">Send</button>
+    <div id="chat-history"></div>
+
 </body>
 </html>
