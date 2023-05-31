@@ -1,7 +1,5 @@
 from flask import Flask, render_template, request, jsonify
 from virtualTuber import VirtualTuber
-from PIL import Image
-import io
 
 app = Flask(__name__)
 virtual_tuber = VirtualTuber()
@@ -18,11 +16,12 @@ def home():
 
 @app.route('/art')
 def art():
-    generated_image = virtual_tuber.generate_art()  # Generate art using VirtualTuber
-    image_data = io.BytesIO()
-    generated_image.save(image_data, format='PNG')
-    image_data.seek(0)
-    return render_template('art.html', image_data=image_data.getvalue())
+    return render_template('art.html')
+
+@app.route('/get_generated_art')
+def get_generated_art():
+    generated_art_url = virtual_tuber.get_generated_art_url()  # Modify this method in the VirtualTuber class to return the URL of the generated art
+    return jsonify({'generated_art_url': generated_art_url})
 
 if __name__ == '__main__':
     app.run(debug=True)

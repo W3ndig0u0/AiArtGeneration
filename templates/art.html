@@ -4,16 +4,17 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Chat</title>
+  <title>AI Art</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='header.css') }}">
   <script defer src="{{ url_for('static', filename='apiCall.js') }}"></script>
+  <script defer src="{{ url_for('static', filename='imageUpdate.js') }}"></script>
 </head>
 
 <body>
     <header class="header">
       <div class="header-content">
-        <h1 class="header-title">Chat App</h1>
+        <h1 class="header-title">Art App</h1>
         <nav class="header-nav">
           <ul class="header-links">
             <li><a href="{{ url_for('index') }}">AI Chat</a></li>
@@ -24,13 +25,10 @@
     </header>
     
     <div class="container">
-    <div class="chat-history" id="chat-history"></div>
-    <div class="chat-controls">
-      <input type="text" id="user-input" autocomplete="off" autofocus onkeydown="handleKeyDown(event)">
-      <button onclick="chat()">Send</button>
+        <div class="art-container">
+            <h2>Generated Art</h2>
+            <img id="generated-art" src="" alt="Generated Art">
+        </div>
     </div>
-    
 </body>
-
-
 </html>
