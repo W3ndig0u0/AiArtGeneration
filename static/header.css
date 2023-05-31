@@ -1,8 +1,12 @@
 .header {
   background-color: #2ecc71;
   color: #ffffff;
-  padding: 20px;
+  padding: 4px;
   text-align: center;
+  width: 75%;
+  border-radius: 10px;
+  margin:0 auto;
+  margin-bottom: 2rem;
 }
 
 .header-content {
@@ -34,8 +38,11 @@
   color: #ffffff;
   text-decoration: none;
   font-size: 18px;
+  padding: 8px 16px;
+  border-radius: 20px;
+  transition: background-color 0.3s ease;
 }
 
 .header-links li a:hover {
-  text-decoration: underline;
+  background-color: rgba(255, 255, 255, 0.2);
 }

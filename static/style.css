@@ -3,13 +3,9 @@ body {
   margin: 20px;
   background-color: #1d1d1d;
   color: #ffffff;
+  overflow: hidden;
 }
 
-h1 {
-  text-align: center;
-  font-size: 4rem;
-  color: #ffffff;
-}
 
 .chat-container {
   margin: 0 auto;
