@@ -39,6 +39,7 @@ bld/
 #wwwroot/
 /pretrained_models
 /civitAi
+/civitAi
 /animeModel
 /fine_tuned_models
 /languageModel

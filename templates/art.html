@@ -49,6 +49,18 @@
               <input type="text" id="negative-prompt-input" placeholder="Enter negative prompt text">
             </div>
             
+          <div class="input-group">
+            <label for="width-input">Width:</label>
+            <input type="text" id="width-input" value="512">
+          </div>
+          
+          
+          <div class="input-group">
+            <label for="height-input">Height:</label>
+            <input type="text" id="height-input" value="512">
+          </div>
+          
+            
             <div class="slider-group">
               <label for="num-inference-steps-slider">Number of Inference Steps:</label>
               <input type="range" id="num-inference-steps-slider" min="1" max="50" value="20" step="1">
@@ -56,16 +68,28 @@
           </div>
           
           <div class="slider-group">
-              <label for="eta-slider">Eta:</label>
-              <input type="range" id="eta-slider" min="0.1" max="2.0" value="0.3" step="0.1">
-              <span id="eta-value">0.3</span>
+              <label for="guidance-scale-slider">Guidance Scale:</label>
+              <input type="range" id="guidance-scale-slider" min="1" max="20" value="7" step="1">
+              <span id="guidance-scale-value">7</span>
+          </div>
+
+          <div class="slider-group">
+              <label for="batchsize-slider">Batch Size:</label>
+              <input type="range" id="batchsize-slider" min="1" max="10" value="1" step="1">
+              <span id="batchsize-value">1</span>
+          </div>
+            
+          <div class="input-group">
+            <label for="seed-input">Seed:</label>
+            <input type="text" id="seed-input" value="-1">
           </div>
           
           <div class="slider-group">
-              <label for="guidance-scale-slider">Guidance Scale:</label>
-              <input type="range" id="guidance-scale-slider" min="1" max="30" value="7" step="1">
-              <span id="guidance-scale-value">7</span>
-          </div>
+            <label for="eta-slider">Eta:</label>
+            <input type="range" id="eta-slider" min="0.1" max="2.0" value="0.1" step="0.1">
+            <span id="eta-value">0.1</span>
+        </div>
+          
           
             </div>
             
