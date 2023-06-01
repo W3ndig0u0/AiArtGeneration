@@ -3,6 +3,8 @@ from virtualTuber import VirtualTuber
 from artGeneration import AnimeArtist
 from fileSize import print_available_models, get_folder_size, convert_size
 from loadModel import load_model
+from accelerate import Accelerator
+from diffusers import DiffusionPipeline
 
 app = Flask(__name__)
 virtual_tuber = VirtualTuber()
@@ -28,12 +30,14 @@ def generate_art():
     num_inference_steps = int(request.json['num_inference_steps'])
     eta = float(request.json['eta'])
     guidance_scale = int(request.json['guidance_scale'])
-    save_folder = "./GeneratedImg"
+
+    save_folder = "./GeneratedImg"  # Define the save_folder variable here
     initial_generation = request.json.get('initial_generation', False)
 
-    intermediate_folder, final_save_path = anime_artist.generate_artMethod(
-        prompt, num_inference_steps, eta, guidance_scale, save_folder, initial_generation
-    )
+    accelerator = Accelerator()
+    generator = DiffusionPipeline.from_pretrained("stablediffusionapi/anime-model-v2", accelerator=accelerator)
+    anime_artist.generator = generator
+    intermediate_folder, final_save_path = anime_artist.generate_art(prompt, num_inference_steps, eta, guidance_scale, save_folder, initial_generation)
 
     intermediate_url = f"/{intermediate_folder}/"
     final_url = f"/{final_save_path}" 
@@ -48,6 +52,8 @@ def generate_art():
     }
 
     return jsonify(response)
+
+
 
 
 
