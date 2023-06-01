@@ -2,7 +2,9 @@ let initialGeneration = true;
 
 function generateArt() {
   const promptInput = document.getElementById('prompt-input').value;
-  console.log(promptInput);
+  const negativePromptInput = document.getElementById('negative-prompt-input').value;
+
+  console.log(negativePromptInput);
 
   const numInferenceStepsSlider = document.getElementById('num-inference-steps-slider');
   const etaSlider = document.getElementById('eta-slider');
@@ -14,6 +16,7 @@ function generateArt() {
 
   const requestData = {
     prompt: promptInput,
+    negativePromt : negativePromptInput,
     num_inference_steps: numInferenceStepsSlider?.value,
     eta: etaSlider?.value,
     guidance_scale: guidanceScaleSlider?.value,

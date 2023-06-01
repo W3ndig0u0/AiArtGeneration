@@ -27,13 +27,14 @@ def art():
 @app.route("/generate_art", methods=["POST"])
 def generate_art():
     prompt = request.json["prompt"]
+    negativePromt = request.json["negativePromt"]
     num_inference_steps = int(request.json["num_inference_steps"])
     eta = float(request.json["eta"])
     guidance_scale = int(request.json["guidance_scale"])
     width = int(request.json.get("width", 512))
     height = int(request.json.get("height", 512))
-    seed = int(request.json.get("seed", -1))
     batch_size = int(request.json.get("batch_size", 1))
+    seed = int(request.json.get("seed", -1))
 
     save_folder = "./GeneratedImg"
     initial_generation = request.json.get("initial_generation", False)
@@ -44,6 +45,7 @@ def generate_art():
         height,
         num_inference_steps,
         eta,
+        negativePromt,
         guidance_scale,
         save_folder,
         seed,

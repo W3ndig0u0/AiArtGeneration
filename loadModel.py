@@ -29,7 +29,7 @@ def load_modelDiff(model_name, cache_dir, device):
         model = DiffusionPipeline.from_pretrained(model_name, cache_dir=cache_dir)
     else:
         print("The model is already downloaded.")
-        model = DiffusionPipeline.from_pretrained(model_path, cache_dir=cache_dir)
+        model = DiffusionPipeline.from_pretrained(model_name, cache_dir=cache_dir)
 
     model.to(device)
     return model

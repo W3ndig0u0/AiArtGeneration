@@ -1,6 +1,6 @@
 import torch
 from PIL import Image
-from diffusers import DiffusionPipeline, DPMSolverMultistepScheduler
+from diffusers import StableDiffusionPipeline, EulerAncestralDiscreteScheduler
 from loadModel import load_modelDiff
 import time
 import os
@@ -14,7 +14,7 @@ class AnimeArtist:
         self.generation_complete = False
         self.estimated_time = None
         self.generator = None
-        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.device = torch.device("cuda")
 
     def generate_art(
         self,
@@ -23,6 +23,7 @@ class AnimeArtist:
         width,
         num_inference_steps,
         eta,
+        negative_prompt,
         guidance_scale,
         save_folder,
         seed,
@@ -37,18 +38,26 @@ class AnimeArtist:
 
         if self.generator is None:
             model_folder = "./artModel"
+            # model_id = "Ojimi/anime-kawai-diffusion"
             model_id = "stablediffusionapi/anime-model-v2"
+            # model_id = "andite/pastel-mix"
+            # model_id = "hakurei/waifu-diffusion"
             self.generator = load_modelDiff(model_id, model_folder, self.device)
-
-            self.generator.scheduler = DPMSolverMultistepScheduler.from_config(
-                self.generator.scheduler.config
+            print(self.device)
+            print(torch.cuda.is_available())
+            print(torch.backends.cudnn.version())
+            print(torch.backends.cudnn.enabled())
+            self.generator.scheduler = EulerAncestralDiscreteScheduler(
+                num_inference_steps
             )
-            self.generator.enable_attention_slicing()
+            # self.generator.enable_attention_slicing()
 
         with torch.no_grad():
             generator = self.generator.to(self.device)
-            current_images = [None] * batch_size
-            intermediate_folder = os.path.join(save_folder, "intermediate")
+            current_images = [
+                Image.new("RGB", (width, height)) for _ in range(batch_size)
+            ]
+            intermediate_folder = os.path.join(str(save_folder), "intermediate")
 
             os.makedirs(intermediate_folder, exist_ok=True)
 
@@ -65,8 +74,9 @@ class AnimeArtist:
                     height=height,
                     width=width,
                     num_inference_steps=num_inference_steps,
-                    eta=eta,
                     guidance_scale=guidance_scale,
+                    negative_prompt=negative_prompt,
+                    eta=eta,
                     generator=randomSeed,
                 )
 
@@ -78,7 +88,6 @@ class AnimeArtist:
                     image.save(save_path)
 
                 self.progress = step + 1
-                time.sleep(1)
 
             final_file_number = file_count + num_inference_steps * batch_size
             final_save_path = os.path.join(
@@ -108,8 +117,9 @@ if __name__ == "__main__":
         512,
         512,
         num_inference_steps,
-        eta,
         guidance_scale,
+        eta,
+        # "bad art",
         save_folder,
         seed,
         batch_size,
