@@ -31,7 +31,7 @@ def generate_art():
     save_folder = "./GeneratedImg"
     initial_generation = request.json.get('initial_generation', False)
 
-    intermediate_folder, final_save_path = anime_artist.generate_art(
+    intermediate_folder, final_save_path = anime_artist.generate_artMethod(
         prompt, num_inference_steps, eta, guidance_scale, save_folder, initial_generation
     )
 

@@ -1,7 +1,10 @@
 let initialGeneration = true;
 
 function generateArt() {
+
   const promptInput = document.getElementById('prompt-input').value;
+  console.log(promptInput);
+
   const numInferenceStepsSlider = document.getElementById('num-inference-steps-slider');
   const etaSlider = document.getElementById('eta-slider');
   const guidanceScaleSlider = document.getElementById('guidance-scale-slider');
@@ -11,8 +14,10 @@ function generateArt() {
     num_inference_steps: numInferenceStepsSlider.value,
     eta: etaSlider.value,
     guidance_scale: guidanceScaleSlider.value,
-    initial_generation: initialGeneration  // Pass the flag indicating initial generation
+    initial_generation: initialGeneration
   };
+
+  console.log(requestData);
 
   fetch('/generate_art', {
     method: 'POST',
@@ -54,7 +59,7 @@ function updateGeneratedArt(data, progressBar, progressLabel, estimatedTimeEleme
 
   if (!data.generation_complete) {
     setTimeout(() => {
-      initialGeneration = false;  // Set the flag to false for progress update
+      initialGeneration = false;
       generateArt();
     }, 1000);
   } else {

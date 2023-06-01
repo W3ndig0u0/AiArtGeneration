@@ -43,7 +43,7 @@ class AnimeArtist:
 
         return generator
 
-        def generate_art(self, prompt, num_inference_steps, eta, guidance_scale, save_folder, initial_generation=False):
+        def generate_artMethod(self, prompt, num_inference_steps, eta, guidance_scale, save_folder, initial_generation=False):
                 if initial_generation:
                     self.progress = 0
                 self.total_steps = num_inference_steps
@@ -65,7 +65,8 @@ class AnimeArtist:
 
                         save_path = os.path.join(intermediate_folder, f"{prompt}-{step}.png")
                         current_image.save(save_path)
-
+                        print(step + " is Done Now!!!")
+                        print(step + " is Done Now!!!")
                         self.progress = step + 1
                         time.sleep(1)
 
@@ -82,4 +83,4 @@ if __name__ == '__main__':
     num_inference_steps = 1
     eta = 0.1
     guidance_scale = 1
-    anime_artist.generate_art(prompt, num_inference_steps, eta, guidance_scale)
+    anime_artist.generate_artMethod(prompt, num_inference_steps, eta, guidance_scale)
