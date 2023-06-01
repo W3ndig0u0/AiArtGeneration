@@ -34,10 +34,10 @@ def generate_art():
     save_folder = "./GeneratedImg"  # Define the save_folder variable here
     initial_generation = request.json.get('initial_generation', False)
 
-    accelerator = Accelerator()
-    generator = DiffusionPipeline.from_pretrained("stablediffusionapi/anime-model-v2", accelerator=accelerator)
+    # accelerator = Accelerator()
+    generator = DiffusionPipeline.from_pretrained("stablediffusionapi/anime-model-v2")
     anime_artist.generator = generator
-    intermediate_folder, final_save_path = anime_artist.generate_art(prompt, num_inference_steps, eta, guidance_scale, save_folder, initial_generation)
+    intermediate_folder, final_save_path = anime_artist.generate_art(prompt, 512, 512, num_inference_steps, eta, guidance_scale, save_folder, initial_generation)
 
     intermediate_url = f"/{intermediate_folder}/"
     final_url = f"/{final_save_path}" 

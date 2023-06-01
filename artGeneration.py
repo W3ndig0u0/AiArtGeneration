@@ -14,7 +14,7 @@ class AnimeArtist:
         self.estimated_time = None
         self.generator = None
 
-    def generate_art(self, prompt, num_inference_steps, eta, guidance_scale, save_folder, initial_generation=False):
+    def generate_art(self, prompt, height, width, num_inference_steps, eta, guidance_scale, save_folder, initial_generation=False):
         if initial_generation:
             self.progress = 0
         self.total_steps = num_inference_steps
@@ -23,24 +23,30 @@ class AnimeArtist:
 
         with torch.no_grad():
             generator = self.generator
+            # generator.to("mps")
             current_image = None
             intermediate_folder = os.path.join(save_folder, 'intermediate')
 
             os.makedirs(intermediate_folder, exist_ok=True)
 
-            for step in range(num_inference_steps):
-                prompt_with_image = f"{prompt} {current_image}" if current_image else prompt
+            existing_files = os.listdir(intermediate_folder)
+            file_count = len(existing_files)
 
-                generated = generator(prompt_with_image, eta=eta, guidance_scale=guidance_scale)
-                current_image = generated.images[0]
+            # for step in range(num_inference_steps):
+            # prompt_with_image = f"{prompt} {current_image}" if current_image else prompt
 
-                save_path = os.path.join(intermediate_folder, f"{prompt}-{step}.png")
-                current_image.save(save_path)
+            generated = generator(prompt, 512, 512, num_inference_steps, eta=eta, guidance_scale=guidance_scale)
+            current_image = generated.images[0]
 
-                self.progress = step + 1
-                time.sleep(1)
+            file_number = file_count +  1
+            save_path = os.path.join(intermediate_folder, f"{file_number}.png")
+            current_image.save(save_path)
 
-            final_save_path = os.path.join(save_folder, f'{prompt}-final.png')
+            self.progress = step + 1
+            time.sleep(1)
+
+            final_file_number = file_count + num_inference_steps
+            final_save_path = os.path.join(save_folder, f"{final_file_number}-final.png")
             current_image.save(final_save_path)
 
             self.generation_complete = True
@@ -51,13 +57,12 @@ class AnimeArtist:
 if __name__ == '__main__':
     anime_artist = AnimeArtist()
 
-    # Instantiate the generator object (DiffusionPipeline in this case)
-    accelerator = Accelerator()
-    generator = DiffusionPipeline.from_pretrained("stablediffusionapi/anime-model-v2", accelerator=accelerator)
+    generator = YourGeneratorModel()
     anime_artist.generator = generator
 
     prompt = "Masterpiece, cute girl, fantasy, jump pose"
     num_inference_steps = 1
     eta = 0.1
     guidance_scale = 1
-    anime_artist.generate_art(prompt, num_inference_steps, eta, guidance_scale, "./GeneratedImg", initial_generation=False)
+    save_folder = "./GeneratedImg"
+    anime_artist.generate_art(prompt, num_inference_steps, eta, guidance_scale, save_folder, initial_generation=False)
