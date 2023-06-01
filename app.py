@@ -46,9 +46,9 @@ def generate_art():
         eta,
         guidance_scale,
         save_folder,
-        initial_generation,
         seed,
         batch_size,
+        initial_generation,
     )
 
     intermediate_url = f"/{intermediate_folder}/"

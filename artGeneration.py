@@ -18,16 +18,16 @@ class AnimeArtist:
 
     def generate_art(
         self,
-        prompt,
+        input_prompt,
         height,
         width,
         num_inference_steps,
         eta,
         guidance_scale,
         save_folder,
+        seed,
+        batch_size,
         initial_generation=False,
-        seed=None,
-        batch_size=1,
     ):
         if initial_generation:
             self.progress = 0
@@ -38,9 +38,8 @@ class AnimeArtist:
         if self.generator is None:
             model_folder = "./artModel"
             model_id = "stablediffusionapi/anime-model-v2"
-            model_file, _ = load_modelDiff(model_id, model_folder, self.device)
+            self.generator = load_modelDiff(model_id, model_folder, self.device)
 
-            self.generator = DiffusionPipeline.from_pretrained(model_file)
             self.generator.scheduler = DPMSolverMultistepScheduler.from_config(
                 self.generator.scheduler.config
             )
@@ -60,12 +59,12 @@ class AnimeArtist:
                 for _ in range(batch_size)
             ]
 
-            for step in range(num_inference_steps):
+            for step in range(batch_size):
                 generated = generator(
-                    prompt=prompt,
+                    prompt=input_prompt,
                     height=height,
                     width=width,
-                    num_inference_steps=1,
+                    num_inference_steps=num_inference_steps,
                     eta=eta,
                     guidance_scale=guidance_scale,
                     generator=randomSeed,
@@ -112,7 +111,7 @@ if __name__ == "__main__":
         eta,
         guidance_scale,
         save_folder,
-        initial_generation=False,
-        seed=seed,
-        batch_size=batch_size,
+        seed,
+        batch_size,
+        initial_generation,
     )
