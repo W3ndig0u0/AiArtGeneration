@@ -24,14 +24,33 @@ def art():
 
 @app.route('/generate_art', methods=['POST'])
 def generate_art():
-    console.log("aå");
     prompt = request.json['prompt']
     num_inference_steps = int(request.json['num_inference_steps'])
     eta = float(request.json['eta'])
     guidance_scale = int(request.json['guidance_scale'])
-    anime_artist.generate_art(prompt, num_inference_steps, eta, guidance_scale)
+    save_folder = "./GeneratedImg"
+    initial_generation = request.json.get('initial_generation', False)
 
-    return jsonify({'message': 'Art generation started'})
+    intermediate_folder, final_save_path = anime_artist.generate_art(
+        prompt, num_inference_steps, eta, guidance_scale, save_folder, initial_generation
+    )
+
+    intermediate_url = f"/{intermediate_folder}/"
+    final_url = f"/{final_save_path}" 
+
+    response = {
+        'intermediate_url': intermediate_url,
+        'final_url': final_url,
+        'progress': anime_artist.progress,
+        'total_steps': anime_artist.total_steps,
+        'generation_complete': anime_artist.generation_complete,
+        'estimated_time': anime_artist.estimated_time
+    }
+
+    return jsonify(response)
+
+
+
 
 if __name__ == '__main__':
     app.run(debug=True)
