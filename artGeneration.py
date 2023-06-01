@@ -3,14 +3,13 @@ import torch
 from diffusers import DiffusionPipeline
 from PIL import Image
 from accelerate import Accelerator
-from loadModel import load_model
 
 class AnimeArtist:
     def __init__(self):
         self.model_id = "stablediffusionapi/anime-model-v2"
         self.cache_dir = "./animeModel"
         self.device = self.get_device()
-        self.generator = self.load_model()
+        self.generator = self.load_art_model()
 
     def get_device(self):
         if torch.backends.mps.is_available():
@@ -18,42 +17,48 @@ class AnimeArtist:
         else:
             return torch.device("cpu")
 
-def load_model(self):
-    model_name = self.model_id
-    cache_dir = self.cache_dir
-    device = self.device
+    def load_art_model(self):
+        model_name = self.model_id
+        cache_dir = self.cache_dir
+        device = self.device
 
-    prompt_input = request.form.get('prompt-input')
-    num_inference_steps = int(request.form.get('num-inference-steps-slider'))
-    eta = float(request.form.get('eta-slider'))
-    guidance_scale = int(request.form.get('guidance-scale-slider'))
-    negative_prompt = request.form.get('negative-prompt-input')
+        os.makedirs(cache_dir, exist_ok=True)
 
-    model, tokenizer = load_model(model_name, cache_dir, device)
-    generator = DiffusionPipeline.from_pretrained_model(model)
-    generator.set_tokenizer(tokenizer)
-    generator.negative_prompt = negative_prompt
-    generator.sampling_method = "dpm++-2M-karras"
-    generator.depth = num_inference_steps
-    generator.enable_attention_slicing()
-    generator.gradient_checkpointing = True  # Enable gradient checkpointing
+        model_dir = os.path.join(cache_dir, model_name.replace('/', '-'))
 
-    generator = accelerator.prepare(generator)
-    return generator
+        if not os.path.exists(model_dir):
+            os.makedirs(model_dir)
+            pipeline = DiffusionPipeline.from_pretrained(model_name)
+            pipeline.save_pretrained(model_dir)
+        else:
+            pipeline = DiffusionPipeline.from_pretrained(model_dir)
 
+        pipeline.sampling_method = "dpm++-2M-karras"
+        pipeline.depth = 20
+        pipeline.gradient_checkpointing = True
+
+        accelerator = Accelerator()
+        generator = accelerator.prepare(pipeline)
+
+        return generator
 
     def generate_art(self, prompt, num_inference_steps, eta, guidance_scale):
         with torch.no_grad():
             generator = self.generator
-            generator.generator.eval()  # Set generator to evaluation mode
             current_image = None
 
             for step in range(num_inference_steps):
-                # Perform a single inference step
-                current_image = generator(prompt, current_image=current_image, eta=eta, guidance_scale=guidance_scale).images[0]
+                prompt_with_image = f"{prompt} {current_image}" if current_image else prompt
+
+                generated = generator(prompt_with_image, eta=eta, guidance_scale=guidance_scale)
+                current_image = generated.images[0]
+                print(prompt_with_image);
                 current_image.save(f"anime-art-{step}.png")
 
 if __name__ == '__main__':
-    accelerator = Accelerator()
     anime_artist = AnimeArtist()
-    anime_artist.generate_art()
+    prompt = "Masterpiece, cute girl, fantasy, jump pose"
+    num_inference_steps = 1
+    eta = 0.1
+    guidance_scale = 1
+    anime_artist.generate_art(prompt, num_inference_steps, eta, guidance_scale)

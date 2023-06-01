@@ -15,6 +15,37 @@
   margin-bottom: 10px;
 }
 
+.progress-container {
+  width: 100%;
+  height: 20px;
+  background-color: #f2f2f2;
+  margin-top: 10px;
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.progress-bar {
+  height: 100%;
+  background-color: #2196F3;
+  width: 0;
+  transition: width 0.3s ease;
+}
+
+.progress-label {
+  font-size: 14px;
+  text-align: center;
+  margin-top: 5px;
+  color: #555;
+}
+
+.estimated-time {
+  font-size: 14px;
+  text-align: center;
+  margin-top: 5px;
+  color: #555;
+}
+
+
 #generated-art {
   width: 100%;
   height: auto;
