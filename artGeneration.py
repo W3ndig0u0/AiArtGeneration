@@ -35,24 +35,26 @@ class AnimeArtist:
         self.total_steps = num_inference_steps
         self.generation_complete = False
         self.estimated_time = None
+        torch.cuda.empty_cache()
 
         if self.generator is None:
             model_folder = "./artModel"
             # model_id = "Ojimi/anime-kawai-diffusion"
-            model_id = "stablediffusionapi/anime-model-v2"
-            # model_id = "andite/pastel-mix"
+            # model_id = "stablediffusionapi/anime-model-v2"
+            model_id = "andite/pastel-mix"
             # model_id = "hakurei/waifu-diffusion"
             self.generator = load_modelDiff(model_id, model_folder, self.device)
             print(self.device)
             print(torch.cuda.is_available())
-            print(torch.backends.cudnn.version())
-            print(torch.backends.cudnn.enabled())
-            self.generator.scheduler = EulerAncestralDiscreteScheduler(
-                num_inference_steps
-            )
+            print(torch.backends.mps.is_available())
+            # self.generator.scheduler = EulerAncestralDiscreteScheduler(
+            #     num_inference_steps
+            # )
+            torch.cuda.empty_cache()
             # self.generator.enable_attention_slicing()
 
         with torch.no_grad():
+            torch.cuda.empty_cache()
             generator = self.generator.to(self.device)
             current_images = [
                 Image.new("RGB", (width, height)) for _ in range(batch_size)
@@ -67,6 +69,7 @@ class AnimeArtist:
                 torch.Generator(self.device).manual_seed(seed)
                 for _ in range(batch_size)
             ]
+            torch.cuda.empty_cache()
 
             for step in range(batch_size):
                 generated = generator(
@@ -75,11 +78,12 @@ class AnimeArtist:
                     width=width,
                     num_inference_steps=num_inference_steps,
                     guidance_scale=guidance_scale,
-                    negative_prompt=negative_prompt,
                     eta=eta,
+                    negative_prompt=negative_prompt,
                     generator=randomSeed,
                 )
 
+                torch.cuda.empty_cache()
                 current_images = generated.images
 
                 for i, image in enumerate(current_images):
@@ -97,7 +101,7 @@ class AnimeArtist:
             current_images[-1].save(final_save_path)
 
             self.generation_complete = True
-
+            torch.cuda.empty_cache()
         return intermediate_folder, final_save_path
 
 

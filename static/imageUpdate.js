@@ -36,25 +36,23 @@ function generateArt() {
     body: JSON.stringify(requestData)
   })
     .then(response => {
-      console.log(response);
       return response.json();
     })
     .then(data => {
-      console.log(data.response);
+      console.log(data);
       const imgElement = document.getElementById('generated-art');
-      imgElement.src = data.generated_art_url;
-
+      imgElement.src = data.intermediate_url;
+  
       const progressBar = document.getElementById('progress-bar');
       const progressLabel = document.getElementById('progress-label');
       const estimatedTimeElement = document.getElementById('estimated-time');
-
+  
       updateGeneratedArt(data, progressBar, progressLabel, estimatedTimeElement);
     })
     .catch(error => {
       console.log(error);
     });
-}
-
+  
 // Update the generated art, progress bar, progress label, and estimated time
 function updateGeneratedArt(data, progressBar, progressLabel, estimatedTimeElement) {
   const progress = data.progress;
