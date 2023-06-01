@@ -2,6 +2,7 @@ from flask import Flask, render_template, request, jsonify
 from artGeneration import AnimeArtist
 from diffusers import DiffusionPipeline, DPMSolverMultistepScheduler
 import os
+import json
 
 app = Flask(__name__)
 anime_artist = AnimeArtist()
@@ -39,7 +40,7 @@ def generate_art():
     save_folder = "./GeneratedImg"
     initial_generation = request.json.get("initial_generation", False)
 
-    intermediate_folder, final_save_path = anime_artist.generate_art(
+    intermediate_folder = anime_artist.generate_art(
         prompt,
         width,
         height,
@@ -53,18 +54,18 @@ def generate_art():
         initial_generation,
     )
 
-    intermediate_url = f"/{intermediate_folder}/"
-    final_url = f"/{final_save_path}"
+    # intermediate_folder = intermediate_folder.replace("\\", "/")
+    intermediate_url = f"/GeneratedImg/{intermediate_folder}/"
 
     response = {
-        "intermediate_url": intermediate_url,
-        "final_url": final_url,
+        "generated_art_url": intermediate_url,
         "progress": anime_artist.progress,
         "total_steps": anime_artist.total_steps,
         "generation_complete": anime_artist.generation_complete,
         "estimated_time": anime_artist.estimated_time,
     }
 
+    print(response)
     return jsonify(response)
 
 

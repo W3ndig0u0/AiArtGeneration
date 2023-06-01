@@ -9,7 +9,13 @@ class VirtualTuber:
     def __init__(self):
         self.model_name = "microsoft/DialoGPT-large"
         self.cache_dir = "./languageModel"
-        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.device = torch.device(
+            "cuda"
+            if torch.cuda.is_available()
+            else "mps"
+            if torch.backends.mps.is_available()
+            else "cpu"
+        )
         self.chat_history_ids = None
         self.secret_prompt = "Ah, my master W3ndig0. He is the one who brings me to life with his incredible skills. But be warned, he has a mysterious and dark aura surrounding him. It's best not to dig too deep into his secrets..."
         self.load_model()

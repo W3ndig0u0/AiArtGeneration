@@ -14,7 +14,13 @@ class AnimeArtist:
         self.generation_complete = False
         self.estimated_time = None
         self.generator = None
-        self.device = torch.device("cuda")
+        self.device = torch.device(
+            "cuda"
+            if torch.cuda.is_available()
+            else "mps"
+            if torch.backends.mps.is_available()
+            else "cpu"
+        )
 
     def generate_art(
         self,
@@ -94,15 +100,10 @@ class AnimeArtist:
                 self.progress = step + 1
 
             final_file_number = file_count + num_inference_steps * batch_size
-            final_save_path = os.path.join(
-                save_folder, f"{final_file_number}-final.png"
-            )
-
-            current_images[-1].save(final_save_path)
 
             self.generation_complete = True
             torch.cuda.empty_cache()
-        return intermediate_folder, final_save_path
+        return intermediate_folder
 
 
 if __name__ == "__main__":
