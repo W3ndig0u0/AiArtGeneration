@@ -7,8 +7,12 @@
   <title>AI Art</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='artGeneration.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='progressbar.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='header.css') }}">
-  <script defer src="{{ url_for('static', filename='apiCall.js') }}"></script>
+
+  <script defer src="{{ url_for('static', filename='chat.js') }}"></script>
+  <script defer src="{{ url_for('static', filename='label.js') }}"></script>
+  <script defer src="{{ url_for('static', filename='randomSeed.js') }}"></script>
   <script defer src="{{ url_for('static', filename='imageUpdate.js') }}"></script>
   </head>
 
@@ -26,41 +30,29 @@
     </header>
     
     <main class="artMain">
-      <div class="art-container">
-        <h2>Generated Art</h2>
-        <div id="generated-art"></div>
-        <!-- <img id="generated-art"  alt="Generated Art"> -->
-        <div class="progress-container">
-          <div class="progress-bar" id="progress-bar"></div>
-          <div class="progress-label" id="progress-label"></div>
-          <div class="estimated-time" id="estimated-time"></div>
-        </div>
-      </div>
-        
+      
         <div class="settings-container">
             <h2>Settings</h2>
             
             <div class="input-group">
-                <label for="prompt-input">Prompt:</label>
-                <input type="text" id="prompt-input" placeholder="Enter prompt text">
+              <label for="prompt-input" class="label-multiline">Prompt:</label>
+              <textarea id="prompt-input" placeholder="Enter prompt text"></textarea>
             </div>
             
             <div class="input-group">
-              <label for="negative-prompt-input">Negative Prompt:</label>
-              <input type="text" id="negative-prompt-input" placeholder="Enter negative prompt text">
-            </div>
+              <label for="negative-prompt-input" class="label-multiline">Negative Prompt:</label>
+              <textarea id="negative-prompt-input" placeholder="Enter negative prompt text"></textarea>
+            </div>            
             
           <div class="input-group">
             <label for="width-input">Width:</label>
             <input type="text" id="width-input" value="512">
           </div>
           
-          
           <div class="input-group">
             <label for="height-input">Height:</label>
             <input type="text" id="height-input" value="512">
           </div>
-          
             
             <div class="slider-group">
               <label for="num-inference-steps-slider">Number of Inference Steps:</label>
@@ -70,13 +62,13 @@
           
           <div class="slider-group">
               <label for="guidance-scale-slider">Guidance Scale:</label>
-              <input type="range" id="guidance-scale-slider" min="1" max="20" value="7" step="1">
+              <input type="range" id="guidance-scale-slider" min="1" max="30" value="7" step="1">
               <span id="guidance-scale-value">7</span>
           </div>
 
           <div class="slider-group">
               <label for="batchsize-slider">Batch Size:</label>
-              <input type="range" id="batchsize-slider" min="1" max="10" value="1" step="1">
+              <input type="range" id="batchsize-slider" min="1" max="1" value="1" step="1">
               <span id="batchsize-value">1</span>
           </div>
             
@@ -90,10 +82,25 @@
             <input type="range" id="eta-slider" min="0" max="2.0" value="0.1" step="0.1">
             <span id="eta-value">0.1</span>
         </div>
-                  <button id="generate-art-button" onclick="generateArt()" >Generate Art</button>
 
-            </div>
+          <div class="buttonContainer">
+              <button class="generate-art-button" onclick="" >Random Prompt</button>
+              <button class="generate-art-button" id="seed-button" >Random Seed</button>
+              <button class="generate-art-button" onclick="generateArt()" >Generate Art</button>
+          </div>
+
+      </div>
             
+          <div class="art-container">
+            <h2>Generated Art</h2>
+            <img id="generated-art" src="https://upload.wikimedia.org/wikipedia/commons/7/71/Black.png?20110927180820" alt="Generated Art">
+            <div class="progress-container">
+              <div class="progress-bar" id="progress-bar"></div>
+              <div class="progress-label" id="progress-label"></div>
+              <div class="estimated-time" id="estimated-time"></div>
+            </div>
+          </div>
+                
           </div>
     </main>
 </body>

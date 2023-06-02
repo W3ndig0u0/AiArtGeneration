@@ -1,40 +1,30 @@
 let initialGeneration = true;
 
 
-var imagePath = 'GeneratedImg/intermediate/14.png';
-
-// Fetch the image from the backend route
-fetch('/get_image/' + encodeURIComponent(imagePath))
-  .then(response => response.blob())
-  .then(blob => {
-    // Create a DOM object URL from the image blob
-    var imageURL = URL.createObjectURL(blob);
-  
-    // Create an image element
-    var myImage = new Image();
-    myImage.src = imageURL;
-  
-    myImage.onload = function() {
-      const imgElement = document.getElementById('generated-art');
-      imgElement.appendChild(myImage);
-    };
-  });
-
-
+function changeImage() {
+  var image = document.getElementById('myImage');
+  image.src = '59.jpg';
+}
 
 function generateArt() {
+  changeImage();
   const promptInput = document.getElementById('prompt-input').value;
   const negativePromptInput = document.getElementById('negative-prompt-input').value;
-
-  console.log(negativePromptInput);
-
   const numInferenceStepsSlider = document.getElementById('num-inference-steps-slider');
   const etaSlider = document.getElementById('eta-slider');
   const guidanceScaleSlider = document.getElementById('guidance-scale-slider');
   const widthInput = document.getElementById('width-input');
   const heightInput = document.getElementById('height-input');
   const batchsizeSlider = document.getElementById('batchsize-slider');
-  const seedInput = document.getElementById('seed-input');
+  const seedInput = document.getElementById('seed-input').value;
+
+  if (promptInput === undefined || promptInput === "" || seedInput === undefined || seedInput === "" ) {
+    alert("Please enter a prompt");
+    return
+  }
+
+  console.log(negativePromptInput);
+
 
   const requestData = {
     prompt: promptInput,
@@ -45,7 +35,7 @@ function generateArt() {
     width: widthInput?.value,
     height: heightInput?.value,
     batch_size: batchsizeSlider?.value,
-    seed: seedInput.value,
+    seed: seedInput,
     initial_generation: initialGeneration
   };
   console.log(requestData);
@@ -77,7 +67,6 @@ function generateArt() {
     });
 }
 
-// Update the generated art, progress bar, progress label, and estimated time
 function updateGeneratedArt(data, progressBar, progressLabel, estimatedTimeElement) {
   const progress = data.progress;
   const totalSteps = data.total_steps;
@@ -98,27 +87,4 @@ function updateGeneratedArt(data, progressBar, progressLabel, estimatedTimeEleme
     estimatedTimeElement.innerText = `Estimated Time Left: ${estimatedTime}`;
     initialGeneration = true;  // Reset the flag for the next generation
   }
-}
-
-const numInferenceStepsSlider = document.getElementById('num-inference-steps-slider');
-numInferenceStepsSlider.addEventListener('input', updateSliderValue);
-
-const etaSlider = document.getElementById('eta-slider');
-etaSlider.addEventListener('input', updateSliderValue);
-
-const guidanceScaleSlider = document.getElementById('guidance-scale-slider');
-guidanceScaleSlider.addEventListener('input', updateSliderValue);
-
-const batchSizeSlider = document.getElementById('batchsize-slider');
-batchSizeSlider.addEventListener('input', updateSliderValue);
-
-function updateSliderValue() {
-  const numInferenceStepsValue = document.getElementById('num-inference-steps-slider').value;
-  const etaValue = document.getElementById('eta-slider').value;
-  const guidanceScaleValue = document.getElementById('guidance-scale-slider').value;
-
-  document.getElementById('num-inference-steps-value').textContent = numInferenceStepsValue;
-  document.getElementById('eta-value').textContent = etaValue;
-  document.getElementById('guidance-scale-value').textContent = guidanceScaleValue;
-  document.getElementById('batchsize-value').textContent = document.getElementById('batchsize-slider').value;
 }

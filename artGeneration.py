@@ -49,8 +49,8 @@ class AnimeArtist:
 
         if self.generator is None:
             model_folder = "./artModel"
-            # model_id = "Ojimi/anime-kawai-diffusion"
-            model_id = "andite/pastel-mix"
+            model_id = "Ojimi/anime-kawai-diffusion"
+            # model_id = "andite/pastel-mix"
             self.generator = load_modelDiff(model_id, model_folder, self.device)
             print(self.device)
             print(torch.cuda.is_available())
@@ -80,9 +80,10 @@ class AnimeArtist:
             file_count = len(existing_files)
             randomSeed = [
                 torch.Generator(self.device).manual_seed(seed)
-                for _ in range(batch_size)
+                if batch_size == 1
+                else torch.Generator(self.device).manual_seed(seed + step)
+                for step in range(batch_size)
             ]
-
             if torch.backends.mps.is_available():
                 torch.mps.empty_cache()
             elif torch.cuda.is_available():
@@ -143,7 +144,7 @@ if __name__ == "__main__":
         num_inference_steps,
         guidance_scale,
         eta,
-        # "bad art",
+        "bad art",
         save_folder,
         seed,
         batch_size,

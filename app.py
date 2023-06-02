@@ -61,7 +61,7 @@ def generate_art():
     )
 
     # intermediate_folder = intermediate_folder.replace("\\", "/")
-    intermediate_url = f"/GeneratedImg/{intermediate_folder}/"
+    intermediate_url = f"{intermediate_folder}/"
 
     response = {
         "generated_art_url": intermediate_url,
