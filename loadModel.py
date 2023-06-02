@@ -20,7 +20,6 @@ def load_model(model_name, cache_dir, device):
         model = AutoModelForCausalLM.from_pretrained(model_path, cache_dir=cache_dir)
 
     model.to(device)
-    torch.cuda.empty_cache()
     return model, tokenizer
 
 
@@ -41,5 +40,4 @@ def load_modelDiff(model_name, cache_dir, device):
             torch_dtype=torch.float16,
         )
     model = model.to(device)
-    torch.cuda.empty_cache()
     return model

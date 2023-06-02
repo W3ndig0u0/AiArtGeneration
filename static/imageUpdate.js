@@ -1,7 +1,26 @@
 let initialGeneration = true;
 
-const imgElement = document.getElementById('generated-art');
-imgElement.src = "../GeneratedImg/intermediate/14.png";
+
+var imagePath = 'GeneratedImg/intermediate/14.png';
+
+// Fetch the image from the backend route
+fetch('/get_image/' + encodeURIComponent(imagePath))
+  .then(response => response.blob())
+  .then(blob => {
+    // Create a DOM object URL from the image blob
+    var imageURL = URL.createObjectURL(blob);
+  
+    // Create an image element
+    var myImage = new Image();
+    myImage.src = imageURL;
+  
+    myImage.onload = function() {
+      const imgElement = document.getElementById('generated-art');
+      imgElement.appendChild(myImage);
+    };
+  });
+
+
 
 function generateArt() {
   const promptInput = document.getElementById('prompt-input').value;
