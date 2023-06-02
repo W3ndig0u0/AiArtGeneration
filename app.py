@@ -4,13 +4,15 @@ from diffusers import DiffusionPipeline, DPMSolverMultistepScheduler
 import os
 import json
 
-app = Flask(__name__, static_url_path='/static', static_folder='static')
+app = Flask(__name__, static_url_path="/static", static_folder="static")
 anime_artist = AnimeArtist()
 
-@app.route('/get_image/<path:image_name>')
+
+@app.route("/get_image/<path:image_name>")
 def get_image(image_name):
-    image_directory = 'GeneratedImg/intermediate'
+    image_directory = "GeneratedImg/intermediate"
     return send_from_directory(image_directory, image_name)
+
 
 @app.route("/process_input", methods=["POST"])
 def process_input():

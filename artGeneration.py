@@ -1,6 +1,4 @@
 import torch
-from torch import mps
-
 from PIL import Image
 from diffusers import StableDiffusionPipeline, EulerAncestralDiscreteScheduler
 from loadModel import load_modelDiff
@@ -44,17 +42,15 @@ class AnimeArtist:
         self.generation_complete = False
         self.estimated_time = None
 
-
-
         if torch.backends.mps.is_available():
-            torch.mps.empty_cache()        
+            torch.mps.empty_cache()
         elif torch.cuda.is_available():
-            torch.cuda.empty_cache() 
-            
+            torch.cuda.empty_cache()
+
         if self.generator is None:
             model_folder = "./artModel"
-            model_id = "Ojimi/anime-kawai-diffusion"
-            # model_id = "andite/pastel-mix"
+            # model_id = "Ojimi/anime-kawai-diffusion"
+            model_id = "andite/pastel-mix"
             self.generator = load_modelDiff(model_id, model_folder, self.device)
             print(self.device)
             print(torch.cuda.is_available())
@@ -63,15 +59,15 @@ class AnimeArtist:
             #     num_inference_steps
             # )
             if torch.backends.mps.is_available():
-                torch.mps.empty_cache()            
+                torch.mps.empty_cache()
             elif torch.cuda.is_available():
-                torch.cuda.empty_cache()           
+                torch.cuda.empty_cache()
 
         with torch.no_grad():
             if torch.backends.mps.is_available():
-                torch.mps.empty_cache()            
+                torch.mps.empty_cache()
             elif torch.cuda.is_available():
-                torch.cuda.empty_cache()     
+                torch.cuda.empty_cache()
             generator = self.generator.to(self.device)
             current_images = [
                 Image.new("RGB", (width, height)) for _ in range(batch_size)
@@ -88,7 +84,7 @@ class AnimeArtist:
             ]
 
             if torch.backends.mps.is_available():
-                torch.mps.empty_cache()            
+                torch.mps.empty_cache()
             elif torch.cuda.is_available():
                 torch.cuda.empty_cache()
 
@@ -104,10 +100,8 @@ class AnimeArtist:
                     generator=randomSeed,
                 )
 
-
-
                 if torch.backends.mps.is_available():
-                    torch.mps.empty_cache()                
+                    torch.mps.empty_cache()
                 elif torch.cuda.is_available():
                     torch.cuda.empty_cache()
 
@@ -124,7 +118,7 @@ class AnimeArtist:
 
             self.generation_complete = True
             if torch.backends.mps.is_available():
-                torch.mps.empty_cache()           
+                torch.mps.empty_cache()
             elif torch.cuda.is_available():
                 torch.cuda.empty_cache()
 

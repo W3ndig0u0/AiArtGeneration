@@ -39,6 +39,7 @@ bld/
 #wwwroot/
 /pretrained_models
 /civitAi
+/ArtVae
 /artModel
 /animeModel
 /fine_tuned_models
