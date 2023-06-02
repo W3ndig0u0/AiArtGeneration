@@ -43,9 +43,6 @@ function chat() {
       // Scroll to the bottom of the chat history
       chatHistory.scrollTop = chatHistory.scrollHeight;
     })
-    .catch(error => {
-      console.log(error);
-    });
   }
 }
 

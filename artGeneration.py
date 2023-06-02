@@ -53,8 +53,8 @@ class AnimeArtist:
             
         if self.generator is None:
             model_folder = "./artModel"
-            # model_id = "Ojimi/anime-kawai-diffusion"
-            model_id = "andite/pastel-mix"
+            model_id = "Ojimi/anime-kawai-diffusion"
+            # model_id = "andite/pastel-mix"
             self.generator = load_modelDiff(model_id, model_folder, self.device)
             print(self.device)
             print(torch.cuda.is_available())

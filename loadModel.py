@@ -1,4 +1,4 @@
-from transformers import AutoModelForCausalLM, AutoTokenizer
+from transformers import AutoModelForCausalLM, AutoTokenizer, CLIPTextConfig
 from diffusers import DiffusionPipeline
 import torch
 import os
