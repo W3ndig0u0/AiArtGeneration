@@ -26,6 +26,19 @@
   display: flex;
 }
 
+.textarea-container {
+  position: relative;
+}
+
+.word-count {
+  position: absolute;
+  bottom: 5px;
+  right: 5px;
+  font-size: 12px;
+  color: #888;
+}
+
+
 .input-group textarea {
   width: 400px;
   padding: 10px;

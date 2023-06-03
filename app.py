@@ -1,4 +1,4 @@
-from flask import Flask, render_template, request, jsonify
+from flask import Flask, render_template, request, jsonify, send_from_directory
 from artGeneration import AnimeArtist
 from diffusers import DiffusionPipeline, DPMSolverMultistepScheduler
 import os
@@ -8,10 +8,9 @@ app = Flask(__name__, static_url_path="/static", static_folder="static")
 anime_artist = AnimeArtist()
 
 
-@app.route("/get_image/<path:image_name>")
-def get_image(image_name):
-    image_directory = "GeneratedImg/intermediate"
-    return send_from_directory(image_directory, image_name)
+@app.route("/GeneratedImg/<path:path>")
+def send_img(path):
+    return send_from_directory("GeneratedImg", path)
 
 
 @app.route("/process_input", methods=["POST"])
@@ -43,10 +42,10 @@ def generate_art():
     batch_size = int(request.json.get("batch_size", 1))
     seed = int(request.json.get("seed", -1))
 
-    save_folder = "./GeneratedImg"
     initial_generation = request.json.get("initial_generation", False)
+    save_folder = "GeneratedImg"
 
-    intermediate_folder = anime_artist.generate_art(
+    img_folder, file_name = anime_artist.generate_art(
         prompt,
         width,
         height,
@@ -60,11 +59,12 @@ def generate_art():
         initial_generation,
     )
 
-    # intermediate_folder = intermediate_folder.replace("\\", "/")
-    intermediate_url = f"{intermediate_folder}/"
+    img_folder = f"{img_folder}/"
+    file_name = f"{file_name}.png"
 
     response = {
-        "generated_art_url": intermediate_url,
+        "folder_url": img_folder,
+        "img_name": file_name,
         "progress": anime_artist.progress,
         "total_steps": anime_artist.total_steps,
         "generation_complete": anime_artist.generation_complete,

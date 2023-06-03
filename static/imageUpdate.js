@@ -1,13 +1,38 @@
-let initialGeneration = true;
+let initialGeneration = false;
 
 
-function changeImage() {
-  var image = document.getElementById('myImage');
-  image.src = '59.jpg';
+const progressLabel = document.getElementById('progress-label');
+const estimatedTimeElement = document.getElementById('estimated-time');
+const progressBar = document.getElementById('progress-bar');
+
+function changeImage(data) {
+  var image = document.getElementById('generated-art');
+  var folder_path = data.folder_url;
+  var img_name = data.img_name;
+
+  var imagePath = folder_path + img_name;
+
+  console.log(imagePath);
+
+  fetch(imagePath)
+    .then(function(response) {
+      if (!response.ok) {
+        throw new Error('Image request failed');
+      }
+      return response.blob();
+    })
+    .then(function(blob) {
+      var objectURL = URL.createObjectURL(blob);
+      image.src = objectURL;
+    })
+    .catch(function(error) {
+      console.error('Error:', error);
+    });
 }
 
+
 function generateArt() {
-  changeImage();
+  initialGeneration = false
   const promptInput = document.getElementById('prompt-input').value;
   const negativePromptInput = document.getElementById('negative-prompt-input').value;
   const numInferenceStepsSlider = document.getElementById('num-inference-steps-slider');
@@ -18,17 +43,16 @@ function generateArt() {
   const batchsizeSlider = document.getElementById('batchsize-slider');
   const seedInput = document.getElementById('seed-input').value;
 
-  if (promptInput === undefined || promptInput === "" || seedInput === undefined || seedInput === "" ) {
+  if (promptInput === undefined || promptInput === "" || seedInput === undefined || seedInput === "") {
     alert("Please enter a prompt");
-    return
+    return;
   }
 
-  console.log(negativePromptInput);
-
+  fakeProgressBarAnimation();
 
   const requestData = {
     prompt: promptInput,
-    negativePromt : negativePromptInput,
+    negativePromt: negativePromptInput,
     num_inference_steps: numInferenceStepsSlider?.value,
     eta: etaSlider?.value,
     guidance_scale: guidanceScaleSlider?.value,
@@ -38,6 +62,7 @@ function generateArt() {
     seed: seedInput,
     initial_generation: initialGeneration
   };
+
   console.log(requestData);
 
   fetch('/generate_art', {
@@ -48,43 +73,68 @@ function generateArt() {
     body: JSON.stringify(requestData)
   })
     .then(response => {
-      console.log(response);
       return response.json();
     })
     .then(data => {
-      console.log(data.response);
-      const imgElement = document.getElementById('generated-art');
-      imgElement.src = data.generated_art_url;
+      changeImage(data);
+      console.log(data);
 
-      const progressBar = document.getElementById('progress-bar');
-      const progressLabel = document.getElementById('progress-label');
-      const estimatedTimeElement = document.getElementById('estimated-time');
-
-      updateGeneratedArt(data, progressBar, progressLabel, estimatedTimeElement);
+      realProgressBarAnimation(data);
     })
     .catch(error => {
-      console.log(error);
+      alert(error);
     });
 }
 
-function updateGeneratedArt(data, progressBar, progressLabel, estimatedTimeElement) {
-  const progress = data.progress;
+
+function fakeProgressBarAnimation() {
+  const totalSteps = 100; // Set the total number of steps
+  let currentProgress = 0; // Start with 0 progress
+  const incrementInterval = 700; // Interval in milliseconds between each increment
+  let maxRandomIncrement = 6;
+
+  const incrementProgress = () => {
+    if (initialGeneration) {
+      return;
+    }
+
+    if (currentProgress >= totalSteps) {
+      // Reached the end, stop incrementing
+      return;
+    }
+
+    if (currentProgress >= totalSteps - 50) {
+      maxRandomIncrement = 2;
+    } else if (currentProgress >= totalSteps - 30) {
+      maxRandomIncrement = 0.5;
+    } else if (currentProgress >= totalSteps - 15) {
+      maxRandomIncrement = 0.1;
+    } else if (currentProgress >= totalSteps - 5) {
+      maxRandomIncrement = 0;
+      return;
+    }
+    
+    // Increment progress randomly
+    const randomIncrement = Math.random() * maxRandomIncrement;
+    currentProgress += randomIncrement;
+
+    // Update progress bar and label
+    const progressPercent = (currentProgress / totalSteps) * 100;
+    progressBar.style.width = progressPercent + '%';
+    progressLabel.innerText = `Progress: ${currentProgress.toFixed(1)} / ${totalSteps}`;
+
+    setTimeout(incrementProgress, incrementInterval);
+  };
+
+  incrementProgress();
+}
+
+function realProgressBarAnimation(data) {
+  initialGeneration = true;
+  const progress = data.progress;      
   const totalSteps = data.total_steps;
   const progressPercent = (progress / totalSteps) * 100;
-  progressBar.style.width = progressPercent + '%';
+
+  progressBar.style.width = 110 + '%';
   progressLabel.innerText = `Progress: ${progress} / ${totalSteps}`;
-
-  console.log(`Progress: ${progress} / ${totalSteps}`);
-  console.log(`Generated Art URL: ${data.generated_art_url}`);
-
-  if (!data.generation_complete) {
-    setTimeout(() => {
-      initialGeneration = false;
-      generateArt();
-    }, 1000);
-  } else {
-    const estimatedTime = data.estimated_time;
-    estimatedTimeElement.innerText = `Estimated Time Left: ${estimatedTime}`;
-    initialGeneration = true;  // Reset the flag for the next generation
-  }
 }

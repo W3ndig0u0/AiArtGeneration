@@ -38,7 +38,7 @@ class AnimeArtist:
     ):
         if initial_generation:
             self.progress = 0
-        self.total_steps = num_inference_steps
+        self.total_steps = batch_size
         self.generation_complete = False
         self.estimated_time = None
 
@@ -53,8 +53,6 @@ class AnimeArtist:
             # model_id = "andite/pastel-mix"
             self.generator = load_modelDiff(model_id, model_folder, self.device)
             print(self.device)
-            print(torch.cuda.is_available())
-            print(torch.backends.mps.is_available())
             # self.generator.scheduler = EulerAncestralDiscreteScheduler(
             #     num_inference_steps
             # )
@@ -72,11 +70,10 @@ class AnimeArtist:
             current_images = [
                 Image.new("RGB", (width, height)) for _ in range(batch_size)
             ]
-            intermediate_folder = os.path.join(str(save_folder), "intermediate")
 
-            os.makedirs(intermediate_folder, exist_ok=True)
+            os.makedirs(save_folder, exist_ok=True)
 
-            existing_files = os.listdir(intermediate_folder)
+            existing_files = os.listdir(save_folder)
             file_count = len(existing_files)
             randomSeed = [
                 torch.Generator(self.device).manual_seed(seed)
@@ -89,6 +86,7 @@ class AnimeArtist:
             elif torch.cuda.is_available():
                 torch.cuda.empty_cache()
 
+            start_time = time.time()
             for step in range(batch_size):
                 generated = generator(
                     prompt=input_prompt,
@@ -110,10 +108,17 @@ class AnimeArtist:
 
                 for i, image in enumerate(current_images):
                     file_number = file_count + step * batch_size + i + 1
-                    save_path = os.path.join(intermediate_folder, f"{file_number}.png")
+                    save_path = os.path.join(save_folder, f"{file_number}.png")
                     image.save(save_path)
 
                 self.progress = step + 1
+
+                elapsed_time = time.time() - start_time
+                if step > 0:
+                    average_time_per_step = elapsed_time / step
+                    remaining_steps = num_inference_steps - step
+                    estimated_time = average_time_per_step * remaining_steps
+                    self.estimated_time = round(estimated_time, 2)
 
             final_file_number = file_count + num_inference_steps * batch_size
 
@@ -123,7 +128,7 @@ class AnimeArtist:
             elif torch.cuda.is_available():
                 torch.cuda.empty_cache()
 
-        return intermediate_folder
+        return save_folder, file_number
 
 
 if __name__ == "__main__":

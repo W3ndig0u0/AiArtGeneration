@@ -21,3 +21,21 @@ function updateSliderValue() {
   document.getElementById('guidance-scale-value').textContent = guidanceScaleValue;
   document.getElementById('batchsize-value').textContent = document.getElementById('batchsize-slider').value;
 }
+
+
+function limitInputTo77Tokens() {
+  var textarea = document.getElementById("prompt-input");
+  var wordCountSpan = document.getElementById("word-count");
+  var words = textarea.value.trim().split(/\s+/); // Split the input into words
+  var wordCount = words.length;
+  var wordsLeft = 50 - wordCount;
+
+  if (wordsLeft < 0) {
+    // If the word count exceeds 77, truncate the input
+    words = words.slice(0, 50);
+    textarea.value = words.join(" ");
+    wordsLeft = 0;
+  }
+
+  wordCountSpan.textContent = wordsLeft + " words left";
+}

@@ -36,9 +36,13 @@
             
             <div class="input-group">
               <label for="prompt-input" class="label-multiline">Prompt:</label>
-              <textarea id="prompt-input" placeholder="Enter prompt text"></textarea>
-            </div>
+              <div class="textarea-container">
+                <textarea id="prompt-input" placeholder="Enter prompt text" oninput="limitInputTo77Tokens()"></textarea>
+                <span id="word-count" class="word-count"></span>
+              </div>
+            </div>            
             
+          
             <div class="input-group">
               <label for="negative-prompt-input" class="label-multiline">Negative Prompt:</label>
               <textarea id="negative-prompt-input" placeholder="Enter negative prompt text"></textarea>
