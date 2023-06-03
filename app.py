@@ -6,11 +6,7 @@ import json
 
 app = Flask(__name__, static_url_path="/static", static_folder="static")
 anime_artist = AnimeArtist()
-
-
-@app.route("/GeneratedImg/<path:path>")
-def send_img(path):
-    return send_from_directory("GeneratedImg", path)
+image_folder = "GeneratedImg"
 
 
 @app.route("/process_input", methods=["POST"])
@@ -30,6 +26,33 @@ def art():
     return render_template("art.html")
 
 
+@app.route("/gallery")
+def gallery():
+    image_files = [
+        filename
+        for filename in os.listdir(image_folder)
+        if filename.endswith((".jpg", ".jpeg", ".png"))
+    ]
+    return render_template("gallery.html", image_files=image_files)
+
+
+@app.route("/getImages")
+def get_images():
+    image_files = sorted(
+        [
+            filename
+            for filename in os.listdir(image_folder)
+            if filename.endswith((".jpg", ".jpeg", ".png"))
+        ]
+    )
+    return jsonify({"imageFiles": image_files})
+
+
+@app.route("/GeneratedImg/<path:path>")
+def send_img(path):
+    return send_from_directory(image_folder, path)
+
+
 @app.route("/generate_art", methods=["POST"])
 def generate_art():
     prompt = request.json["prompt"]
@@ -43,7 +66,7 @@ def generate_art():
     seed = int(request.json.get("seed", -1))
 
     initial_generation = request.json.get("initial_generation", False)
-    save_folder = "GeneratedImg"
+    save_folder = image_folder
 
     img_folder, file_name = anime_artist.generate_art(
         prompt,

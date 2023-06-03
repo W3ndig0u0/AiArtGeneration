@@ -4,20 +4,23 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>AI Chat</title>
+  <title>AI Art</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='artGeneration.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='progressbar.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='header.css') }}">
-  
-  <script defer src="{{ url_for('static', filename='chat.js') }}"></script>
-</head>
+  <link rel="stylesheet" href="{{ url_for('static', filename='gallery.css') }}">
 
-<body>
+  <script defer src="{{ url_for('static', filename='gallery.js') }}"></script>
+  </head>
+
+<body class="galleryBody">
     <header class="header">
       <div class="header-content">
         <h1 class="header-title">Art App</h1>
         <nav class="header-nav">
           <ul class="header-links">
-            <li><a href="#">AI Chat</a></li>
+            <li><a href="{{ url_for('home') }}">AI Chat</a></li>
             <li><a href="{{ url_for('art') }}">AI Art</a></li>
             <li><a href="{{ url_for('gallery') }}">Gallery</a></li>
           </ul>
@@ -25,14 +28,14 @@
       </div>
     </header>
     
-    <div class="container">
-    <div class="chat-history" id="chat-history"></div>
-    <div class="chat-controls">
-      <input type="text" id="user-input" autocomplete="off" autofocus onkeydown="handleKeyDown(event)">
-      <button onclick="chat()">Send</button>
-    </div>
-    
+    <main>
+      <div class="btn-container">
+          <button id="changeOrderButton">Change Order</button>
+      </div>
+
+      <div class="imageContainer" id="imageContainer"></div>
+      <div class="paginationContainer" id="paginationContainer"></div>
+
+    </main>
 </body>
-
-
 </html>

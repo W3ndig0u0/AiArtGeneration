@@ -24,6 +24,7 @@ function changeImage(data) {
     .then(function(blob) {
       var objectURL = URL.createObjectURL(blob);
       image.src = objectURL;
+      image.setAttribute('draggable', 'false');
     })
     .catch(function(error) {
       console.error('Error:', error);

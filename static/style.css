@@ -6,6 +6,11 @@ body {
   overflow: hidden;
 }
 
+image {
+  user-drag: none;
+  user-select: none;
+  pointer-events: none;
+}
 
 .chat-container {
   margin: 0 auto;
