@@ -40,9 +40,11 @@ function chat() {
       document.getElementById('user-input').value = "";
       document.getElementById('user-input').focus();
 
-      // Scroll to the bottom of the chat history
       chatHistory.scrollTop = chatHistory.scrollHeight;
     })
+    .catch(error => {
+      alert(error);
+    });
   }
 }
 

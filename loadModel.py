@@ -14,8 +14,7 @@ def load_model(model_name, cache_dir, device):
 
     model_path = os.path.join(cache_dir, model_name)
     if not os.path.exists(model_path):
-        print("ERROR: THE MODEL IS NOT DOWNLOADED.")
-        print("DOWNLOADING " + model_name + " NOW!")
+        print("Using " + model_name)
         model = AutoModelForCausalLM.from_pretrained(model_name, cache_dir=cache_dir)
     else:
         print("The model is already downloaded.")

@@ -1,18 +1,20 @@
 from flask import Flask, render_template, request, jsonify, send_from_directory
 from artGeneration import AnimeArtist
+from virtualTuber import VirtualTuber
 from diffusers import DiffusionPipeline, DPMSolverMultistepScheduler
 import os
 import json
 
 app = Flask(__name__, static_url_path="/static", static_folder="static")
 anime_artist = AnimeArtist()
+virtualTuber = VirtualTuber()
 image_folder = "GeneratedImg"
 
 
 @app.route("/process_input", methods=["POST"])
 def process_input():
     user_input = request.json["user_input"]
-    response = virtual_tuber.run(user_input)
+    response = virtualTuber.run(user_input)
     return jsonify({"response": response})
 
 
@@ -99,4 +101,4 @@ def generate_art():
 
 
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run()

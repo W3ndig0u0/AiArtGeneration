@@ -24,6 +24,11 @@ class VirtualTuber:
         self.model, tokenizer = load_model(self.model_name, self.cache_dir, self.device)
 
     def generate_response(self, user_input):
+        if torch.backends.mps.is_available():
+            torch.mps.empty_cache()
+        elif torch.cuda.is_available():
+            torch.cuda.empty_cache()
+
         tokenizer = AutoTokenizer.from_pretrained(
             self.model_name, cache_dir=self.cache_dir, padding_side="left"
         )
@@ -56,9 +61,3 @@ class VirtualTuber:
         else:
             response = self.generate_response(user_input)
         return response
-
-
-if __name__ == "__main__":
-    virtual_tuber = VirtualTuber()
-    print(f"Using device: {virtual_tuber.device}")
-    virtual_tuber.run()
