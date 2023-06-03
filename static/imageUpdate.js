@@ -88,10 +88,10 @@ function generateArt() {
 
 
 function fakeProgressBarAnimation() {
-  const totalSteps = 100; // Set the total number of steps
+  const totalSteps = 90; // Set the total number of steps
   let currentProgress = 0; // Start with 0 progress
   const incrementInterval = 700; // Interval in milliseconds between each increment
-  let maxRandomIncrement = 6;
+  let maxRandomIncrement = 5;
 
   const incrementProgress = () => {
     if (initialGeneration) {
