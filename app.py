@@ -13,6 +13,8 @@ virtualTuber = VirtualTuber()
 image_folder = "GeneratedImg"
 ACTIVE_MODEL_FILE = "active_model.txt"
 # model_id = "andite/pastel-mix"
+# vae_name = "stabilityai/sd-vae-ft-mse"
+vae_name = "ckpt/anything-v4.5-vae-swapped"
 
 
 @app.route("/process_input", methods=["POST"])
@@ -89,6 +91,7 @@ def generate_art():
         seed,
         batch_size,
         get_active_model(),
+        vae_name,
         initial_generation,
     )
 

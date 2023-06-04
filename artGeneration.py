@@ -35,6 +35,7 @@ class AnimeArtist:
         seed,
         batch_size,
         artModel_id,
+        vae_name,
         initial_generation=False,
     ):
         if initial_generation:
@@ -51,8 +52,9 @@ class AnimeArtist:
         model_folder = "./artModel"
         # model_id = "Ojimi/anime-kawai-diffusion"
         print(artModel_id)
+        print(vae_name)
         # model_id = "andite/pastel-mix"
-        self.generator = load_modelDiff(artModel_id, model_folder, self.device)
+        self.generator = load_modelDiff(artModel_id, vae_name, model_folder, self.device)
         print(self.device)
         # self.generator.scheduler = EulerAncestralDiscreteScheduler(
         #     num_inference_steps

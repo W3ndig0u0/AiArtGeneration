@@ -1,7 +1,9 @@
 from transformers import AutoModelForCausalLM, AutoTokenizer, CLIPTextConfig
 from diffusers import StableDiffusionPipeline
+from diffusers.models import AutoencoderKL
 import torch
 import os
+from huggingface_hub import hf_hub_download
 
 # model = None  # Global variable to store the loaded model
 # vae = None  # Global variable to store the loaded VAE model
@@ -54,14 +56,19 @@ def load_model(model_name, cache_dir, device):
 #     return model
 
 
-def load_modelDiff(model_name, cache_dir, device):
+def load_modelDiff(model_name, vae_name, cache_dir, device):
+    var_cache_dir = os.path.join("ArtVae")
+    vae = AutoencoderKL.from_pretrained(vae_name, torch_dtype=torch.float16, cache_dir=var_cache_dir)
+
     model_path = os.path.join(cache_dir, model_name)
+
     if not os.path.exists(model_path):
         print("DOWNLOADING " + model_name + " NOW!")
         model = StableDiffusionPipeline.from_pretrained(
             model_name,
             cache_dir=cache_dir,
             torch_dtype=torch.float16,
+            vae=vae
         )
     else:
         print("The model is already downloaded.")
@@ -69,7 +76,9 @@ def load_modelDiff(model_name, cache_dir, device):
             model_name,
             cache_dir=cache_dir,
             torch_dtype=torch.float16,
+            vae=vae
         )
+
 
     model = model.to(device)
     return model
