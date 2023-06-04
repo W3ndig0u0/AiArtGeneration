@@ -13,6 +13,7 @@
   <script defer src="{{ url_for('static', filename='chat.js') }}"></script>
   <script defer src="{{ url_for('static', filename='label.js') }}"></script>
   <script defer src="{{ url_for('static', filename='randomSeed.js') }}"></script>
+  <script defer src="{{ url_for('static', filename='loadArtModel.js') }}"></script>
   <script defer src="{{ url_for('static', filename='imageUpdate.js') }}"></script>
   </head>
 
@@ -34,7 +35,12 @@
       
         <div class="settings-container">
             <h2>Settings</h2>
-            
+
+          <div class="model-option">
+            <label for="menu" class="label-multiline">Ai model:</label>
+            <div id="menu"></div>
+          </div>
+
             <div class="input-group">
               <label for="prompt-input" class="label-multiline">Prompt:</label>
               <div class="textarea-container">
@@ -95,7 +101,7 @@
           </div>
 
       </div>
-            
+
           <div class="art-container">
             <h2>Generated Art</h2>
             <img id="generated-art" src="https://upload.wikimedia.org/wikipedia/commons/7/71/Black.png?20110927180820" alt="Generated Art">

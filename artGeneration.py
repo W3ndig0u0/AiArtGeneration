@@ -34,6 +34,7 @@ class AnimeArtist:
         save_folder,
         seed,
         batch_size,
+        artModel_id,
         initial_generation=False,
     ):
         if initial_generation:
@@ -47,19 +48,19 @@ class AnimeArtist:
         elif torch.cuda.is_available():
             torch.cuda.empty_cache()
 
-        if self.generator is None:
-            model_folder = "./artModel"
-            model_id = "Ojimi/anime-kawai-diffusion"
-            # model_id = "andite/pastel-mix"
-            self.generator = load_modelDiff(model_id, model_folder, self.device)
-            print(self.device)
-            # self.generator.scheduler = EulerAncestralDiscreteScheduler(
-            #     num_inference_steps
-            # )
-            if torch.backends.mps.is_available():
-                torch.mps.empty_cache()
-            elif torch.cuda.is_available():
-                torch.cuda.empty_cache()
+        model_folder = "./artModel"
+        # model_id = "Ojimi/anime-kawai-diffusion"
+        print(artModel_id)
+        # model_id = "andite/pastel-mix"
+        self.generator = load_modelDiff(artModel_id, model_folder, self.device)
+        print(self.device)
+        # self.generator.scheduler = EulerAncestralDiscreteScheduler(
+        #     num_inference_steps
+        # )
+        if torch.backends.mps.is_available():
+            torch.mps.empty_cache()
+        elif torch.cuda.is_available():
+            torch.cuda.empty_cache()
 
         with torch.no_grad():
             if torch.backends.mps.is_available():

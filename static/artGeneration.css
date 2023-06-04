@@ -133,3 +133,21 @@
     width: 100%;
   }
 }
+
+
+#modelSelect {
+  font-family: Arial, sans-serif;
+  font-size: 16px;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  background-color: #f9f9f9;
+  color: #333;
+  width: 200px;
+  margin: 20px 0px;
+}
+
+#modelSelect option {
+  font-weight: normal;
+}
+

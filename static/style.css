@@ -3,7 +3,7 @@ body {
   margin: 20px;
   background-color: #1d1d1d;
   color: #ffffff;
-  overflow: hidden;
+  /* overflow: hidden; */
 }
 
 image {

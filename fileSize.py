@@ -5,12 +5,14 @@ import math
 def print_available_models(cache_dir):
     file_list = os.listdir(cache_dir)
     if file_list:
-        response = ""
+        models = []
         for file_name in file_list:
             file_path = os.path.join(cache_dir, file_name)
             if os.path.isdir(file_path):
                 file_size = get_folder_size(file_path)
-                response += f"{file_name} ({file_size})"
+                model_info = {"name": file_name, "size": file_size}
+                models.append(model_info)
+        response = models
     else:
         response = "No models found in the cache directory."
     return response
@@ -31,5 +33,5 @@ def convert_size(size_bytes):
     size_name = ("B", "KB", "MB", "GB", "TB", "PB", "EB", "ZB", "YB")
     i = int(math.floor(math.log(size_bytes, 1024)))
     p = math.pow(1024, i)
-    size = round(size_bytes / p, 2)
+    size = round(size_bytes / p, 1)
     return f"{size} {size_name[i]}"

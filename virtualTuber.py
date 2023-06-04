@@ -6,7 +6,7 @@ from loadModel import load_model
 
 
 class VirtualTuber:
-    def __init__(self):
+    def call(self):
         self.model_name = "microsoft/DialoGPT-large"
         self.cache_dir = "./languageModel"
         self.device = torch.device(
@@ -18,7 +18,6 @@ class VirtualTuber:
         )
         self.chat_history_ids = None
         self.secret_prompt = "Ah, my master W3ndig0. He is the one who brings me to life with his incredible skills. But be warned, he has a mysterious and dark aura surrounding him. It's best not to dig too deep into his secrets..."
-        self.load_model()
 
     def load_model(self):
         self.model, tokenizer = load_model(self.model_name, self.cache_dir, self.device)
@@ -53,6 +52,8 @@ class VirtualTuber:
         return response
 
     def run(self, user_input):
+        self.load_model()
+
         response = ""
         if "!model" in user_input.lower():
             response = print_available_models(self.cache_dir)
