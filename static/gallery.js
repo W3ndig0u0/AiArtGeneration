@@ -1,5 +1,6 @@
 var imageFiles = [];
 var imagesPerPage = 20;
+var folderPath = "fullImg/";
 
 fetchImages();
 
@@ -13,6 +14,7 @@ function fetchImages() {
           return response.json();
       })
       .then(data => {
+        console.log(data.imageFiles);
           imageFiles = data.imageFiles.sort(numericalSort);
           displayImages(imageFiles);
       })
@@ -22,14 +24,13 @@ function fetchImages() {
 }
 
 function displayImages(data, currentPage = 1) {
-  var totalPages = Math.ceil(data.length / imagesPerPage); // Total number of pages
-  var startIndex = (currentPage - 1) * imagesPerPage; // Start index of the images to display
-  var endIndex = startIndex + imagesPerPage; // End index of the images to display
+  var totalPages = Math.ceil(data.length / imagesPerPage);
+  var startIndex = (currentPage - 1) * imagesPerPage;
+  var endIndex = startIndex + imagesPerPage;
 
   var imageContainer = document.getElementById('imageContainer');
-  var tempContainer = document.createElement('div'); // Create a temporary container for shuffling
+  var tempContainer = document.createElement('div');
 
-  // Slice the image array based on the current page and images per page
   var imageSlice = data.slice(startIndex, endIndex);
 
   imageSlice.forEach(function(imageFile) {

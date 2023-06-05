@@ -4,14 +4,12 @@
   <meta charset="UTF-8">
   <meta http-equiv="X-UA-Compatible" content="IE=edge">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Gallery</title>
+  <title>Settings</title>
   <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='artGeneration.css') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='progressbar.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='settings.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='header.css') }}">
-  <link rel="stylesheet" href="{{ url_for('static', filename='gallery.css') }}">
 
-  <script defer src="{{ url_for('static', filename='gallery.js') }}"></script>
+  <script defer src="{{ url_for('static', filename='downloadModel.js') }}"></script>
   </head>
 
 <body class="galleryBody">
@@ -30,14 +28,30 @@
     </header>
     
     <main>
-      <div class="btn-container">
-          <button id="changeOrderButton">Change Order</button>
+      <div class="content">
+        <section id="model">
+          <h2>Download New Model</h2>
+          <div class="input-group">
+            <label for="modelDownload" class="label-multiline">Model ID:</label>
+            <input type="text" id="modelDownload" placeholder="Model ID (HugginFace)"></input>
+          </div>         
+        </section>
+
+        <section id="vae">
+          <h2>Download New Vae</h2>
+          <div class="input-group">
+            <label for="vaeDownload" class="label-multiline">Vae ID:</label>
+            <input type="text" id="vaeDownload" placeholder="Vae ID (HugginFace)"></input>
+          </div>
+        </section>
+
+        <section id="gpu">
+          <h2>Choose GPU or CPU</h2>
+          <p>Not added yet :P</p>
+        </section>
       </div>
-
-      <div class="imageContainer" id="imageContainer"></div>
-      <div class="paginationContainer" id="paginationContainer"></div>
-
     </main>
+    <div class="space"></div>
     <footer class="footer">
       <div class="footerContainer">
         <div class="footer-content">

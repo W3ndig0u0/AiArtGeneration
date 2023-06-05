@@ -26,6 +26,7 @@
             <li><a href="{{ url_for('home') }}">AI Chat</a></li>
             <li><a href="{{ url_for('art') }}">AI Art</a></li>
             <li><a href="{{ url_for('gallery') }}">Gallery</a></li>
+            <li><a href="{{ url_for('settings') }}">Settings</a></li>
           </ul>
         </nav>
       </div>
@@ -36,10 +37,13 @@
         <div class="settings-container">
             <h2>Settings</h2>
 
-          <div class="model-option">
-            <label for="menu" class="label-multiline">Ai model:</label>
-            <div id="menu"></div>
-          </div>
+            <div class="model-option">
+              <label for="menu" class="label-multiline">Ai model:</label>
+              <div id="menu"></div>
+
+              <label for="menu" class="label-multiline">Vae model:</label>
+              <div id="menu"></div>
+            </div>
 
             <div class="input-group">
               <label for="prompt-input" class="label-multiline">Prompt:</label>
@@ -79,7 +83,7 @@
 
           <div class="slider-group">
               <label for="batchsize-slider">Batch Size:</label>
-              <input type="range" id="batchsize-slider" min="1" max="1" value="1" step="1">
+              <input type="range" id="batchsize-slider" min="1" max="10" value="1" step="1">
               <span id="batchsize-value">1</span>
           </div>
             

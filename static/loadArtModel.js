@@ -37,8 +37,5 @@ fetch('/available_models')
         .then(data => {
           console.log('Response from backend:', data);
         })
-        .catch(error => {
-          console.error('Error:', error);
-        });
       });
     })

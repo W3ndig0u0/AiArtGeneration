@@ -8,9 +8,8 @@ const progressBar = document.getElementById('progress-bar');
 function changeImage(data) {
   var image = document.getElementById('generated-art');
   var folder_path = data.folder_url;
-  var img_name = data.img_name;
 
-  var imagePath = folder_path + img_name;
+  var imagePath = folder_path;
 
   console.log(imagePath);
 

@@ -1,7 +1,7 @@
 from flask import Flask, render_template, request, jsonify, send_from_directory
 from artGeneration import AnimeArtist
 from virtualTuber import VirtualTuber
-from diffusers import DiffusionPipeline, DPMSolverMultistepScheduler
+from diffusers import StableDiffusionPipeline, DPMSolverMultistepScheduler
 from fileSize import print_available_models
 import os
 import json
@@ -10,11 +10,11 @@ import json
 app = Flask(__name__, static_url_path="/static", static_folder="static")
 anime_artist = AnimeArtist()
 virtualTuber = VirtualTuber()
-image_folder = "GeneratedImg"
+image_folder = "GeneratedImg/"
+cache_dir = "artModel/"
+
 ACTIVE_MODEL_FILE = "active_model.txt"
-# model_id = "andite/pastel-mix"
-# vae_name = "stabilityai/sd-vae-ft-mse"
-vae_name = "ckpt/anything-v4.5-vae-swapped"
+vae_name = "stabilityai/sd-vae-ft-mse"
 
 
 @app.route("/process_input", methods=["POST"])
@@ -33,6 +33,20 @@ def home():
 @app.route("/art")
 def art():
     return render_template("art.html")
+
+
+@app.route("/settings")
+def settings():
+    return render_template("settings.html")
+
+
+@app.route("/downloadModel", methods=["POST"])
+def downloadModel():
+    data = request.get_json()
+    modelName = data.get("labelText")
+    model = StableDiffusionPipeline.from_pretrained(modelName, cache_dir=cache_dir)
+    set_active_model(model)
+    return jsonify({"message": modelName})
 
 
 @app.route("/gallery")
@@ -77,8 +91,6 @@ def generate_art():
     initial_generation = request.json.get("initial_generation", False)
     save_folder = "GeneratedImg/"
 
-    print(get_active_model())
-
     img_folder, file_name = anime_artist.generate_art(
         prompt,
         width,
@@ -95,7 +107,7 @@ def generate_art():
         initial_generation,
     )
 
-    img_folder = f"{img_folder}/"
+    img_folder = f"{img_folder}"
     file_name = f"{file_name}.png"
 
     response = {
@@ -139,15 +151,20 @@ def get_active_model():
             return active_model
     else:
         return ""
-        
+
+
 def remove_first_word_before_slash(string):
-    if '/' in string:
-        return string.split('/', 1)[1]
+    if "/" in string:
+        return string.split("/", 1)[1]
     else:
         return string
+
+
 def set_active_model(model_id):
-    model_id = str(model_id).replace("--", "/").replace("models--", "").replace("models", "")
-    model_id = model_id.replace('/', '', 1)  # Remove the first '/'
+    model_id = (
+        str(model_id).replace("--", "/").replace("models--", "").replace("models", "")
+    )
+    model_id = model_id.replace("/", "", 1)  # Remove the first '/'
     with open(ACTIVE_MODEL_FILE, "w") as file:
         file.write(model_id)
 
