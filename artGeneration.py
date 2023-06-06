@@ -15,7 +15,7 @@ class AnimeArtist:
         self.generation_complete = False
         self.estimated_time = None
         self.generator = None
-        self.device = torch.device("cuda" if torch.cuda.is_available() else "cpu")
+        self.device = torch.device("mps" if torch.backends.mps.is_available() else "cuda" if torch.cuda.is_available() else "cpu")
 
     def load_generator(self, artModel_id, vae_name, model_folder):
         self.generator = load_modelDiff(
@@ -74,8 +74,8 @@ class AnimeArtist:
             torch.mps.empty_cache()
         elif torch.cuda.is_available():
             torch.cuda.empty_cache()
+            self.generator.enable_model_cpu_offload()
 
-        self.generator.enable_model_cpu_offload()
         self.generator.enable_attention_slicing()
 
         with torch.no_grad():

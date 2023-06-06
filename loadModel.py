@@ -52,5 +52,9 @@ def load_modelDiff(model_name, vae_name, cache_dir, device):
     )
 
     model = model.to(device)
-    model.enable_xformers_memory_efficient_attention()
+    if device == "cuda":
+        model.enable_xformers_memory_efficient_attention()
+    elif device == "mps":
+        torch.backends.mps.enable_xformers_memory_efficient_attention()
+
     return model
