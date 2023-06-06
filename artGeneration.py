@@ -69,6 +69,7 @@ class AnimeArtist:
 
         print(vae_name)
         print(self.device)
+
         if torch.backends.mps.is_available():
             torch.mps.empty_cache()
         elif torch.cuda.is_available():
@@ -112,8 +113,8 @@ class AnimeArtist:
 
                 file_number = file_count + step + 1
 
-                save_folder = os.path.join(save_folder, f"{file_number}.png")
-                current_images[step].save(save_folder)
+                file_path = os.path.join(save_folder, f"{file_number}.png")
+                current_images[step].save(file_path)
 
                 self.progress = step + 1
 
