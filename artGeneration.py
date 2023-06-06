@@ -131,11 +131,7 @@ class AnimeArtist:
             file_number = file_number + 1
             grid_size = math.ceil(math.sqrt(batch_size))
             generated_images = self.image_grid(current_images, grid_size, grid_size)
-
-            grids_folder = os.path.join(save_folder, "grids")
-            os.makedirs(grids_folder, exist_ok=True)
-
-            save_path = os.path.join(grids_folder, f"{file_number}.png")
+            save_path = os.path.join(save_folder, "grid.png")
             generated_images.save(save_path)
 
         final_file_number = file_number

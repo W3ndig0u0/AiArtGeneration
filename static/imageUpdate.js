@@ -9,7 +9,7 @@ function changeImage(data) {
   var image = document.getElementById('generated-art');
   var folder_path = data.folder_url;
 
-  var imagePath = folder_path;
+  var imagePath = folder_path + data.img_name;
 
   console.log(imagePath);
 

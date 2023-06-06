@@ -15,6 +15,7 @@ cache_dir = "artModel/"
 
 ACTIVE_MODEL_FILE = "active_model.txt"
 vae_name = "stabilityai/sd-vae-ft-mse"
+# vae_name = "/kl-f8-anime.ckpt"
 
 
 @app.route("/process_input", methods=["POST"])
