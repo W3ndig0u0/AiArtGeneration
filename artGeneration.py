@@ -96,6 +96,7 @@ class AnimeArtist:
                 for step in range(batch_size)
             ]
 
+            file_number = file_count + 3
             start_time = time.time()
             for step in range(batch_size):
                 generated = self.generator(
@@ -111,7 +112,7 @@ class AnimeArtist:
 
                 current_images[step] = generated.images[0]
 
-                file_number = file_count + step + 1
+                file_number += 1
 
                 file_path = os.path.join(save_folder, f"{file_number}.png")
                 current_images[step].save(file_path)
@@ -131,7 +132,7 @@ class AnimeArtist:
             file_number = file_number + 1
             grid_size = math.ceil(math.sqrt(batch_size))
             generated_images = self.image_grid(current_images, grid_size, grid_size)
-            save_path = os.path.join(save_folder, "grid.png")
+            save_path = os.path.join(save_folder, f"{file_number}.png")
             generated_images.save(save_path)
 
         final_file_number = file_number
