@@ -1,6 +1,5 @@
 let initialGeneration = false;
 
-
 const progressLabel = document.getElementById('progress-label');
 const estimatedTimeElement = document.getElementById('estimated-time');
 const progressBar = document.getElementById('progress-bar');
@@ -30,9 +29,8 @@ function changeImage(data) {
     });
 }
 
-
 function generateArt() {
-  initialGeneration = false
+  initialGeneration = false;
   const promptInput = document.getElementById('prompt-input').value;
   const negativePromptInput = document.getElementById('negative-prompt-input').value;
   const numInferenceStepsSlider = document.getElementById('num-inference-steps-slider');
@@ -65,6 +63,7 @@ function generateArt() {
 
   console.log(requestData);
 
+
   fetch('/generate_art', {
     method: 'POST',
     headers: {
@@ -78,7 +77,6 @@ function generateArt() {
     .then(data => {
       changeImage(data);
       console.log(data);
-
       realProgressBarAnimation(data);
     })
     .catch(error => {
@@ -86,20 +84,20 @@ function generateArt() {
     });
 }
 
+let progressAnimationId;
 
 function fakeProgressBarAnimation() {
-  const totalSteps = 90; // Set the total number of steps
-  let currentProgress = 0; // Start with 0 progress
-  const incrementInterval = 700; // Interval in milliseconds between each increment
-  let maxRandomIncrement = 5;
+  const totalSteps = 90;
+  let currentProgress = 0;
+  const incrementInterval = 1000;
+  let maxRandomIncrement = 3;
 
   const incrementProgress = () => {
     if (initialGeneration) {
       return;
     }
 
-    if (currentProgress >= totalSteps) {
-      // Reached the end, stop incrementing
+    if (currentProgress >= totalSteps - 10) {
       return;
     }
 
@@ -113,7 +111,7 @@ function fakeProgressBarAnimation() {
       maxRandomIncrement = 0;
       return;
     }
-    
+
     // Increment progress randomly
     const randomIncrement = Math.random() * maxRandomIncrement;
     currentProgress += randomIncrement;
@@ -123,15 +121,20 @@ function fakeProgressBarAnimation() {
     progressBar.style.width = progressPercent + '%';
     progressLabel.innerText = `Progress: ${currentProgress.toFixed(1)} / ${totalSteps}`;
 
-    setTimeout(incrementProgress, incrementInterval);
+    progressAnimationId = setTimeout(incrementProgress, incrementInterval);
   };
+
+  clearTimeout(progressAnimationId);
+  currentProgress = 0;
+  progressBar.style.width = '0%';
 
   incrementProgress();
 }
 
+
 function realProgressBarAnimation(data) {
   initialGeneration = true;
-  const progress = data.progress;      
+  const progress = data.progress;
   const totalSteps = data.total_steps;
   const progressPercent = (progress / totalSteps) * 100;
 

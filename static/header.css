@@ -3,9 +3,10 @@
   color: #ffffff;
   padding: 4px;
   text-align: center;
-  width: 75%;
+
+  width: 90%;
   border-radius: 10px;
-  margin:0 auto;
+  margin: 0 auto;
   margin-bottom: 2rem;
 }
 
@@ -45,4 +46,20 @@
 
 .header-links li a:hover {
   background-color: rgba(255, 255, 255, 0.2);
+}
+
+/* Responsive Styles */
+
+@media (max-width: 768px) {
+  .header {
+    width: 90%;
+  }
+  
+  .header-links {
+    flex-wrap: wrap;
+  }
+
+  .header-links li {
+    margin: 5px;
+  }
 }

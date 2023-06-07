@@ -1,5 +1,5 @@
 var imageFiles = [];
-var imagesPerPage = 20;
+var imagesPerPage = 30;
 var folderPath = "fullImg/";
 
 fetchImages();
@@ -39,6 +39,11 @@ function displayImages(data, currentPage = 1) {
     img.alt = imageFile;
     img.draggable = false;
     img.classList.add('image');
+
+    img.addEventListener('click', function() {
+      openModal(this);
+    });
+
     tempContainer.appendChild(img);
   });
 
@@ -109,8 +114,6 @@ function addPagination(currentPage, totalPages) {
   }
 }
 
-
-
 function createPaginationButton(text, page) {
   var button = document.createElement('button');
   button.classList.add('pagination-button');
@@ -149,3 +152,4 @@ function setActiveButton(button) {
     }
   });
 }
+

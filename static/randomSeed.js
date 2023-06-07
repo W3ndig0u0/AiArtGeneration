@@ -11,7 +11,6 @@ function generateRandomSeed() {
   return seed;
 }
 
-
 document.getElementById("seed-button").addEventListener("click", function() {
   var randomSeed = generateRandomSeed();
   document.getElementById("seed-input").value = randomSeed;

@@ -44,7 +44,7 @@ bld/
 /animeModel
 /fine_tuned_models
 /languageModel
-
+/RandomPromptModel
 # Visual Studio 2017 auto generated files
 Generated\ Files/
 

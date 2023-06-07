@@ -15,7 +15,13 @@ class AnimeArtist:
         self.generation_complete = False
         self.estimated_time = None
         self.generator = None
-        self.device = torch.device("mps" if torch.backends.mps.is_available() else "cuda" if torch.cuda.is_available() else "cpu")
+        self.device = torch.device(
+            "mps"
+            if torch.backends.mps.is_available()
+            else "cuda"
+            if torch.cuda.is_available()
+            else "cpu"
+        )
 
     def load_generator(self, artModel_id, vae_name, model_folder):
         self.generator = load_modelDiff(
@@ -87,7 +93,7 @@ class AnimeArtist:
             existing_files = os.listdir(save_folder)
             file_count = len(existing_files)
 
-            randomSeed = [
+            randomSeeds = [
                 torch.Generator(self.device).manual_seed(seed)
                 if seed != -1 and step == 0
                 else torch.Generator(self.device).manual_seed(
@@ -107,7 +113,7 @@ class AnimeArtist:
                     guidance_scale=guidance_scale,
                     eta=eta,
                     negative_prompt=negative_prompt,
-                    generator=randomSeed[step],
+                    generator=randomSeeds[step],
                 )
 
                 current_images[step] = generated.images[0]

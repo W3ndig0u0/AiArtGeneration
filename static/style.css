@@ -124,3 +124,7 @@ button {
   background-color: #ffffff;
   margin: 0 auto;
 }
+
+.footer-text{
+  word-wrap: break-word;
+}

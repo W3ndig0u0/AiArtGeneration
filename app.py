@@ -3,13 +3,16 @@ from artGeneration import AnimeArtist
 from virtualTuber import VirtualTuber
 from diffusers import StableDiffusionPipeline, DPMSolverMultistepScheduler
 from fileSize import print_available_models
+from randomPrompt import prompt
 import os
 import json
+import subprocess
 
 
 app = Flask(__name__, static_url_path="/static", static_folder="static")
 anime_artist = AnimeArtist()
 virtualTuber = VirtualTuber()
+randomPrompt = prompt()
 image_folder = "GeneratedImg/"
 cache_dir = "artModel/"
 
@@ -112,15 +115,42 @@ def generate_art():
     file_name = f"{file_name}.png"
 
     response = {
-        "folder_url": img_folder,
         "img_name": file_name,
+        "folder_url": img_folder,
         "progress": anime_artist.progress,
         "total_steps": anime_artist.total_steps,
         "generation_complete": anime_artist.generation_complete,
         "estimated_time": anime_artist.estimated_time,
+        "settings": {
+            "prompt": prompt,
+            "negativePromt": negativePromt,
+            "width": width,
+            "height": height,
+            "num_inference_steps": num_inference_steps,
+            "eta": eta,
+            "guidance_scale": guidance_scale,
+            "seed": seed,
+            "batch_size": batch_size,
+            "get_active_model": get_active_model(),
+            "vae": vae_name,
+        },
     }
 
-    print(response)
+    json_filename = "imageJson.json"
+    json_filepath = os.path.join("static", json_filename)
+
+    if not os.path.exists(json_filepath):
+        with open(json_filepath, "w") as json_file:
+            json.dump({file_name: response}, json_file)
+    else:
+        with open(json_filepath, "r") as json_file:
+            existing_data = json.load(json_file)
+
+        existing_data[file_name] = response
+
+        with open(json_filepath, "w") as json_file:
+            json.dump(existing_data, json_file)
+
     return jsonify(response)
 
 
@@ -168,6 +198,11 @@ def set_active_model(model_id):
     model_id = model_id.replace("/", "", 1)  # Remove the first '/'
     with open(ACTIVE_MODEL_FILE, "w") as file:
         file.write(model_id)
+
+
+@app.route("/get_prompt", methods=["POST"])
+def getPrompt():
+    randomPrompt.prompt()
 
 
 if __name__ == "__main__":
