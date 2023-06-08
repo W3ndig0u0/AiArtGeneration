@@ -40,14 +40,13 @@ To run AiArtGeneration locally on your machine, follow the instructions below.
 
 - Python 3.7 or later.
 - Flask framework.
-- Hugging Face Transformers library.
 
 ### Installation
 
 1. Clone the repository to your local machine using the following command:
 
    ```
-   git clone https://github.com/your-username/aiartgeneration.git
+   git clone https://github.com/W3ndig0u0/AiArtGeneration.git
    ```
 
 2. Navigate to the project directory.
