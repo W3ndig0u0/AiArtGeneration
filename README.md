@@ -11,22 +11,23 @@ AiArtGeneration is a small project developed using Flask and the Hugging Face AP
 - **Explore Artistic Styles**: Experiment with different prompts, negative prompts, and seeds to explore various artistic styles and themes.
 - **User-Friendly Interface**: Enjoy a simple and intuitive user interface, allowing you to interact with the AI model effortlessly.
 
-Showcase
+## Showcase
+
 Here are some examples of images generated using AiArtGeneration that used the same prompt and Anime model:
 
-Image 1
+### Image 1
 ![189](https://github.com/W3ndig0u0/AiArtGeneration/assets/70271139/ea1b580b-e199-473d-a6e5-e443fecbcaff)
 
-Image 2
+### Image 2
 ![196](https://github.com/W3ndig0u0/AiArtGeneration/assets/70271139/e7a2dd53-1f95-4243-9dd9-a2cff81674e7)
 
-Image 3
+### Image 3
 ![256](https://github.com/W3ndig0u0/AiArtGeneration/assets/70271139/b58ef96d-0dbe-4109-8d42-82c0b8d3d74e)
 
-Image 4
+### Image 4
 ![287](https://github.com/W3ndig0u0/AiArtGeneration/assets/70271139/55eb1cf6-1c39-4cbf-87fb-e75d4ede07fc)
 
-Image 5
+### Image 5
 ![192](https://github.com/W3ndig0u0/AiArtGeneration/assets/70271139/c91132f4-7d42-4400-b64e-53d7483f4886)
 
 Please note that the images shown above are just a small sample of what AiArtGeneration is capable of creating. The actual generated images can vary based on prompts, negative prompts, seeds, and other input parameters.
