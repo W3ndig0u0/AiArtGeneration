@@ -1,4 +1,8 @@
-  const modal = document.createElement('div');
+let currentImageFileName = '';
+let selectedModalImage = null;
+
+
+const modal = document.createElement('div');
   modal.classList.add('modal');
   modal.id = 'image-modal';
   modal.innerHTML = `
@@ -10,6 +14,7 @@
         <p class="modal-negative-prompt"></p>
         <p class="modal-info"></p>
       <div class="button-container">
+        <button class="download-button">Download Image</button>
         <button class="remove-button">Remove Image</button>
         <button class="open-folder-button">Open Folder</button>
       </div>
@@ -26,14 +31,24 @@
   const closeButton = modal.querySelector('.close');
   const removeButton = modal.querySelector('.remove-button');
   const openFolderButton = modal.querySelector('.open-folder-button');
+  const downloadButton = modal.querySelector('.download-button');
 
   const fetchJsonData = () => {
     return fetch('./static/imageJson.json')
-    .then(response => response.json())
+      .then(response => {
+        if (!response.ok) {
+          throw new Error('Network response was not ok');
+        }
+        return response.json();
+      })
       .then(data => {
-      return data;
+        return data;
+      })
+      .catch(error => {
+        console.error('An error occurred:', error);
       });
   };
+  
 
   const openModal = (image) => {
     const modalImage = modal.querySelector('.modal-image');
@@ -42,7 +57,10 @@
     const modalInfo = modal.querySelector('.modal-info');
   
     modalImage.src = image.src;
-  
+    currentImageFileName = image.src.split('/').pop();
+    selectedModalImage = image;
+    
+    
     fetchJsonData().then(data => {
       const imageName = image.src.split('/').pop();
       const imageData = getImageData(imageName, data);
@@ -69,8 +87,8 @@
         modalNegativePrompt.innerHTML = "";
       }
   
-      // Show the modal
       modal.style.display = 'block';
+
     });
   };
   
@@ -81,29 +99,80 @@
     return undefined;
   }
   
-  // Close the modal when the close button is clicked
   closeButton.addEventListener('click', () => {
     modal.style.display = 'none';
   });
-
+  
   window.addEventListener('click', (event) => {
     if (event.target === modal) {
       modal.style.display = 'none';
     }
   });
+  
+  window.addEventListener('keydown', (event) => {
+    if (event.key === 'Escape') {
+      modal.style.display = 'none';
+    }
+  });
+  
 
   removeButton.addEventListener('click', () => {
-    //image.remove();
-    alert("Function not added");
+    if (currentImageFileName) {
+      deleteImage(currentImageFileName);
+    } else {
+      alert('No image selected');
+    }
   });
-
-  openFolderButton.addEventListener('click', () => {
-    fetchJsonData().then(data => {
-      const folderUrl = data.folder_url;
-      alert("Function not added: folder at : " + folderUrl)
+  
+    const deleteImage = (imageFileName) => {
+      fetch('/delete_image', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ fileName: imageFileName })
+      })
+      .then(response => {
+        if (response.ok) {
+          alert('Image deleted successfully');
+          fetchImages();
+        } 
+      })
+      .catch(error => {
+        alert('Error occurred while deleting image:'+ error);
+      });
+    };
+    
+    openFolderButton.addEventListener('click', async () => {
+      try {
+        const data = await fetchJsonData();
+        const folderUrl = data[currentImageFileName].folder_url;
+        console.log(folderUrl + data[currentImageFileName].img_name);
+        window.open(folderUrl + data[currentImageFileName].img_name);
+      } catch (error) {
+        console.error('An error occurred:', error);
+      }
     });
-  });
 
+    function downloadImage(imageUrl) {
+      if (selectedModalImage) {
+        const link = document.createElement('a');
+        link.href = imageUrl;
+        link.download = currentImageFileName;
+        document.body.appendChild(link);
+        link.click();
+        document.body.removeChild(link);
+      } else {
+        alert('No image selected');
+      }
+    }
+
+    downloadButton.addEventListener('click', () => {
+      if (selectedModalImage) {
+        downloadImage(selectedModalImage.src);
+      }
+    });
+    
   function getActiveImgs() {
     const imageElements = document.getElementsByClassName('image');
 

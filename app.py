@@ -7,9 +7,11 @@ from randomPrompt import prompt
 import os
 import json
 import subprocess
+from flaskwebgui import FlaskUI
 
 
 app = Flask(__name__, static_url_path="/static", static_folder="static")
+ui = FlaskUI(app)
 anime_artist = AnimeArtist()
 virtualTuber = VirtualTuber()
 randomPrompt = prompt()
@@ -205,5 +207,27 @@ def getPrompt():
     randomPrompt.prompt()
 
 
+@app.route("/delete_image", methods=["POST"])
+def delete_image():
+    data = request.get_json()
+    image_file = data.get("fileName")
+    permissions = 0o755
+    try:
+        current_directory = os.getcwd()
+        image_path = os.path.join(current_directory, "GeneratedImg", image_file)
+        if os.path.exists(image_path):
+            os.chmod(image_path, permissions)
+            os.remove(image_path)
+            return jsonify({"message": "Image deleted successfully"}), 200
+        else:
+            return jsonify({"error": "Image file not found"}), 404
+
+    except Exception as e:
+        return jsonify({"error": str(e)}), 500
+
+
 if __name__ == "__main__":
-    app.run(Debug=True)
+    if test_env:
+        ui.run()
+    else:
+        app.run(Debug=True)

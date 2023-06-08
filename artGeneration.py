@@ -6,6 +6,7 @@ import time
 import os
 import math
 import random
+import datetime
 
 
 class AnimeArtist:
@@ -91,8 +92,14 @@ class AnimeArtist:
 
             os.makedirs(save_folder, exist_ok=True)
             existing_files = os.listdir(save_folder)
-            file_count = len(existing_files)
+            existing_numbers = [
+                int(file_name.split("_")[-1].split(".")[0])
+                for file_name in existing_files
+                if file_name.endswith(".png") and file_name.split(".")[0].isdigit()
+            ]
+            last_file_number = max(existing_numbers) if existing_numbers else 0
 
+            date_prefix = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
             randomSeeds = [
                 torch.Generator(self.device).manual_seed(seed)
                 if seed != -1 and step == 0
@@ -102,8 +109,8 @@ class AnimeArtist:
                 for step in range(batch_size)
             ]
 
-            file_number = file_count + 3
             start_time = time.time()
+            file_number = last_file_number
             for step in range(batch_size):
                 generated = self.generator(
                     prompt=input_prompt,
@@ -120,7 +127,9 @@ class AnimeArtist:
 
                 file_number += 1
 
-                file_path = os.path.join(save_folder, f"{file_number}.png")
+                file_path = os.path.join(
+                    save_folder, f"{date_prefix}_{file_number:03}.png"
+                )
                 current_images[step].save(file_path)
 
                 self.progress = step + 1
@@ -135,12 +144,12 @@ class AnimeArtist:
             self.generation_complete = True
 
         if batch_size > 1:
-            file_number = file_number + 1
+            file_number += 1
             grid_size = math.ceil(math.sqrt(batch_size))
             generated_images = self.image_grid(current_images, grid_size, grid_size)
-            save_path = os.path.join(save_folder, f"{file_number}.png")
+            save_path = os.path.join(save_folder, f"{date_prefix}_{file_number}.png")
             generated_images.save(save_path)
 
-        final_file_number = file_number
+        final_file_number = date_prefix + str(file_number)
 
         return save_folder, final_file_number

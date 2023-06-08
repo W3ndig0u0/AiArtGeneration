@@ -2,7 +2,6 @@ var imageFiles = [];
 var imagesPerPage = 30;
 var folderPath = "fullImg/";
 
-fetchImages();
 
 function fetchImages() {
   fetch('/getImages')
@@ -79,11 +78,38 @@ function shuffleImages(images, container) {
 }
 
 function numericalSort(a, b) {
-  var numA = parseInt(a.match(/\d+/)[0]);
-  var numB = parseInt(b.match(/\d+/)[0]);
+  var isNewOrderA = /^\d{8}_\d{6}_\d+\.png$/.test(a);
+  var isNewOrderB = /^\d{8}_\d{6}_\d+\.png$/.test(b);
 
-  return numB - numA;
+  if (isNewOrderA && isNewOrderB) {
+    var numA = parseInt(a.match(/\d+/)[0]);
+    var numB = parseInt(b.match(/\d+/)[0]);
+
+    return numB - numA;
+  } else if (isNewOrderA) {
+    return -1;
+  } else if (isNewOrderB) {
+    return 1; 
+  } else {
+    var isNormalOrderA = /^\d+\.png$/.test(a);
+    var isNormalOrderB = /^\d+\.png$/.test(b);
+
+    if (isNormalOrderA && isNormalOrderB) {
+      var numA = parseInt(a.match(/\d+/)[0]);
+      var numB = parseInt(b.match(/\d+/)[0]);
+
+      return numB - numA;
+    } else if (isNormalOrderA) {
+      return -1;
+    } else if (isNormalOrderB) {
+      return 1; 
+    } else {
+      return 0;
+    }
+  }
 }
+
+
 
 function addPagination(currentPage, totalPages) {
   var paginationContainer = document.getElementById('paginationContainer');
@@ -153,3 +179,5 @@ function setActiveButton(button) {
   });
 }
 
+
+fetchImages();
