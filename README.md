@@ -13,7 +13,7 @@ AiArtGeneration is a small project developed using Flask and the Hugging Face AP
 
 ## Showcase
 
-Here are some examples of images generated using AiArtGeneration that used the same prompt and Anime model:
+Here are some examples of images generated using AiArtGeneration:
 
 ### Image 1
 ![189](https://github.com/W3ndig0u0/AiArtGeneration/assets/70271139/ea1b580b-e199-473d-a6e5-e443fecbcaff)
