@@ -15,6 +15,7 @@ const modal = document.createElement('div');
         <p class="modal-info"></p>
       <div class="button-container">
         <button class="download-button">Download Image</button>
+        <button class="upscaling-button">Upscale Image</button>
         <button class="remove-button">Remove Image</button>
         <button class="open-folder-button">Open Folder</button>
       </div>
@@ -32,6 +33,7 @@ const modal = document.createElement('div');
   const removeButton = modal.querySelector('.remove-button');
   const openFolderButton = modal.querySelector('.open-folder-button');
   const downloadButton = modal.querySelector('.download-button');
+  const upscalingButton = modal.querySelector('.upscaling-button');
 
   const fetchJsonData = () => {
     return fetch('./static/imageJson.json')
@@ -58,6 +60,7 @@ const modal = document.createElement('div');
   
     modalImage.src = image.src;
     currentImageFileName = image.src.split('/').pop();
+    console.log(currentImageFileName)
     selectedModalImage = image;
     
     
@@ -65,6 +68,7 @@ const modal = document.createElement('div');
       const imageName = image.src.split('/').pop();
       const imageData = getImageData(imageName, data);
   
+      console.log(data)
       if (imageData !== undefined) {
         const { prompt, negativePromt, width, height, num_inference_steps, eta, guidance_scale, seed,  get_active_model, vae } =  imageData.settings;
         const { img_name, folder_url } = imageData;
@@ -172,6 +176,17 @@ const modal = document.createElement('div');
         downloadImage(selectedModalImage.src);
       }
     });
+
+
+    upscalingButton.addEventListener('click', () => {
+      if (selectedModalImage) {
+        const imageUrl = selectedModalImage.src;
+        const upscalingSiteUrl = `/upscale?image=${encodeURIComponent(imageUrl)}`;
+        window.location.href = upscalingSiteUrl;
+      } else {
+        alert('No image selected');
+      }
+    });    
     
   function getActiveImgs() {
     const imageElements = document.getElementsByClassName('image');

@@ -78,36 +78,49 @@ function shuffleImages(images, container) {
 }
 
 function numericalSort(a, b) {
-  var isNewOrderA = /^\d{8}_\d{6}_\d+\.png$/.test(a);
-  var isNewOrderB = /^\d{8}_\d{6}_\d+\.png$/.test(b);
+  var pattern = /^(\d{8}_\d{6})|(\d{8}_\d{6}_\d+)|(\d+)$/;
+  
+  var matchA = a.match(pattern);
+  var matchB = b.match(pattern);
 
-  if (isNewOrderA && isNewOrderB) {
-    var numA = parseInt(a.match(/\d+/)[0]);
-    var numB = parseInt(b.match(/\d+/)[0]);
-
-    return numB - numA;
-  } else if (isNewOrderA) {
+  if (matchA && matchB) {
+    if (matchA[1] && matchB[1]) {
+      return b.localeCompare(a);
+    } else if (matchA[2] && matchB[2]) {
+      var partsA = matchA[2].split("_");
+      var partsB = matchB[2].split("_");
+      if (partsA[0] === partsB[0]) {
+        if (partsA[1] === partsB[1]) {
+          var numberA = parseInt(partsA[2]);
+          var numberB = parseInt(partsB[2]);
+          if (numberA !== numberB) {
+            return numberB - numberA;
+          }
+        } else {
+          return parseInt(partsB[1]) - parseInt(partsA[1]);
+        }
+      } else {
+        return parseInt(partsB[0]) - parseInt(partsA[0]);
+      }
+    } else if (matchA[3] && matchB[3]) {
+      return parseInt(b) - parseInt(a);
+    }
+  } else if (matchA && matchA[1]) {
     return -1;
-  } else if (isNewOrderB) {
-    return 1; 
+  } else if (matchB && matchB[1]) {
+    return 1;
   } else {
-    var isNormalOrderA = /^\d+\.png$/.test(a);
-    var isNormalOrderB = /^\d+\.png$/.test(b);
-
-    if (isNormalOrderA && isNormalOrderB) {
-      var numA = parseInt(a.match(/\d+/)[0]);
-      var numB = parseInt(b.match(/\d+/)[0]);
-
-      return numB - numA;
-    } else if (isNormalOrderA) {
-      return -1;
-    } else if (isNormalOrderB) {
-      return 1; 
-    } else {
-      return 0;
+    // Sort simple numbers in descending order
+    var numberA = parseInt(a);
+    var numberB = parseInt(b);
+    if (!isNaN(numberA) && !isNaN(numberB)) {
+      return numberB - numberA;
     }
   }
+
+  return a.localeCompare(b);
 }
+
 
 
 

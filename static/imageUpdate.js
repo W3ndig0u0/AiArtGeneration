@@ -7,6 +7,7 @@ const progressBar = document.getElementById('progress-bar');
 function changeImage(data) {
   var image = document.getElementById('generated-art');
   var folder_path = data.folder_url;
+  var step = data.step;
 
   var imagePath = folder_path + data.img_name;
 
@@ -27,7 +28,11 @@ function changeImage(data) {
     .catch(function(error) {
       console.error('Error:', error);
     });
+
+  var stepElement = document.getElementById('current-step');
+  stepElement.textContent = 'Step: ' + data.progress;
 }
+
 
 function generateArt() {
   initialGeneration = false;

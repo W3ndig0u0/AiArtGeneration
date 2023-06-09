@@ -3,11 +3,13 @@ from artGeneration import AnimeArtist
 from virtualTuber import VirtualTuber
 from diffusers import StableDiffusionPipeline, DPMSolverMultistepScheduler
 from fileSize import print_available_models
+from upscale import scaleImg
 from randomPrompt import prompt
 import os
 import json
 import subprocess
 from flaskwebgui import FlaskUI
+from flask import send_file
 
 
 app = Flask(__name__, static_url_path="/static", static_folder="static")
@@ -44,6 +46,23 @@ def art():
 @app.route("/settings")
 def settings():
     return render_template("settings.html")
+
+
+@app.route("/upscale")
+def upscale():
+    image_url = request.args.get("image")
+    return render_template("upscale.html", image_url=image_url)
+
+
+@app.route("/upscale_image")
+def upscale_image():
+    image_url = request.args.get("image")
+    upscaled_image_path = scaleImg(image_url)
+    print(upscaled_image_path)
+    if upscaled_image_path is not None:
+        return send_file(upscaled_image_path, mimetype="image/png")
+    else:
+        return "Failed to upscale the image."
 
 
 @app.route("/downloadModel", methods=["POST"])

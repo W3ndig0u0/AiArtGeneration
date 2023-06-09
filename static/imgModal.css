@@ -101,7 +101,8 @@
 
 .remove-button,
 .open-folder-button,
-.download-button {
+.download-button,
+.upscaling-button,.upscale-button {
   margin: 20px 10px;
   background-color: #007bff;
   color: #fff;
@@ -113,7 +114,8 @@
 }
 
 .remove-button:hover,
-.open-folder-button:hover, .download-button:hover {
+.open-folder-button:hover, .download-button:hover, 
+.upscaling-button:hover, .upscale-button:hover {
   background-color: #0056b3;
 }
 

@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Upscaler</title>
+  <link rel="icon" type="image/png" href="https://i.imgur.com/lUFtccZ.png"/>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='artGeneration.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='header.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='imgModal.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='upscale.css') }}">
+
+  <script defer src="{{ url_for('static', filename='imgModal.js') }}"></script>
+  <script defer src="{{ url_for('static', filename='upscale.js') }}"></script>
+  </head>
+
+<body class="galleryBody">
+    <header class="header">
+      <div class="header-content">
+        <h1 class="header-title">Art App</h1>
+        <nav class="header-nav">
+          <ul class="header-links">
+            <li><a href="{{ url_for('home') }}">AI Chat</a></li>
+            <li><a href="{{ url_for('art') }}">AI Art</a></li>
+            <li><a href="{{ url_for('gallery') }}">Gallery</a></li>
+            <li><a href="{{ url_for('settings') }}">Settings</a></li>
+          </ul>
+        </nav>
+      </div>
+    </header>
+    
+    <main>
+      <div class="upscaleContainer">
+      <h1>Anime Image Upscaler</h1>
+      <div class="image-container">
+        <img class="chosen-image" id="chosen-image" src="{{ image_url }}" alt="Chosen Image">
+        <img class="upscaled-image" id="upscaled-image" src="https://upload.wikimedia.org/wikipedia/commons/7/71/Black.png?20110927180820" alt="Upscaled Image">
+      </div>
+      <button id="upscale-button" class="upscale-button">Upscale Image</button>
+      </div>
+    
+    </main>
+    <footer class="footer">
+      <div class="footerContainer">
+        <div class="footer-content">
+          <p class="footer-text">© 2023 W3ndig0u0's Website. All rights reserved. More in Github.com/W3ndig0u0</p>
+        </div>
+      </div>
+    </footer>
+</body>
+</html>
