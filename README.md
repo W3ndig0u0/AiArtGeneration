@@ -25,7 +25,7 @@ Here are some examples of images generated using AiArtGeneration:
 ![256](https://github.com/W3ndig0u0/AiArtGeneration/assets/70271139/b58ef96d-0dbe-4109-8d42-82c0b8d3d74e)
 
 ### Image 4
-![287](https://github.com/W3ndig0u0/AiArtGeneration/assets/70271139/55eb1cf6-1c39-4cbf-87fb-e75d4ede07fc)
+![](https://cdn.discordapp.com/attachments/1116489587401949295/1117539309709443073/art.png))
 
 ### Image 5
 ![](https://cdn.discordapp.com/attachments/1116489587401949295/1117540050058616892/art.png)
