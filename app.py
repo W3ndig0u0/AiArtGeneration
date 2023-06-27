@@ -8,12 +8,10 @@ from randomPrompt import prompt
 import os
 import json
 import subprocess
-from flaskwebgui import FlaskUI
 from flask import send_file
 
 
 app = Flask(__name__, static_url_path="/static", static_folder="static")
-ui = FlaskUI(app)
 anime_artist = AnimeArtist()
 virtualTuber = VirtualTuber()
 randomPrompt = prompt()
@@ -246,7 +244,4 @@ def delete_image():
 
 
 if __name__ == "__main__":
-    if test_env:
-        ui.run()
-    else:
-        app.run(Debug=True)
+    app.run(Debug=True)
