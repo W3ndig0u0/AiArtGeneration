@@ -22,13 +22,16 @@ Here are some examples of images generated using AiArtGeneration:
 ![196](https://github.com/W3ndig0u0/AiArtGeneration/assets/70271139/e7a2dd53-1f95-4243-9dd9-a2cff81674e7)
 
 ### Image 3
-![256](https://github.com/W3ndig0u0/AiArtGeneration/assets/70271139/b58ef96d-0dbe-4109-8d42-82c0b8d3d74e)
+![](https://cdn.discordapp.com/attachments/1116489587401949295/1116888439187578950/art.png)
 
 ### Image 4
-![287](https://github.com/W3ndig0u0/AiArtGeneration/assets/70271139/55eb1cf6-1c39-4cbf-87fb-e75d4ede07fc)
+![](https://cdn.discordapp.com/attachments/1116489587401949295/1117539309709443073/art.png))
 
 ### Image 5
-![192](https://github.com/W3ndig0u0/AiArtGeneration/assets/70271139/c91132f4-7d42-4400-b64e-53d7483f4886)
+![](https://cdn.discordapp.com/attachments/1116489587401949295/1117540050058616892/art.png)
+
+### Image 6
+![](https://cdn.discordapp.com/attachments/1116489587401949295/1117034278732173423/art.png)
 
 Please note that the images shown above are just a small sample of what AiArtGeneration is capable of creating. The actual generated images can vary based on prompts, negative prompts, seeds, and other input parameters.
 
