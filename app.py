@@ -242,4 +242,4 @@ def delete_image():
     except Exception as e:
         return jsonify({"error": str(e)}), 500
 
-app.run()
+app.run(debug=True)
