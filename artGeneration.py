@@ -155,3 +155,4 @@ class AnimeArtist:
             final_file_number = date_prefix
 
             return save_folder, final_file_number
+
