@@ -19,7 +19,7 @@ image_folder = "GeneratedImg/"
 cache_dir = "artModel/"
 
 ACTIVE_MODEL_FILE = "active_model.txt"
-vae_name = "stabilityai/sd-vae-ft-mse"
+vae_name = "ostris/OpenFLUX.1"
 # vae_name = "/kl-f8-anime.ckpt"
 
 
@@ -241,5 +241,6 @@ def delete_image():
 
     except Exception as e:
         return jsonify({"error": str(e)}), 500
+
 
 app.run(debug=True)
