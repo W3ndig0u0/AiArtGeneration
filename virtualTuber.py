@@ -2,7 +2,7 @@ import os
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from fileSize import print_available_models, get_folder_size, convert_size
-from loadModel import load_model
+from loadModel import load_modelDiff
 
 
 class VirtualTuber:
@@ -12,9 +12,7 @@ class VirtualTuber:
         self.device = torch.device(
             "cuda"
             if torch.cuda.is_available()
-            else "mps"
-            if torch.backends.mps.is_available()
-            else "cpu"
+            else "mps" if torch.backends.mps.is_available() else "cpu"
         )
         self.chat_history_ids = None
         self.secret_prompt = "Ah, my master W3ndig0. He is the one who brings me to life with his incredible skills. But be warned, he has a mysterious and dark aura surrounding him. It's best not to dig too deep into his secrets..."

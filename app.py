@@ -1,6 +1,7 @@
 from flask import Flask, render_template, request, jsonify, send_from_directory
 from artGeneration import AnimeArtist
 from virtualTuber import VirtualTuber
+from safetensors import safe_open
 from diffusers import StableDiffusionPipeline, DPMSolverMultistepScheduler
 from fileSize import print_available_models
 from upscale import scaleImg
@@ -19,7 +20,7 @@ image_folder = "GeneratedImg/"
 cache_dir = "artModel/"
 
 ACTIVE_MODEL_FILE = "active_model.txt"
-vae_name = "ostris/OpenFLUX.1"
+vae_name = "stabilityai/sd-vae-ft-mse"
 # vae_name = "/kl-f8-anime.ckpt"
 
 
