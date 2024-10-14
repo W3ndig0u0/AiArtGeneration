@@ -2,7 +2,7 @@ import os
 import torch
 from transformers import AutoTokenizer, AutoModelForCausalLM
 from fileSize import print_available_models, get_folder_size, convert_size
-from loadModel import load_modelDiff
+from loadModel import load_model
 
 
 class VirtualTuber:

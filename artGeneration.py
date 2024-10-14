@@ -1,7 +1,6 @@
 import torch
 from PIL import Image
-from safetensors import safe_open
-from diffusers import StableDiffusionPipeline
+from diffusers import StableDiffusionPipeline, EulerAncestralDiscreteScheduler
 from loadModel import load_modelDiff
 import time
 import os
@@ -17,23 +16,17 @@ class AnimeArtist:
         self.generation_complete = False
         self.estimated_time = None
         self.generator = None
-        self.device = (
-            "cuda"
-            if torch.cuda.is_available()
-            else "mps" if torch.backends.mps.is_available() else "cpu"
+        self.device = torch.device(
+            "mps"
+            if torch.backends.mps.is_available()
+            else "cuda" if torch.cuda.is_available() else "cpu"
         )
 
     def load_generator(self, artModel_id, vae_name, model_folder):
-
         self.generator = load_modelDiff(
             artModel_id, vae_name, model_folder, self.device
         )
-
         self.generator.to(self.device)
-
-        if self.generator is None:
-            print("Failed to load the model. Check the parameters and paths.")
-            return
 
     def image_grid(self, imgs, rows, cols, max_size):
         w, h = imgs[0].size
@@ -80,11 +73,14 @@ class AnimeArtist:
         self.generation_complete = False
         self.estimated_time = None
 
-        print(f"VAE Name: {vae_name}, Device: {self.device}")
+        print(vae_name)
+        print(self.device)
 
-        if torch.cuda.is_available():
+        (
             torch.cuda.empty_cache()
-
+            if torch.cuda.is_available()
+            else torch.mps.empty_cache()
+        )
         self.generator.enable_model_cpu_offload() if torch.cuda.is_available() else None
         self.generator.enable_attention_slicing()
 
@@ -92,6 +88,7 @@ class AnimeArtist:
             current_images = [
                 Image.new("RGB", (width, height)) for _ in range(batch_size)
             ]
+
             os.makedirs(save_folder, exist_ok=True)
             existing_files = [
                 f
@@ -110,7 +107,7 @@ class AnimeArtist:
                     torch.Generator(self.device).manual_seed(seed)
                     if seed != -1 and step == 0
                     else torch.Generator(self.device).manual_seed(
-                        random.randint(0, 2**32 - 1)
+                        torch.randint(0, 2**32, (1,)).item()
                     )
                 )
                 for step in range(batch_size)
@@ -134,14 +131,11 @@ class AnimeArtist:
                 current_images[step] = generated.images[0]
 
                 file_number += 1
+
                 file_path = os.path.join(
                     save_folder, f"{date_prefix}_{file_number}.png"
                 )
-
-                try:
-                    current_images[step].save(file_path)
-                except Exception as e:
-                    print(f"Error saving image: {e}")
+                current_images[step].save(file_path)
 
                 self.progress = step + 1
 
@@ -161,6 +155,8 @@ class AnimeArtist:
                 )
                 save_path = os.path.join(save_folder, f"{date_prefix}.png")
                 generated_images.save(save_path)
+                print(f"Image saved at: {save_path}")
 
             final_file_number = date_prefix
+
             return save_folder, final_file_number

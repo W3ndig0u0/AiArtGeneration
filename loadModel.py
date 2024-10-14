@@ -6,55 +6,51 @@ import os
 
 
 def load_model(model_name, cache_dir, device):
+    """Load a causal language model (for GPT-style models)."""
     tokenizer = AutoTokenizer.from_pretrained(
         model_name, cache_dir=cache_dir, padding_side="left"
     )
 
     print("Using " + model_name)
-    model = AutoModelForCausalLM.from_pretrained(model_path, cache_dir=cache_dir)
+    model = AutoModelForCausalLM.from_pretrained(model_name, cache_dir=cache_dir)  # fixed model_path
     model.to(device)
     return model, tokenizer
 
 
 def load_modelDiff(model_name, vae_name, cache_dir, device):
+    """Load a Stable Diffusion model with a specified VAE."""
     var_cache_dir = os.path.join("ArtVae")
-    safe_cache_dir = os.path.join("artModel")
+    
     vae = AutoencoderKL.from_pretrained(
-        vae_name, torch_dtype=torch.float16, cache_dir=var_cache_dir
+        vae_name, 
+        torch_dtype=torch.float16, 
+        cache_dir=var_cache_dir
     )
 
-    print("Using " + model_name + " NOW!")
-    if model_name.endswith(".safetensors") or model_name.endswith(".ckpt"):
-        model = StableDiffusionPipeline.from_ckpt(
-            model_name,
-            cache_dir=cache_dir,
-            torch_dtype=torch.float16,
-            vae=vae,
-            local_files_only=True,
-        )
-    else:
-        model = StableDiffusionPipeline.from_pretrained(
-            model_name,
-            cache_dir=cache_dir,
-            torch_dtype=torch.float16,
-            vae=vae,
-            local_files_only=True,
-        )
+    print(f"Using {model_name} NOW!")
 
-    print("Using " + model_name + " NOW!")
-    model = StableDiffusionPipeline.from_pretrained(
+    load_method = (
+        StableDiffusionPipeline.from_ckpt if model_name.endswith((".safetensors", ".ckpt")) 
+        else StableDiffusionPipeline.from_pretrained
+    )
+
+    model = load_method(
         model_name,
         cache_dir=cache_dir,
-        torch_dtype=torch.float16,
+        torch_dtype=torch.float32, 
         vae=vae,
         local_files_only=True,
-        use_safetensors=True,
+        safety_checker=None,       
+        requires_safety_checker=False,
+        low_cpu_mem_usage=False, 
     )
 
-    model = model.to(device)
-    if device == "cuda":
-        model.enable_xformers_memory_efficient_attention()
-    elif device == "mps":
-        torch.backends.mps.enable_xformers_memory_efficient_attention()
+    model.to(device)
+
+    if device in ["cuda", "mps"]:
+        if device == "cuda":
+            model.enable_xformers_memory_efficient_attention()
+        else:
+            torch.backends.mps.enable_xformers_memory_efficient_attention()
 
     return model

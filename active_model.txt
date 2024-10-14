@@ -1,1 +1,1 @@
-black-forest-labs/FLUX.1-dev
+stable-diffusion-v1-5/stable-diffusion-v1-5
