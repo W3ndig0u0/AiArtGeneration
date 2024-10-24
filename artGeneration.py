@@ -133,7 +133,7 @@ class AnimeArtist:
                 file_number += 1
 
                 file_path = os.path.join(
-                    save_folder, f"{date_prefix}_{file_number}.png"
+                    save_folder, f"{date_prefix}.png"
                 )
                 current_images[step].save(file_path)
 

@@ -37,7 +37,7 @@ def load_modelDiff(model_name, vae_name, cache_dir, device):
     model = load_method(
         model_name,
         cache_dir=cache_dir,
-        torch_dtype=torch.float32, 
+        torch_dtype=torch.float16, 
         vae=vae,
         local_files_only=True,
         safety_checker=None,       
