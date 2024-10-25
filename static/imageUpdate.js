@@ -1,166 +1,145 @@
-document.addEventListener('DOMContentLoaded', function() {
-  let initialGeneration = false;
+let initialGeneration = false;
 
-  const progressLabel = document.getElementById('progress-label');
-  const estimatedTimeElement = document.getElementById('estimated-time');
-  const progressBar = document.getElementById('progress-bar');
+const progressLabel = document.getElementById('progress-label');
+const estimatedTimeElement = document.getElementById('estimated-time');
+const progressBar = document.getElementById('progress-bar');
 
-  function changeImage(data) {
-      // Ensure data is valid and contains necessary properties
-      if (!data || !data.folder_url || !data.img_name) {
-          console.error('Invalid data:', data);
-          return;
-      }
-
-      var image = document.getElementById('generated-art');
-      var folder_path = data.folder_url;
-      var imagePath = folder_path + data.img_name;
-
-      console.log('Image path:', imagePath); // Log the image path
-
-      fetch(imagePath)
-          .then(function(response) {
-              if (!response.ok) {
-                  throw new Error('Image request failed');
-              }
-              return response.blob();
-          })
-          .then(function(blob) {
-              var objectURL = URL.createObjectURL(blob);
-              image.src = objectURL;
-              image.setAttribute('draggable', 'false');
-          })
-          .catch(function(error) {
-              console.error('Error fetching image:', error);
-          });
-
-      var stepElement = document.getElementById('current-step');
-      if (stepElement) {
-          stepElement.textContent = 'Step: ' + data.progress;
-      } else {
-          console.error('current-step element not found');
-      }
+function changeImage(data) {
+  const image = document.getElementById('generated-art');
+  if (!image || !data.folder_url || !data.img_name) {
+    console.error("Image element or data properties missing.");
+    return;
   }
 
-  function generateArt() {
-      initialGeneration = false;
-      const promptInput = document.getElementById('prompt-input').value;
-      const negativePromptInput = document.getElementById('negative-prompt-input').value;
-      const numInferenceStepsSlider = document.getElementById('num-inference-steps-slider');
-      const etaSlider = document.getElementById('eta-slider');
-      const guidanceScaleSlider = document.getElementById('guidance-scale-slider');
-      const widthInput = document.getElementById('width-input');
-      const heightInput = document.getElementById('height-input');
-      const batchsizeSlider = document.getElementById('batchsize-slider');
-      const seedInput = document.getElementById('seed-input').value;
+  const imagePath = data.folder_url + data.img_name;
+  console.log("Image path:", imagePath);
 
-      if (!promptInput || !seedInput) {
-          alert("Please enter a prompt and a seed");
-          return;
-      }
+  fetch(imagePath)
+    .then(response => {
+      if (!response.ok) throw new Error('Image request failed');
+      return response.blob();
+    })
+    .then(blob => {
+      const objectURL = URL.createObjectURL(blob);
+      image.src = objectURL;
+      image.setAttribute('draggable', 'false');
+    })
+    .catch(error => {
+      console.error('Error loading image:', error);
+    });
 
-      fakeProgressBarAnimation();
+  const stepElement = document.getElementById('current-step');
+  if (stepElement) {
+    stepElement.textContent = `Step: ${data.progress ?? 0}`;
+  }
+}
 
-      const requestData = {
-          prompt: promptInput,
-          negativePrompt: negativePromptInput,
-          num_inference_steps: numInferenceStepsSlider?.value,
-          eta: etaSlider?.value,
-          guidance_scale: guidanceScaleSlider?.value,
-          width: widthInput?.value,
-          height: heightInput?.value,
-          batch_size: batchsizeSlider?.value,
-          seed: seedInput,
-          initial_generation: initialGeneration
-      };
+function generateArt() {
+  initialGeneration = false;
+  const promptInput = document.getElementById('prompt-input').value;
+  const negativePromptInput = document.getElementById('negative-prompt-input').value;
+  const numInferenceStepsSlider = document.getElementById('num-inference-steps-slider');
+  const etaSlider = document.getElementById('eta-slider');
+  const guidanceScaleSlider = document.getElementById('guidance-scale-slider');
+  const widthInput = document.getElementById('width-input');
+  const heightInput = document.getElementById('height-input');
+  const batchsizeSlider = document.getElementById('batchsize-slider');
+  const seedInput = document.getElementById('seed-input').value;
 
-      console.log('Request Data:', requestData); // Log request data
-
-      fetch('/generate_art', {
-          method: 'POST',
-          headers: {
-              'Content-Type': 'application/json'
-          },
-          body: JSON.stringify(requestData)
-      })
-          .then(response => {
-              if (!response.ok) {
-                  throw new Error('Network response was not ok');
-              }
-              return response.json();
-          })
-          .then(data => {
-              console.log('Response Data:', data); // Log response data
-              changeImage(data);
-              realProgressBarAnimation(data);
-          })
-          .catch(error => {
-              alert('Error: ' + error.message);
-          });
+  if (!promptInput || !seedInput) {
+    alert("Please enter a prompt and seed value.");
+    return;
   }
 
-  let progressAnimationId;
+  fakeProgressBarAnimation();
 
-  function fakeProgressBarAnimation() {
-      const totalSteps = 90;
-      let currentProgress = 0;
-      const incrementInterval = 1000;
-      let maxRandomIncrement = 3;
+  const requestData = {
+    prompt: promptInput,
+    negativePrompt: negativePromptInput,
+    num_inference_steps: numInferenceStepsSlider?.value,
+    eta: etaSlider?.value,
+    guidance_scale: guidanceScaleSlider?.value,
+    width: widthInput?.value,
+    height: heightInput?.value,
+    batch_size: batchsizeSlider?.value,
+    seed: seedInput,
+    initial_generation: initialGeneration
+  };
 
-      const incrementProgress = () => {
-          if (initialGeneration) {
-              return;
-          }
+  console.log("Request data:", requestData);
 
-          if (currentProgress >= totalSteps - 10) {
-              return;
-          }
+  fetch('/generate_art', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(requestData)
+  })
+    .then(response => {
+      if (!response.ok) throw new Error(`Server error: ${response.statusText}`);
+      return response.json();
+    })
+    .then(data => {
+      changeImage(data);
+      realProgressBarAnimation(data);
+    })
+    .catch(error => {
+      alert(`An error occurred: ${error.message}`);
+      console.error("Fetch error:", error);
+    });
+}
 
-          if (currentProgress >= totalSteps - 50) {
-              maxRandomIncrement = 2;
-          } else if (currentProgress >= totalSteps - 30) {
-              maxRandomIncrement = 0.5;
-          } else if (currentProgress >= totalSteps - 15) {
-              maxRandomIncrement = 0.1;
-          } else if (currentProgress >= totalSteps - 5) {
-              maxRandomIncrement = 0;
-              return;
-          }
+let progressAnimationId;
 
-          // Increment progress randomly
-          const randomIncrement = Math.random() * maxRandomIncrement;
-          currentProgress += randomIncrement;
+function fakeProgressBarAnimation() {
+  const totalSteps = 90;
+  let currentProgress = 0;
+  const incrementInterval = 1000;
+  let maxRandomIncrement = 3;
 
-          // Update progress bar and label
-          const progressPercent = (currentProgress / totalSteps) * 100;
-          progressBar.style.width = progressPercent + '%';
-          progressLabel.innerText = `Progress: ${currentProgress.toFixed(1)} / ${totalSteps}`;
+  const incrementProgress = () => {
+    if (initialGeneration) return;
 
-          progressAnimationId = setTimeout(incrementProgress, incrementInterval);
-      };
+    if (currentProgress >= totalSteps - 10) return;
 
-      clearTimeout(progressAnimationId);
-      currentProgress = 0;
-      progressBar.style.width = '0%';
+    if (currentProgress >= totalSteps - 50) {
+      maxRandomIncrement = 2;
+    } else if (currentProgress >= totalSteps - 30) {
+      maxRandomIncrement = 0.5;
+    } else if (currentProgress >= totalSteps - 15) {
+      maxRandomIncrement = 0.1;
+    } else if (currentProgress >= totalSteps - 5) {
+      maxRandomIncrement = 0;
+      return;
+    }
 
-      incrementProgress();
+    const randomIncrement = Math.random() * maxRandomIncrement;
+    currentProgress += randomIncrement;
+    const progressPercent = (currentProgress / totalSteps) * 100;
+
+    if (progressBar && progressLabel) {
+      progressBar.style.width = `${progressPercent}%`;
+      progressLabel.innerText = `Progress: ${currentProgress.toFixed(1)} / ${totalSteps}`;
+    }
+
+    progressAnimationId = setTimeout(incrementProgress, incrementInterval);
+  };
+
+  clearTimeout(progressAnimationId);
+  currentProgress = 0;
+  if (progressBar) progressBar.style.width = '0%';
+
+  incrementProgress();
+}
+
+function realProgressBarAnimation(data) {
+  initialGeneration = true;
+  const progress = data.progress ?? 0;
+  const totalSteps = data.total_steps ?? 100;
+  const progressPercent = (progress / totalSteps) * 100;
+
+  if (progressBar && progressLabel) {
+    progressBar.style.width = `${progressPercent}%`;
+    progressLabel.textContent = `Progress: ${progress} / ${totalSteps}`;
   }
-
-  function realProgressBarAnimation(data) {
-      initialGeneration = true;
-      const progress = data.progress;
-      const totalSteps = data.total_steps;
-
-      if (progress !== undefined && totalSteps !== undefined) {
-          const progressPercent = (progress / totalSteps) * 100;
-
-          progressBar.style.width = progressPercent + '%'; // Updated to reflect actual progress
-          progressLabel.innerText = `Progress: ${progress} / ${totalSteps}`;
-      } else {
-          console.error('Invalid progress data:', data);
-      }
-  }
-
-  // Expose the generateArt function to the global scope
-  window.generateArt = generateArt;
-});
+}

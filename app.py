@@ -103,7 +103,7 @@ def send_img(path):
 @app.route("/generate_art", methods=["POST"])
 def generate_art():
     prompt = request.json["prompt"]
-    negativePromt = request.json["negativePromt"]
+    negativePrompt = request.json.get("negativePrompt", "")
     num_inference_steps = int(request.json["num_inference_steps"])
     eta = float(request.json["eta"])
     guidance_scale = int(request.json["guidance_scale"])
@@ -121,7 +121,7 @@ def generate_art():
         height,
         num_inference_steps,
         eta,
-        negativePromt,
+        negativePrompt,
         guidance_scale,
         save_folder,
         seed,
@@ -130,6 +130,7 @@ def generate_art():
         vae_name,
         initial_generation,
     )
+
 
     img_folder = f"{img_folder}"
     file_name = f"{file_name}.png"
@@ -143,7 +144,7 @@ def generate_art():
         "estimated_time": anime_artist.estimated_time,
         "settings": {
             "prompt": prompt,
-            "negativePromt": negativePromt,
+            "negativePrompt": negativePrompt,
             "width": width,
             "height": height,
             "num_inference_steps": num_inference_steps,
