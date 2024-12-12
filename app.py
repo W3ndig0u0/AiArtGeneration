@@ -1,6 +1,5 @@
 from flask import Flask, render_template, request, jsonify, send_from_directory
 from artGeneration import AnimeArtist
-from virtualTuber import VirtualTuber
 from safetensors import safe_open
 from diffusers import StableDiffusionPipeline, DPMSolverMultistepScheduler
 from fileSize import print_available_models
@@ -14,7 +13,6 @@ from flask import send_file
 
 app = Flask(__name__, static_url_path="/static", static_folder="static")
 anime_artist = AnimeArtist()
-virtualTuber = VirtualTuber()
 randomPrompt = prompt()
 image_folder = "GeneratedImg/"
 cache_dir = "artModel/"
@@ -27,13 +25,11 @@ vae_name = "stabilityai/sd-vae-ft-mse"
 @app.route("/process_input", methods=["POST"])
 def process_input():
     user_input = request.json["user_input"]
-    response = virtualTuber.run(user_input)
     return jsonify({"response": response})
 
 
 @app.route("/")
 def home():
-    virtualTuber.call()
     return render_template("index.html")
 
 
@@ -107,8 +103,8 @@ def generate_art():
     num_inference_steps = int(request.json["num_inference_steps"])
     eta = float(request.json["eta"])
     guidance_scale = int(request.json["guidance_scale"])
-    width = int(request.json.get("width", 512))
-    height = int(request.json.get("height", 512))
+    width = int(request.json.get("width", 640))
+    height = int(request.json.get("height", 360))
     batch_size = int(request.json.get("batch_size", 1))
     seed = int(request.json.get("seed", -1))
 
@@ -216,7 +212,7 @@ def set_active_model(model_id):
     model_id = (
         str(model_id).replace("--", "/").replace("models--", "").replace("models", "")
     )
-    model_id = model_id.replace("/", "", 1)  # Remove the first '/'
+    model_id = model_id.replace("/", "", 1)
     with open(ACTIVE_MODEL_FILE, "w") as file:
         file.write(model_id)
 

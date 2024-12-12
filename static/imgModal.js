@@ -1,7 +1,6 @@
 let currentImageFileName = '';
 let selectedModalImage = null;
 
-
 const modal = document.createElement('div');
   modal.classList.add('modal');
   modal.id = 'image-modal';
@@ -68,12 +67,12 @@ const modal = document.createElement('div');
       const imageName = image.src.split('/').pop();
       const imageData = getImageData(imageName, data);
   
-      console.log(data)
+      console.log(imageData)
       if (imageData !== undefined) {
-        const { prompt, negativePromt, width, height, num_inference_steps, eta, guidance_scale, seed,  get_active_model, vae } =  imageData.settings;
+        const { prompt, negativePrompt, width, height, num_inference_steps, eta, guidance_scale, seed,  get_active_model, vae } =  imageData.settings;
         const { img_name, folder_url } = imageData;
         modalPrompt.textContent = `Prompt: ${prompt}`;
-        modalNegativePrompt.textContent = `Negative Prompt: ${negativePromt}`;
+        modalNegativePrompt.textContent = `Negative Prompt: ${negativePrompt}`;
         modalInfo.innerHTML = `
           <p>Image Name: ${img_name}</p>
           <p>Size: ${width} x ${height}</p>

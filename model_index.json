@@ -1,18 +1,18 @@
 {
   "_class_name": "StableDiffusionPipeline",
-  "_diffusers_version": "0.16.1",
+  "_diffusers_version": "0.8.0",
   "feature_extractor": [
     "transformers",
-    "CLIPFeatureExtractor"
+    "CLIPImageProcessor"
   ],
-  "requires_safety_checker": true,
+  "requires_safety_checker": false,
   "safety_checker": [
-    "stable_diffusion",
-    "StableDiffusionSafetyChecker"
+    null,
+    null
   ],
   "scheduler": [
     "diffusers",
-    "PNDMScheduler"
+    "DDIMScheduler"
   ],
   "text_encoder": [
     "transformers",

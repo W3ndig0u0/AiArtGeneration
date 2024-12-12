@@ -1,7 +1,25 @@
+.hide{
+  display: none;
+}
+
 .artMain {
   display: flex;
   justify-content: space-around;
   margin: 20px;
+}
+
+.settings-container{
+    position: fixed;
+    top: 0;
+    left: 0;
+    height: 100%;
+    width: 20%;
+    background: #11101d;
+    z-index: 100;
+    transition: all 0.5s ease;
+    padding: 1rem;
+    align-items: center;
+    margin: auto;
 }
 
 .art-container h2 {
@@ -22,8 +40,10 @@
 
 .input-group {
   margin-bottom: 20px;
-  margin-left: 1px;
-  display: flex;
+}
+
+.input-down{
+  flex-direction: horizontal;
 }
 
 .textarea-container {
@@ -40,7 +60,7 @@
 
 
 .input-group textarea {
-  width: 400px;
+  width: 100%;
   padding: 10px;
   font-size: 16px;
   line-height: 1.5;
@@ -48,7 +68,6 @@
   border-radius: 5px;
   box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
   resize: none;
-  height: 100px;
 }
 
 .input-group textarea:focus {
@@ -60,7 +79,7 @@
 .input-group label {
   font-size: 18px;
   margin-right: 10px;
-  width: 200px;
+  width: 100px;
   text-align: right;
 }
 
@@ -72,15 +91,14 @@
   transition: border-color 0.3s, box-shadow 0.3s;
 }
 
-
 .input-group input[type="text"] {
-  width: 400px;
+  width: 100%;
   padding: 5px;
   font-size: 18px;
 }
 
 .slider-group input[type="range"] {
-  width: 400px;
+  width: 100%;
 }
 
 .slider-group {
@@ -92,7 +110,6 @@
 .slider-group label {
   font-size: 18px;
   margin-right: 10px;
-  width: 200px;
   text-align: right;
 }
 
@@ -104,6 +121,46 @@
   padding-left: 150px;
   padding-top: 20px;
 }
+
+.DimensionsButtons {
+  width: 100%;
+  display: flex;
+  justify-content: space-around;
+  gap: 8px;
+  margin-top: 8px;
+}
+
+.DimensionsButtons button {
+  display: flex;
+  align-items: center;
+  flex-direction:column;
+  padding: 4px 8px;
+  font-size: 12px;
+  border: 1px solid #444;
+  background-color: #11101d;
+  color: #fff;
+  border-radius: 4px;
+  cursor: pointer;
+  transition: background-color 0.2s, border-color 0.2s;
+}
+
+.DimensionsButtons button:hover {
+  background-color: #222;
+  border-color: #666; 
+}
+
+
+.DimensionsButtons button img{
+  width: 40px;
+  filter: invert(1);
+}
+
+.DimensionsButtons button.selected {
+  background-color: #555;
+  color: white;
+  border: 1px solid #fff;
+}
+
 
 .generate-art-button {
   padding: 10px 20px;
@@ -130,7 +187,7 @@
 
   .input-group input[type="text"],
   .slider-group input[type="range"] {
-    width: 100%;
+    width: 90%;
   }
 }
 
