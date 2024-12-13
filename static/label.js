@@ -27,11 +27,12 @@ let currentHeightRatio = 9;
 function setDimensions(widthRatio, heightRatio, clickedButton) {
   currentWidthRatio = widthRatio;
   currentHeightRatio = heightRatio;
+  
 
   const dimensions = {
     small: `${widthRatio * 20}x${heightRatio * 20}`,
     medium: `${widthRatio * 40}x${heightRatio * 40}`,
-    large: `${widthRatio * 60}x${heightRatio * 60}`,
+    large: `${widthRatio * 56}x${heightRatio * 56}`,
   };
 
   const buttons = document.querySelectorAll("#format-buttons-show button span");
@@ -52,7 +53,7 @@ function updateSize(size, clickedButton) {
   const sizeMap = {
     small: 20,
     medium: 40,
-    large: 60,
+    large: 56,
   };
 
   const multiplier = sizeMap[size];

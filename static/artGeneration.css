@@ -5,21 +5,15 @@
 .artMain {
   display: flex;
   justify-content: space-around;
-  margin: 20px;
 }
 
 .settings-container{
-    position: fixed;
-    top: 0;
-    left: 0;
-    height: 100%;
-    width: 20%;
     background: #11101d;
-    z-index: 100;
     transition: all 0.5s ease;
     padding: 1rem;
     align-items: center;
-    margin: auto;
+    margin: 0;
+    border-radius: 10px;
 }
 
 .art-container h2 {
@@ -58,10 +52,9 @@
   color: #888;
 }
 
-
 .input-group textarea {
   width: 100%;
-  padding: 10px;
+  padding: 10px 0px;
   font-size: 16px;
   line-height: 1.5;
   border: 1px solid #ccc;
@@ -115,11 +108,6 @@
 
 .slider-group span {
   font-size: 18px;
-}
-
-.buttonContainer {
-  padding-left: 150px;
-  padding-top: 20px;
 }
 
 .DimensionsButtons {
@@ -191,20 +179,188 @@
   }
 }
 
-
 #modelSelect {
-  font-family: Arial, sans-serif;
-  font-size: 16px;
-  padding: 10px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
+  display: none;
+}
+
+.model-select-container {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 20px;
+}
+
+.model-card {
+  display: flex;
+  flex-direction: column;
+
   background-color: #f9f9f9;
-  color: #333;
-  width: 200px;
-  margin: 20px 0px;
+  padding: 15px;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+  cursor: pointer;
+  transition: transform 0.3s, box-shadow 0.3s;
+  width: 150px;
+  text-align: center;
 }
 
-#modelSelect option {
-  font-weight: normal;
+.model-card img {
+  width: 160px;
+  object-fit: cover;
+  border-radius: 50%;
 }
 
+.model-card:hover {
+  transform: scale(1.05);
+  box-shadow: 0 6px 10px rgba(0, 0, 0, 0.15);
+}
+
+.model-card h3 {
+  font-size: 16px;
+  font-weight: bold;
+  margin-bottom: 5px;
+}
+
+.model-card p {
+  font-size: 14px;
+  color: #555;
+}
+
+/* Basic modal styling */
+.modal {
+  display: none; /* Hidden by default */
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+  padding-top: 60px;
+  text-align: center;
+}
+
+.modal-content {
+  background-color: white;
+  margin: 5% auto;
+  padding: 20px;
+  border-radius: 8px;
+  width: 80%;
+  max-width: 600px;
+}
+
+.close-btn {
+  color: #aaa;
+  font-size: 28px;
+  font-weight: bold;
+  position: absolute;
+  right: 20px;
+  top: 10px;
+}
+
+.close-btn:hover,
+.close-btn:focus {
+  color: black;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+.model-button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 20px;
+  border: none;
+  background-color: #4c9baf;
+  color: white;
+  font-size: 18px;
+  width: 100%;
+  wrap
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease, transform 0.3s ease;
+  position: relative;
+  margin-bottom: 2rem;
+}
+
+.model-button:hover {
+  background-color: #459aa0;
+  transform: scale(1.05);
+}
+
+.model-button img {
+  width: 30px;
+  height: 30px;
+  margin-right: 10px;
+  border-radius: 50%;
+}
+
+.model-button span {
+  font-size: 18px;
+}
+
+/* Modal Styles */
+.modal {
+  display: none;
+  position: fixed;
+  z-index: 1;
+  left: 0;
+  top: 0;
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+  background-color: rgba(0, 0, 0, 0.4);
+  padding-top: 60px;
+  justify-content: center;
+  align-items: center;
+  color: #222;
+}
+
+.modal-content {
+  background-color: #fefefe;
+  margin: 10% auto;
+  padding: 20px;
+  border: 1px solid #888;
+  width: 80%;
+  max-width: 600px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+}
+
+.model-select-container {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-around;
+}
+
+.model-card {
+  width: 120px;
+  margin: 10px;
+  padding: 10px;
+  text-align: center;
+  border: 1px solid #ccc;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  cursor: pointer;
+  transition: transform 0.2s ease;
+}
+
+.model-card:hover {
+  transform: scale(1.05);
+}
+
+.model-card img {
+  width: 100%;
+  border-radius: 8px;
+}
+
+.model-card h4{
+  font-size: 14px;
+  margin-top: 10px;
+  color: #11101d;
+}
+
+.model-card p {
+  font-size: 12px;
+}

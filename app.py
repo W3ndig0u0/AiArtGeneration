@@ -200,14 +200,6 @@ def get_active_model():
     else:
         return ""
 
-
-def remove_first_word_before_slash(string):
-    if "/" in string:
-        return string.split("/", 1)[1]
-    else:
-        return string
-
-
 def set_active_model(model_id):
     model_id = (
         str(model_id).replace("--", "/").replace("models--", "").replace("models", "")

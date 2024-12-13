@@ -11,7 +11,6 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='progressbar.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='header.css') }}">
 
-  <script defer src="{{ url_for('static', filename='chat.js') }}"></script>
   <script defer src="{{ url_for('static', filename='label.js') }}"></script>
   <script defer src="{{ url_for('static', filename='randomSeed.js') }}"></script>
   <script defer src="{{ url_for('static', filename='loadArtModel.js') }}"></script>
@@ -49,9 +48,20 @@
         <div class="settings-container">
 
           <div class="model-option">
-              <label for="menu" class="label-multiline">Ai model:</label>
-              <div id="menu"></div>
-          </div>         
+            <label for="menu" class="label-multiline">AI Model:</label>
+            <button id="openModelSelector" class="model-button">
+              <img src="" id="selectedModelImage" alt="Model" class="model-image">
+              <span id="selectedModelName">Select Model</span>
+            </button>
+          </div>
+          
+          <div id="modelModal" class="modal" style="display: none;">  <!-- Initially hidden -->
+            <div class="modal-content">
+              <h2>Select an AI Model</h2>
+              <div id="modelSelectContainer" class="model-select-container"></div>
+            </div>
+          </div>
+          
             
             <div class="input-group">
               <label for="negative-prompt-input" class="label-multiline">Negative Prompt:</label>
@@ -61,8 +71,8 @@
             <div class="input-group input-down">
               <label for="format-buttons">Image Dimensions:</label>
               <div class="DimensionsButtons" id="format-buttons-set">
-                <button type="button" onclick="setDimensions(16, 9, this)"><img src="https://cdn-icons-png.flaticon.com/512/3172/3172457.png" alt="16:9 size">16:9</button>
-                <button type="button" onclick="setDimensions(9, 16, this)"><img src="https://static.thenounproject.com/png/5620142-200.png" alt="9:16 size">9:16</button>
+                <button type="button" onclick="setDimensions(16, 9, this)"><img src="https://static.thenounproject.com/png/5620142-200.png" alt="16:9 size">16:9</button>
+                <button type="button" onclick="setDimensions(9, 16, this)"><img src="https://cdn-icons-png.flaticon.com/512/3172/3172457.png" alt="9:16 size">9:16</button>
                 <button type="button" onclick="setDimensions(10, 10, this)"><img src="https://imgpng.ru/d/square_PNG7.png" alt="1:1 size">1:1</button>
               </div>
               <div class="DimensionsButtons" id="format-buttons-show">
@@ -114,7 +124,6 @@
         </div>
 
           <div class="buttonContainer">
-              <button class="generate-art-button" onclick="" >Random Prompt</button>
               <button class="generate-art-button" id="seed-button" >Random Seed</button>
               <button class="generate-art-button" onclick="generateArt()" >Generate Art</button>
           </div>
@@ -132,18 +141,14 @@
               </div>
             </div>   
 
-            <img id="generated-art" src="https://www.3ammagazine.com/wp-content/uploads/2021/03/black-rectangle-png-png-collections-black-rectangle-png-1280_720.png" alt="Generated Art">
+            <img id="generated-art" src="https://img.freepik.com/free-photo/free-photo-black-grunge-abstract-background-pattern-wallpaper_1340-33834.jpg?semt=ais_hybrid" alt="Generated Art">
             <div class="progress-container">
               <div class="progress-bar" id="progress-bar"></div>
               <div class="progress-label" id="progress-label"></div>
               <div class="estimated-time" id="estimated-time"></div>
             </div>
-            <div class="btn-container">
-              <button id="changeOrderButton">Change Order</button>
-          </div>
           </div>
                 
-          </div>
     </main>
     
 </body>

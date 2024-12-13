@@ -18,7 +18,15 @@ def print_available_models(cache_dir):
                     if os.path.isdir(file_path)
                     else os.path.getsize(file_path)
                 )
-                model_info = {"name": file_name, "size": file_size}
+                
+                # Define an image path for each model (can be based on model name or another strategy)
+                model_image = get_model_image(file_name)  # Custom function to get model image
+                
+                model_info = {
+                    "name": file_name,
+                    "size": file_size,
+                    "image": model_image,  # Add the image path to model info
+                }
                 models.append(model_info)
         response = models
     else:
@@ -43,3 +51,16 @@ def convert_size(size_bytes):
     p = math.pow(1024, i)
     size = round(size_bytes / p, 1)
     return f"{size} {size_name[i]}"
+
+
+def get_model_image(model_name):
+    """
+    Return a different image path for each model based on the model name.
+    """
+    model_image_map = {
+        "models--JingAnimeV2": "/GeneratedImg/196.png",  # Image for JingAnimeV2
+        "models--stablediffusionapi--realistic-vision-v51": "/GeneratedImg/20241103_231916.png",  # Image for Realistic Vision V51
+    }
+
+    # Default to a generic image if model name is not found
+    return model_image_map.get(model_name, "/GeneratedImg/211.png")

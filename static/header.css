@@ -4,7 +4,7 @@
   align-items: center;
   font-size: 1rem;
   margin: 0;
-  padding: 0;
+  padding: 1rem;
 }
 
 .header-content, .header-logo {
@@ -18,8 +18,14 @@
   cursor: default;
 }
 
+.header-mid {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+
 .header-mid button {
-  margin: 0;
   background-color: #ffffff;
   color: #2196F3;
   border: 2px solid #2196F3;
@@ -49,8 +55,8 @@
   list-style: none;
   display: flex;
   justify-content: center;
-  margin: 0;
-  padding: 0;
+  align-items: center;
+  text-align: center;
 }
 
 .header-links li a {
@@ -58,6 +64,7 @@
   text-decoration: none;
   padding: 0px 8px;
   border-radius: 20px;
+  text-align: center;
   transition: background-color 0.3s ease;
 }
 

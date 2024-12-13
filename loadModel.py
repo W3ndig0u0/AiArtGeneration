@@ -5,18 +5,6 @@ import torch
 import os
 
 
-def load_model(model_name, cache_dir, device):
-    """Load a causal language model (for GPT-style models)."""
-    tokenizer = AutoTokenizer.from_pretrained(
-        model_name, cache_dir=cache_dir, padding_side="left"
-    )
-
-    print("Using " + model_name)
-    model = AutoModelForCausalLM.from_pretrained(model_name, cache_dir=cache_dir)  # fixed model_path
-    model.to(device)
-    return model, tokenizer
-
-
 def load_modelDiff(model_name, vae_name, cache_dir, device):
     """Load a Stable Diffusion model with a specified VAE."""
     var_cache_dir = os.path.join("ArtVae")
