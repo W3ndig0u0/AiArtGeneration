@@ -8,7 +8,7 @@ document.addEventListener('DOMContentLoaded', function () {
 
   window.addEventListener('click', function(event) {
     const modal = document.getElementById('modelModal');
-    const modalContent = document.querySelector('.modal-content');
+    const modalContent = document.querySelector('.model-modal-content');
 
     if (event.target === modal) {
       modal.style.display = 'none';

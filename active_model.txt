@@ -1,1 +1,1 @@
-stablediffusionapi/realistic-vision-v51
+JingAnimeV2

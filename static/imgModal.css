@@ -18,6 +18,7 @@
   align-items: center;
   justify-content: center;
   width: 80%;
+  height: 80%;
   margin: 5% auto;
   background-color: #222;
   padding: 20px;
@@ -25,7 +26,10 @@
   position: relative;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.4);
   animation: slide-up 0.25s ease-in-out;
+}
 
+.modal-content img{
+  width: fit-content;
 }
 
 .button-container {

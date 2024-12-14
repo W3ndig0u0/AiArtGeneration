@@ -49,7 +49,6 @@ function displayImages(data, currentPage = 1) {
   imageContainer.innerHTML = '';
   shuffleImages(tempContainer.children, imageContainer);
 
-  // Add pagination controls
   addPagination(currentPage, totalPages);
 }
 
@@ -110,7 +109,6 @@ function numericalSort(a, b) {
   } else if (matchB && matchB[1]) {
     return 1;
   } else {
-    // Sort simple numbers in descending order
     var numberA = parseInt(a);
     var numberB = parseInt(b);
     if (!isNaN(numberA) && !isNaN(numberB)) {
@@ -120,7 +118,6 @@ function numericalSort(a, b) {
 
   return a.localeCompare(b);
 }
-
 
 
 

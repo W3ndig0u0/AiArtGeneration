@@ -94,8 +94,7 @@ def get_images():
 @app.route("/GeneratedImg/<path:path>")
 def send_img(path):
     return send_from_directory(image_folder, path)
-
-
+    
 @app.route("/generate_art", methods=["POST"])
 def generate_art():
     prompt = request.json["prompt"]
@@ -127,6 +126,7 @@ def generate_art():
         initial_generation,
     )
 
+
     img_folder = f"{img_folder}"
     file_name = f"{file_name}.png"
 
@@ -152,16 +152,21 @@ def generate_art():
         },
     }
 
-    return jsonify(response)
+    json_filename = "imageJson.json"
+    json_filepath = os.path.join("static", json_filename)
 
-@app.route("/available_models")
-def available_models():
-    active_model = get_active_model()
+    if not os.path.exists(json_filepath):
+        with open(json_filepath, "w") as json_file:
+            json.dump({file_name: response}, json_file)
+    else:
+        with open(json_filepath, "r") as json_file:
+            existing_data = json.load(json_file)
 
-    response = {
-        "all_models": print_available_models("artModel"),
-        "active_models": active_model,
-    }
+        existing_data[file_name] = response
+
+        with open(json_filepath, "w") as json_file:
+            json.dump(existing_data, json_file)
+
     return jsonify(response)
 
 
@@ -173,6 +178,11 @@ def selected_model():
     response = {"message": "Selected model received: " + global_model_id}
     return jsonify(response)
 
+def remove_first_word_before_slash(string):
+    if "/" in string:
+        return string.split("/", 1)[1]
+    else:
+        return string
 
 def get_active_model():
     if os.path.exists(ACTIVE_MODEL_FILE):

@@ -238,7 +238,7 @@
   color: #555;
 }
 
-.modal {
+.model-modal {
   display: none;
   position: fixed;
   z-index: 1;
@@ -252,13 +252,13 @@
   text-align: center;
 }
 
-.modal-content {
+.model-content {
   background-color: white;
   margin: 5% auto;
   padding: 20px;
   border-radius: 8px;
-  width: 80%;
-  max-width: 600px;
+  width: 90%;
+  max-width: 1024px;
 }
 
 .close-btn {
@@ -311,8 +311,7 @@
   font-size: 18px;
 }
 
-/* Modal Styles */
-.modal {
+.model-modal {
   display: none;
   position: fixed;
   z-index: 1;
@@ -328,7 +327,7 @@
   color: #222;
 }
 
-.modal-content {
+.model-modal-content {
   background-color: #fefefe;
   margin: 10% auto;
   padding: 20px;

@@ -43,7 +43,7 @@ class AnimeArtist:
 
         grid = Image.new("RGB", size=(cols * w, rows * h))
         for i, img in enumerate(imgs):
-            img = img.resize((w, h), Image.ANTIALIAS)
+            img = img.resize((w, h), Image.Resampling.LANCZOS)
             grid.paste(img, box=(i % cols * w, i // cols * h))
         return grid
 
@@ -101,7 +101,7 @@ class AnimeArtist:
             ]
             last_file_number = max(existing_numbers) if existing_numbers else 0
 
-            date_prefix = datetime.datetime.now().strftime("%Y%m%d_%H%M")
+            date_prefix = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
             randomSeeds = [
                 (
                     torch.Generator(self.device).manual_seed(seed)
@@ -133,7 +133,7 @@ class AnimeArtist:
                 file_number += 1
 
                 file_path = os.path.join(
-                    save_folder, f"{date_prefix}_{file_number}.png"
+                    save_folder, f"{date_prefix}.png"
                 )
                 current_images[step].save(file_path)
 
