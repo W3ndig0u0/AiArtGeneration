@@ -6,12 +6,12 @@
 }
 
 #generated-art {
-  width: 1024px;
+  max-width: 1024px;
   border-radius: 10px;
 }
 
 .progress-container {
-  width: 1024px;
+  max-width: 1024px;
   height: 20px;
   background-color: #f2f2f2;
   margin-top: 10px;
