@@ -101,7 +101,7 @@ class AnimeArtist:
             ]
             last_file_number = max(existing_numbers) if existing_numbers else 0
 
-            date_prefix = datetime.datetime.now().strftime("%Y%m%d_%H%M%S")
+            date_prefix = datetime.datetime.now().strftime("%Y%m%d_%H%M")
             randomSeeds = [
                 (
                     torch.Generator(self.device).manual_seed(seed)
@@ -133,7 +133,7 @@ class AnimeArtist:
                 file_number += 1
 
                 file_path = os.path.join(
-                    save_folder, f"{date_prefix}.png"
+                    save_folder, f"{date_prefix}_{file_number}.png"
                 )
                 current_images[step].save(file_path)
 

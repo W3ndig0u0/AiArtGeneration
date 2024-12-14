@@ -4,16 +4,18 @@
 
 .artMain {
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
 }
 
 .settings-container{
-    background: #11101d;
-    transition: all 0.5s ease;
-    padding: 1rem;
-    align-items: center;
-    margin: 0;
-    border-radius: 10px;
+  
+  border-right: solid 1px #e1e1e1;
+  transition: all 0.5s ease;
+  padding: 1rem ;
+  align-items: center;
+  margin: 0;
+  width: 20vw;
+  height: 95vh;
 }
 
 .art-container h2 {
@@ -110,12 +112,23 @@
   font-size: 18px;
 }
 
+.batchsize{
+  display: flex;
+  flex-direction: column;
+}
+
+.batchsize .DimensionsButtons button{
+  font-size: 24px;
+}
+
+
 .DimensionsButtons {
   width: 100%;
   display: flex;
   justify-content: space-around;
-  gap: 8px;
   margin-top: 8px;
+  gap: 8px;
+
 }
 
 .DimensionsButtons button {
@@ -225,9 +238,8 @@
   color: #555;
 }
 
-/* Basic modal styling */
 .modal {
-  display: none; /* Hidden by default */
+  display: none;
   position: fixed;
   z-index: 1;
   left: 0;
@@ -275,7 +287,6 @@
   color: white;
   font-size: 18px;
   width: 100%;
-  wrap
   font-weight: bold;
   border-radius: 5px;
   cursor: pointer;

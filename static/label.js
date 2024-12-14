@@ -49,6 +49,36 @@ function setDimensions(widthRatio, heightRatio, clickedButton) {
   updateSize('medium', document.querySelector("#format-buttons-show button:nth-child(2)"));
 }
 
+function updateBatchSize(batchSize, clickedButton) {
+  const slider = document.getElementById("batchsize-slider");
+  const valueDisplay = document.getElementById("batchsize-value");
+
+  slider.value = batchSize;
+  valueDisplay.textContent = batchSize;
+
+  const allBatchButtons = document.querySelectorAll(".batchsize .DimensionsButtons button");
+  allBatchButtons.forEach((btn) => btn.classList.remove("selected"));
+  clickedButton.classList.add("selected");
+}
+
+document.addEventListener("DOMContentLoaded", () => {
+  const batchButtons = document.querySelectorAll(".batchsize .DimensionsButtons button");
+
+  batchButtons.forEach((button) => {
+    button.addEventListener("click", () => {
+      const batchSize = button.getAttribute("data-batchsize");
+      updateBatchSize(batchSize, button);
+    });
+  });
+
+  const defaultBatchButton = document.querySelector(".batchsize .DimensionsButtons button:nth-child(1)");
+  if (defaultBatchButton) {
+    defaultBatchButton.click();
+  }
+});
+
+
+
 function updateSize(size, clickedButton) {
   const sizeMap = {
     small: 20,

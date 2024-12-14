@@ -4,12 +4,24 @@
   align-items: center;
   font-size: 1rem;
   margin: 0;
+  border-bottom: solid 1px #e1e1e1;
   padding: 1rem;
+
 }
 
-.header-content, .header-logo {
+.header-content, .header-logo, .header-settings  {
   display: flex;
   justify-content: space-between;
+  text-align: center;
+  align-items: center;
+  gap: 10px;
+}
+
+.header-links {
+    list-style-type: disc;
+    margin-block-start: 0;
+    margin-block-end: 0;
+    padding-inline-start: 0px;
 }
 
 .header-title{

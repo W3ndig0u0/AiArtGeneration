@@ -127,7 +127,6 @@ def generate_art():
         initial_generation,
     )
 
-
     img_folder = f"{img_folder}"
     file_name = f"{file_name}.png"
 
@@ -153,23 +152,7 @@ def generate_art():
         },
     }
 
-    json_filename = "imageJson.json"
-    json_filepath = os.path.join("static", json_filename)
-
-    if not os.path.exists(json_filepath):
-        with open(json_filepath, "w") as json_file:
-            json.dump({file_name: response}, json_file)
-    else:
-        with open(json_filepath, "r") as json_file:
-            existing_data = json.load(json_file)
-
-        existing_data[file_name] = response
-
-        with open(json_filepath, "w") as json_file:
-            json.dump(existing_data, json_file)
-
     return jsonify(response)
-
 
 @app.route("/available_models")
 def available_models():

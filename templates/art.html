@@ -25,7 +25,7 @@
         <div class="header-settings">
           <nav class="header-nav">
             <ul class="header-links">
-              <li><a class="header-logo" ><img src="" alt="logo">Seraphic Dreams</a></li>
+              <li><a class="header-logo" ><img src="https://imgur.com/pCKEspL" alt="logo">Seraphic Dreams</a></li>
             </ul>        
         </div>
         
@@ -38,13 +38,12 @@
         <div class="header-settings">
           <nav class="header-nav">
             <ul class="header-links">
-              <li><a href="{{ url_for('settings') }}">Settings</a><img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Settings-icon-symbol-vector.png/640px-Settings-icon-symbol-vector.png" alt="Settings logo"></li>
+              <li><a class="header-settings" href="{{ url_for('settings') }}">Settings<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Settings-icon-symbol-vector.png/640px-Settings-icon-symbol-vector.png" alt="Settings logo"></a></li>
             </ul>        
         </div>
     </header>
     
     <main class="artMain">
-      
         <div class="settings-container">
 
           <div class="model-option">
@@ -55,7 +54,7 @@
             </button>
           </div>
           
-          <div id="modelModal" class="modal" style="display: none;">  <!-- Initially hidden -->
+          <div id="modelModal" class="modal" style="display: none;">
             <div class="modal-content">
               <h2>Select an AI Model</h2>
               <div id="modelSelectContainer" class="model-select-container"></div>
@@ -71,8 +70,8 @@
             <div class="input-group input-down">
               <label for="format-buttons">Image Dimensions:</label>
               <div class="DimensionsButtons" id="format-buttons-set">
-                <button type="button" onclick="setDimensions(16, 9, this)"><img src="https://static.thenounproject.com/png/5620142-200.png" alt="16:9 size">16:9</button>
-                <button type="button" onclick="setDimensions(9, 16, this)"><img src="https://cdn-icons-png.flaticon.com/512/3172/3172457.png" alt="9:16 size">9:16</button>
+                <button type="button" onclick="setDimensions(16, 9, this)"><img src="https://static.thenounproject.com/png/5620142-200.png" alt="9:16 size">9:16</button>
+                <button type="button" onclick="setDimensions(9, 16, this)"><img src="https://cdn-icons-png.flaticon.com/512/3172/3172457.png" alt="16:9 size">16:9</button>
                 <button type="button" onclick="setDimensions(10, 10, this)"><img src="https://imgpng.ru/d/square_PNG7.png" alt="1:1 size">1:1</button>
               </div>
               <div class="DimensionsButtons" id="format-buttons-show">
@@ -93,7 +92,7 @@
             </div>
             
             
-            
+
             <div class="slider-group">
               <label for="num-inference-steps-slider">Number of Inference Steps:</label>
               <input type="range" id="num-inference-steps-slider" min="1" max="100" value="20" step="1">
@@ -106,11 +105,21 @@
               <span id="guidance-scale-value">7</span>
           </div>
 
-          <div class="slider-group">
-              <label for="batchsize-slider">Batch Size:</label>
-              <input type="range" id="batchsize-slider" min="1" max="10" value="1" step="1">
-              <span id="batchsize-value">1</span>
+          <div class="hide">
+            <input type="range" id="batchsize-slider" min="1" max="5" value="1" step="1">
+            <span id="batchsize-value">1</span>
           </div>
+          
+            <div class="slider-group batchsize">
+              <label for="batchsize-slider">Batch Size:</label>
+              <div class="DimensionsButtons">
+                <button type="button" data-batchsize="1">1</button>
+                <button type="button" data-batchsize="2">2</button>
+                <button type="button" data-batchsize="3">3</button>
+                <button type="button" data-batchsize="4">4</button>
+                <button type="button" data-batchsize="5">5</button>
+              </div>
+            </div>            
             
           <div class="input-group">
             <label for="seed-input">Seed:</label>
