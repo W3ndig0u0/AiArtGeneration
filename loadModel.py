@@ -11,7 +11,7 @@ def load_modelDiff(model_name, vae_name, cache_dir, device):
     
     vae = AutoencoderKL.from_pretrained(
         vae_name, 
-        torch_dtype=torch.float16, 
+        torch_dtype=torch.float32, 
         cache_dir=var_cache_dir
     )
 
@@ -25,7 +25,7 @@ def load_modelDiff(model_name, vae_name, cache_dir, device):
     model = load_method(
         model_name,
         cache_dir=cache_dir,
-        torch_dtype=torch.float16, 
+        torch_dtype=torch.float32, 
         vae=vae,
         local_files_only=True,
         safety_checker=None,       

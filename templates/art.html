@@ -60,12 +60,7 @@
               <div id="modelSelectContainer" class="model-select-container"></div>
             </div>
           </div>
-          
             
-            <div class="input-group">
-              <label for="negative-prompt-input" class="label-multiline">Negative Prompt:</label>
-              <textarea id="negative-prompt-input" placeholder="Enter negative prompt text"></textarea>
-            </div>            
             
             <div class="input-group input-down">
               <label for="format-buttons">Image Dimensions:</label>
@@ -80,36 +75,25 @@
                 <button type="button" onclick="updateSize('large', this)"><p>Large</p><span>500x500</span></button>
               </div>
             </div>
-            
-            <div class="input-group hide">
-              <label for="width-input">Width:</label>
-              <input type="text" id="width-input" value="300">
+
+            <div class="slider-group guidescale">
+              <label for="num-inference-steps-slider">Generation Mode:</label>
+              <div class="DimensionsButtons num-inference-steps-buttons">
+                <button type="button">Speed</button>
+                <button type="button">Balanced</button>
+                <button type="button">Quality</button>
+                <button type="button">Masterpiece</button>
+              </div>
             </div>
             
-            <div class="input-group hide">
-              <label for="height-input">Height:</label>
-              <input type="text" id="height-input" value="300">
+            <div class="slider-group guidescale">
+              <label for="guidance-scale-slider">Creativity:</label>
+              <div class="DimensionsButtons guidance-scale-buttons">
+                <button type="button">Creative</button>
+                <button type="button">Strict</button>
+              </div>
             </div>
             
-            
-
-            <div class="slider-group">
-              <label for="num-inference-steps-slider">Number of Inference Steps:</label>
-              <input type="range" id="num-inference-steps-slider" min="1" max="100" value="20" step="1">
-              <span id="num-inference-steps-value">20</span>
-          </div>
-          
-          <div class="slider-group">
-              <label for="guidance-scale-slider">Guidance Scale:</label>
-              <input type="range" id="guidance-scale-slider" min="1" max="30" value="7" step="1">
-              <span id="guidance-scale-value">7</span>
-          </div>
-
-          <div class="hide">
-            <input type="range" id="batchsize-slider" min="1" max="5" value="1" step="1">
-            <span id="batchsize-value">1</span>
-          </div>
-          
             <div class="slider-group batchsize">
               <label for="batchsize-slider">Batch Size:</label>
               <div class="DimensionsButtons">
@@ -119,26 +103,55 @@
                 <button type="button" data-batchsize="4">4</button>
                 <button type="button" data-batchsize="5">5</button>
               </div>
-            </div>            
+            </div>
             
-          <div class="input-group">
-            <label for="seed-input">Seed:</label>
-            <input type="text" id="seed-input" value="-1">
+            <div class="fullhide">
+              <input type="range" id="batchsize-slider" min="1" max="5" value="1" step="1">
+              <span id="batchsize-value">1</span>
+            </div>
+            <button class="generate-art-button" id="advanced-button">Advanced Settings</button>
+
+            <div id="advanced-settings" class="hide">
+              <div class="input-group">
+                <label for="width-input">Width:</label>
+                <input type="text" id="width-input" value="300">
+              </div>
+            
+              <div class="input-group">
+                <label for="height-input">Height:</label>
+                <input type="text" id="height-input" value="300">
+              </div>
+            
+              <div class="slider-group">
+                <label for="num-inference-steps-slider">Number of Inference Steps:</label>
+                <input type="range" id="num-inference-steps-slider" min="1" max="100" value="20" step="1">
+                <span id="num-inference-steps-value">20</span>
+              </div>
+            
+              <div class="slider-group">
+                <label for="guidance-scale-slider">Guidance Scale:</label>
+                <input type="range" id="guidance-scale-slider" min="1" max="30" value="7" step="1">
+                <span id="guidance-scale-value">7</span>
+              </div>
+            
+              <div class="slider-group">
+                <label for="eta-slider">Eta:</label>
+                <input type="range" id="eta-slider" min="0" max="2.0" value="0.1" step="0.1">
+                <span id="eta-value">0.1</span>
+              </div>
+            
+              <div class="input-group">
+                <label for="seed-input">Seed:</label>
+                <input type="text" id="seed-input" value="-1">
+              </div>
+            
+              <div class="buttonContainer">
+                <button class="generate-art-button" id="seed-button">Random Seed</button>
+              </div>
+            </div>
           </div>
-          
-          <div class="slider-group">
-            <label for="eta-slider">Eta:</label>
-            <input type="range" id="eta-slider" min="0" max="2.0" value="0.1" step="0.1">
-            <span id="eta-value">0.1</span>
-        </div>
-
-          <div class="buttonContainer">
-              <button class="generate-art-button" id="seed-button" >Random Seed</button>
-              <button class="generate-art-button" onclick="generateArt()" >Generate Art</button>
-          </div>
-
-      </div>
-
+            
+            
           <div class="art-container">
             <h2>Generated Art</h2>
 
@@ -147,8 +160,14 @@
               <div class="textarea-container">
                 <textarea id="prompt-input" placeholder="Enter prompt text" oninput="limitInputTo77Tokens()"></textarea>
                 <span id="word-count" class="word-count"></span>
+                <button class="generate-art-button" onclick="generateArt()" >Generate Art</button>
               </div>
             </div>   
+
+            <div class="input-group">
+              <label for="negative-prompt-input" class="label-multiline">Negative Prompt:</label>
+              <textarea id="negative-prompt-input" placeholder="Enter negative prompt text"></textarea>
+            </div>
 
             <img id="generated-art" src="https://img.freepik.com/free-photo/free-photo-black-grunge-abstract-background-pattern-wallpaper_1340-33834.jpg?semt=ais_hybrid" alt="Generated Art">
             <div class="progress-container">

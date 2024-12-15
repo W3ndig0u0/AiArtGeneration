@@ -2,13 +2,17 @@
   display: none;
 }
 
+.fullhide{
+  display: none;
+}
+
 .artMain {
   display: flex;
-  justify-content: space-between;
+  flex-direction: row;
+  justify-content: flex-start;
 }
 
 .settings-container{
-  
   border-right: solid 1px #e1e1e1;
   transition: all 0.5s ease;
   padding: 1rem ;
@@ -16,6 +20,8 @@
   margin: 0;
   width: 20vw;
   height: 95vh;
+  overflow: auto;
+  position: relative;
 }
 
 .art-container h2 {
@@ -39,7 +45,7 @@
 }
 
 .input-down{
-  flex-direction: horizontal;
+  width: 100%;
 }
 
 .textarea-container {
@@ -87,19 +93,21 @@
 }
 
 .input-group input[type="text"] {
-  width: 100%;
+  width: 90%;
   padding: 5px;
   font-size: 18px;
 }
 
-.slider-group input[type="range"] {
-  width: 100%;
-}
 
 .slider-group {
   margin-bottom: 20px;
   display: flex;
   align-items: center;
+  flex-direction: column;
+}
+
+.buttonContainer{
+  margin-bottom: 5rem;
 }
 
 .slider-group label {
@@ -112,38 +120,55 @@
   font-size: 18px;
 }
 
-.batchsize{
-  display: flex;
-  flex-direction: column;
+.guidescale{
+  text-align: left;
+  flex-wrap: wrap;
+  width: 100%;
 }
 
-.batchsize .DimensionsButtons button{
-  font-size: 24px;
+
+.guidescale .DimensionsButtons button {
+  font-size: 18px;
+  flex-grow: 1; 
 }
 
+.batchsize {
+  text-align: left;
+  flex-wrap: wrap;
+  width: 100%;
+}
+
+.batchsize .DimensionsButtons button {
+  font-size: 20px;
+  flex-grow: 1; 
+}
 
 .DimensionsButtons {
   width: 100%;
   display: flex;
-  justify-content: space-around;
+  justify-content: space-between;
+  margin: 0;
   margin-top: 8px;
   gap: 8px;
-
+  flex-wrap: wrap;
 }
 
 .DimensionsButtons button {
   display: flex;
   align-items: center;
-  flex-direction:column;
-  padding: 4px 8px;
+  flex-direction: column;
+  padding: 8px 16px;
   font-size: 12px;
   border: 1px solid #444;
   background-color: #11101d;
   color: #fff;
   border-radius: 4px;
   cursor: pointer;
+  margin: 0;
   transition: background-color 0.2s, border-color 0.2s;
+  text-align: center;
 }
+
 
 .DimensionsButtons button:hover {
   background-color: #222;

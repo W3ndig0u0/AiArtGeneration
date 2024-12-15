@@ -1,8 +1,15 @@
 .art-container {
-  margin-right: 20px;
   display: flex;
-  flex-direction: column;
   align-items: center;
+  flex-direction: column;
+  flex-grow: 1;
+  padding: 0;
+  margin: 0;
+}
+
+.art-container .input-group{
+  width: 1024px;
+  height: 10rem;
 }
 
 #generated-art {
@@ -11,7 +18,7 @@
 }
 
 .progress-container {
-  max-width: 1024px;
+  width: 1024px;
   height: 20px;
   background-color: #f2f2f2;
   margin-top: 10px;

@@ -169,6 +169,17 @@ def generate_art():
 
     return jsonify(response)
 
+@app.route("/available_models")
+def available_models():
+    active_model = get_active_model()
+
+    response = {
+        "all_models": print_available_models("artModel"),
+        "active_models": active_model,
+    }
+    return jsonify(response)
+
+
 
 @app.route("/selected_model", methods=["POST"])
 def selected_model():

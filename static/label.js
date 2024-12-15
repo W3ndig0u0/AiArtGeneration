@@ -21,6 +21,55 @@ function updateSliderValue() {
   document.getElementById('batchsize-value').textContent = document.getElementById('batchsize-slider').value;
 }
 
+document.getElementById('advanced-button').addEventListener('click', () => {
+  const hideElement = document.getElementById('advanced-settings');
+  hideElement.classList.toggle('hide');
+});
+
+
+document.addEventListener("DOMContentLoaded", () => {
+  const sliderConfig = [
+    {
+      sliderId: 'num-inference-steps-slider',
+      valueId: 'num-inference-steps-value',
+      buttonsClass: '.num-inference-steps-buttons button',
+      values: [26, 40, 60, 100]
+    },
+    {
+      sliderId: 'guidance-scale-slider',
+      valueId: 'guidance-scale-value',
+      buttonsClass: '.guidance-scale-buttons button',
+      values: [6, 12]
+    }
+  ];
+
+  sliderConfig.forEach(({ sliderId, valueId, buttonsClass, values }) => {
+    const slider = document.getElementById(sliderId);
+    const valueDisplay = document.getElementById(valueId);
+    const buttons = document.querySelectorAll(buttonsClass);
+
+    slider.addEventListener('input', () => {
+      valueDisplay.textContent = slider.value;
+      buttons.forEach(btn => btn.classList.remove('selected'));
+      const matchedIndex = values.indexOf(Number(slider.value));
+      if (matchedIndex >= 0) buttons[matchedIndex].classList.add('selected');
+    });
+
+    buttons.forEach((button, index) => {
+      button.addEventListener('click', () => {
+        slider.value = values[index];
+        valueDisplay.textContent = slider.value;
+        buttons.forEach(btn => btn.classList.remove('selected'));
+        button.classList.add('selected');
+      });
+    });
+
+    buttons[0]?.classList.add('selected');
+  });
+});
+
+
+
 let currentWidthRatio = 16;
 let currentHeightRatio = 9;
 
@@ -66,18 +115,16 @@ document.addEventListener("DOMContentLoaded", () => {
 
   batchButtons.forEach((button) => {
     button.addEventListener("click", () => {
-      const batchSize = button.getAttribute("data-batchsize");
+      const batchSize = button.getAttribute("batchsize-buttons");
       updateBatchSize(batchSize, button);
     });
   });
 
-  const defaultBatchButton = document.querySelector(".batchsize .DimensionsButtons button:nth-child(1)");
+  const defaultBatchButton = document.querySelector(".batchsize .DimensionsButtons button");
   if (defaultBatchButton) {
     defaultBatchButton.click();
   }
 });
-
-
 
 function updateSize(size, clickedButton) {
   const sizeMap = {
@@ -114,7 +161,6 @@ function limitInputTo77Tokens() {
   var wordsLeft = 50 - wordCount;
 
   if (wordsLeft < 0) {
-    // If the word count exceeds 77, truncate the input
     words = words.slice(0, 50);
     textarea.value = words.join(" ");
     wordsLeft = 0;
