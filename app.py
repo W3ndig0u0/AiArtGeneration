@@ -179,8 +179,6 @@ def available_models():
     }
     return jsonify(response)
 
-
-
 @app.route("/selected_model", methods=["POST"])
 def selected_model():
     selected_model = request.json["selected_model"]

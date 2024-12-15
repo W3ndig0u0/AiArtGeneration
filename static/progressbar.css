@@ -9,7 +9,6 @@
 
 .art-container .input-group{
   width: 1024px;
-  height: 10rem;
 }
 
 #generated-art {
@@ -18,7 +17,7 @@
 }
 
 .progress-container {
-  width: 1024px;
+  width: 500px;
   height: 20px;
   background-color: #f2f2f2;
   margin-top: 10px;

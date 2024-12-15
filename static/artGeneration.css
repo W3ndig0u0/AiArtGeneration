@@ -12,16 +12,17 @@
   justify-content: flex-start;
 }
 
-.settings-container{
+.settings-container {
   border-right: solid 1px #e1e1e1;
   transition: all 0.5s ease;
-  padding: 1rem ;
+  padding: 1rem;
   align-items: center;
   margin: 0;
   width: 20vw;
-  height: 95vh;
-  overflow: auto;
+  height: 90vh; 
+  overflow-y: auto;
   position: relative;
+  box-sizing: border-box; 
 }
 
 .art-container h2 {
@@ -54,7 +55,7 @@
 
 .word-count {
   position: absolute;
-  bottom: 5px;
+  bottom: 50%;
   right: 5px;
   font-size: 12px;
   color: #888;

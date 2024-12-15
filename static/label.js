@@ -68,8 +68,6 @@ document.addEventListener("DOMContentLoaded", () => {
   });
 });
 
-
-
 let currentWidthRatio = 16;
 let currentHeightRatio = 9;
 
@@ -97,7 +95,6 @@ function setDimensions(widthRatio, heightRatio, clickedButton) {
 
   updateSize('medium', document.querySelector("#format-buttons-show button:nth-child(2)"));
 }
-
 function updateBatchSize(batchSize, clickedButton) {
   const slider = document.getElementById("batchsize-slider");
   const valueDisplay = document.getElementById("batchsize-value");
@@ -115,7 +112,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
   batchButtons.forEach((button) => {
     button.addEventListener("click", () => {
-      const batchSize = button.getAttribute("batchsize-buttons");
+      const batchSize = button.getAttribute("data-batchsize");
       updateBatchSize(batchSize, button);
     });
   });
