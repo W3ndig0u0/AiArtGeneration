@@ -2,6 +2,8 @@ var imageFiles = [];
 var imagesPerPage = 30;
 var folderPath = "fullImg/";
 
+var imageFiles = [];
+var imagesPerPage2 = 4;
 
 function fetchImages() {
   fetch('/getImages')
@@ -15,11 +17,39 @@ function fetchImages() {
       .then(data => {
         console.log(data.imageFiles);
           imageFiles = data.imageFiles.sort(numericalSort);
+          displayImagesSmall(imageFiles);
           displayImages(imageFiles);
       })
       .catch(error => {
           console.log('Error:', error);
       });
+}
+
+function displayImagesSmall(data) {
+  var imageContainer = document.getElementById('imageContainer2');
+  var tempContainer = document.createElement('div');
+  tempContainer.className = 'imageContainer2'
+
+  if (imageContainer != null) {
+    imageContainer.innerHTML = '';
+
+    for (let i = 0; i < Math.min(4, data.length); i++) {
+      var imageFile = data[i];
+      var img = document.createElement('img');
+      img.src = "GeneratedImg/" + imageFile;
+      img.alt = imageFile;
+      img.draggable = false;
+      img.classList.add('image');
+
+      img.addEventListener('click', function() {
+        openModal(this);
+      });
+
+      tempContainer.appendChild(img);
+    }
+
+    imageContainer.appendChild(tempContainer);
+  }
 }
 
 function displayImages(data, currentPage = 1) {
@@ -32,24 +62,27 @@ function displayImages(data, currentPage = 1) {
 
   var imageSlice = data.slice(startIndex, endIndex);
 
-  imageSlice.forEach(function(imageFile) {
-    var img = document.createElement('img');
-    img.src = "GeneratedImg" + '/' + imageFile;
-    img.alt = imageFile;
-    img.draggable = false;
-    img.classList.add('image');
+  if(imageContainer != null){
+    imageSlice.forEach(function(imageFile) {
+      var img = document.createElement('img');
+      img.src = "GeneratedImg" + '/' + imageFile;
+      img.alt = imageFile;
+      img.draggable = false;
+      img.classList.add('image');
 
-    img.addEventListener('click', function() {
-      openModal(this);
+      img.addEventListener('click', function() {
+        openModal(this);
+      });
+
+      tempContainer.appendChild(img);
     });
 
-    tempContainer.appendChild(img);
-  });
+    imageContainer.innerHTML = '';
+    shuffleImages(tempContainer.children, imageContainer);
 
-  imageContainer.innerHTML = '';
-  shuffleImages(tempContainer.children, imageContainer);
+    addPagination(currentPage, totalPages);
+  }
 
-  addPagination(currentPage, totalPages);
 }
 
 function shuffleImages(images, container) {
@@ -166,7 +199,7 @@ function createPaginationButton(text, page) {
 }
 
 var changeOrderButton = document.getElementById('changeOrderButton');
-changeOrderButton.addEventListener('click', function() {
+changeOrderButton?.addEventListener('click', function() {
   imageFiles.reverse();
   displayImages(imageFiles);
 });

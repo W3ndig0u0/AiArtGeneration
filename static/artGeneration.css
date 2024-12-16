@@ -13,12 +13,12 @@
 }
 
 .settings-container {
-  border-right: solid 1px #e1e1e1;
+  border-right: solid 2px rgba(23,27,41,255);
   transition: all 0.5s ease;
   padding: 1rem;
   align-items: center;
   margin: 0;
-  width: 20vw;
+  width: 35vw;
   height: 90vh; 
   overflow-y: auto;
   position: relative;
@@ -183,9 +183,8 @@
 }
 
 .DimensionsButtons button.selected {
-  background-color: #555;
-  color: white;
-  border: 1px solid #fff;
+  background-color: #1d1f28;
+  border: 1px solid #c14dd3;
 }
 
 
@@ -193,6 +192,7 @@
   padding: 10px 20px;
   font-size: 18px;
   background-color: #2196F3;
+  transition: 200ms;
   color: #FFF;
   border: none;
   cursor: pointer;

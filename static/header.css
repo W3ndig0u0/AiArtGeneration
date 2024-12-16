@@ -4,7 +4,7 @@
   align-items: center;
   font-size: 1rem;
   margin: 0;
-  border-bottom: solid 1px #e1e1e1;
+  border-bottom: solid 1px rgba(23,27,41,255);
   padding: 1rem;
 
 }
@@ -63,6 +63,7 @@
 }
 
 
+
 .header-links {
   list-style: none;
   display: flex;
@@ -93,4 +94,9 @@
 
 .header-logo{
   cursor: pointer;
+}
+
+.logo{
+  width: 2.5rem !important;
+  filter: invert(0.1) !important;
 }

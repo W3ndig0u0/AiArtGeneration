@@ -68,6 +68,7 @@ const modal = document.createElement('div');
       const imageData = getImageData(imageName, data);
   
       console.log(data)
+      console.log(imageName)
       console.log(imageData)
       if (imageData !== undefined) {
         const { prompt, negativePrompt, width, height, num_inference_steps, eta, guidance_scale, seed,  get_active_model, vae } =  imageData.settings;

@@ -11,6 +11,11 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='progressbar.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='header.css') }}">
 
+  <link rel="stylesheet" href="{{ url_for('static', filename='gallery.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='imgModal.css') }}">
+
+  <script defer src="{{ url_for('static', filename='gallery.js') }}"></script>
+  <script defer src="{{ url_for('static', filename='imgModal.js') }}"></script>
   <script defer src="{{ url_for('static', filename='label.js') }}"></script>
   <script defer src="{{ url_for('static', filename='randomSeed.js') }}"></script>
   <script defer src="{{ url_for('static', filename='loadArtModel.js') }}"></script>
@@ -25,7 +30,7 @@
         <div class="header-settings">
           <nav class="header-nav">
             <ul class="header-links">
-              <li><a class="header-logo" ><img src="https://imgur.com/pCKEspL" alt="logo">Seraphic Dreams</a></li>
+              <li><a class="header-logo" href="{{ url_for('art')}}"><img class="logo" src="../static/logo-removebg-preview.png" alt="logo">Seraphic Dreams</a></li>
             </ul>        
         </div>
         
@@ -177,6 +182,8 @@
               <div class="progress-label" id="progress-label"></div>
               <div class="estimated-time" id="estimated-time"></div>
             </div>
+            <div class="imageTop"><p>Most recent Images:</p><li><a href="{{ url_for('gallery') }}">See More Images</a></li></div>
+            <div class="imageContainer" id="imageContainer2"></div>
           </div>
                 
     </main>

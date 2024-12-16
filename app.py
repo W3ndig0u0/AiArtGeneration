@@ -20,7 +20,8 @@ cache_dir = "artModel/"
 ACTIVE_MODEL_FILE = "active_model.txt"
 vae_name = "stabilityai/sd-vae-ft-mse"
 # vae_name = "/kl-f8-anime.ckpt"
-#vae_name = "madebyollin/sdxl-vae-fp16-fix"
+# vae_name = "madebyollin/sdxl-vae-fp16-fix"
+
 
 @app.route("/process_input", methods=["POST"])
 def process_input():
@@ -94,7 +95,8 @@ def get_images():
 @app.route("/GeneratedImg/<path:path>")
 def send_img(path):
     return send_from_directory(image_folder, path)
-    
+
+
 @app.route("/generate_art", methods=["POST"])
 def generate_art():
     prompt = request.json["prompt"]
@@ -125,7 +127,6 @@ def generate_art():
         vae_name,
         initial_generation,
     )
-
 
     img_folder = f"{img_folder}"
     file_name = f"{file_name}.png"
@@ -169,6 +170,7 @@ def generate_art():
 
     return jsonify(response)
 
+
 @app.route("/available_models")
 def available_models():
     active_model = get_active_model()
@@ -179,6 +181,7 @@ def available_models():
     }
     return jsonify(response)
 
+
 @app.route("/selected_model", methods=["POST"])
 def selected_model():
     selected_model = request.json["selected_model"]
@@ -187,11 +190,13 @@ def selected_model():
     response = {"message": "Selected model received: " + global_model_id}
     return jsonify(response)
 
+
 def remove_first_word_before_slash(string):
     if "/" in string:
         return string.split("/", 1)[1]
     else:
         return string
+
 
 def get_active_model():
     if os.path.exists(ACTIVE_MODEL_FILE):
@@ -201,6 +206,7 @@ def get_active_model():
             return active_model
     else:
         return ""
+
 
 def set_active_model(model_id):
     model_id = (

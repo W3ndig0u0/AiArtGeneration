@@ -11,112 +11,181 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='progressbar.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='header.css') }}">
 
-  <script defer src="{{ url_for('static', filename='chat.js') }}"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='gallery.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='imgModal.css') }}">
+
+  <script defer src="{{ url_for('static', filename='gallery.js') }}"></script>
+  <script defer src="{{ url_for('static', filename='imgModal.js') }}"></script>
   <script defer src="{{ url_for('static', filename='label.js') }}"></script>
   <script defer src="{{ url_for('static', filename='randomSeed.js') }}"></script>
   <script defer src="{{ url_for('static', filename='loadArtModel.js') }}"></script>
   <script defer src="{{ url_for('static', filename='imageUpdate.js') }}"></script>
+  
   </head>
 
 <body>
     <header class="header">
       <div class="header-content">
-        <h1 class="header-title">Image Creation</h1>
-        <nav class="header-nav">
-          <ul class="header-links">
-            <li><a href="{{ url_for('art') }}">AI Art</a></li>
-            <li><a href="{{ url_for('gallery') }}">Gallery</a></li>
-            <li><a href="{{ url_for('settings') }}">Settings</a></li>
-          </ul>
-        </nav>
-      </div>
+
+        <div class="header-settings">
+          <nav class="header-nav">
+            <ul class="header-links">
+              <li><a class="header-logo" href="{{ url_for('art')}}"><img class="logo" src="../static/logo-removebg-preview.png" alt="logo">Seraphic Dreams</a></li>
+            </ul>        
+        </div>
+        
+        
+        <div class="header-mid">
+          <h1 class="header-title">Image Creation</h1>
+          <button>?</button>
+        </div>
+
+        <div class="header-settings">
+          <nav class="header-nav">
+            <ul class="header-links">
+              <li><a class="header-settings" href="{{ url_for('settings') }}">Settings<img src="https://upload.wikimedia.org/wikipedia/commons/thumb/d/dc/Settings-icon-symbol-vector.png/640px-Settings-icon-symbol-vector.png" alt="Settings logo"></a></li>
+            </ul>        
+        </div>
     </header>
     
     <main class="artMain">
-      
         <div class="settings-container">
-            <h2>Settings</h2>
 
-            <div class="model-option">
-              <label for="menu" class="label-multiline">Ai model:</label>
-              <div id="menu"></div>
-
-              <label for="menu" class="label-multiline">Vae model:</label>
-              <div id="menu"></div>
+          <div class="model-option">
+            <label for="menu" class="label-multiline">AI Model:</label>
+            <button id="openModelSelector" class="model-button">
+              <img src="" id="selectedModelImage" alt="Model" class="model-image">
+              <span id="selectedModelName">Select Model</span>
+            </button>
+          </div>
+          
+          <div id="modelModal" class="model-modal" style="display: none;">
+            <div class="model-modal-content">
+              <h2>Select an AI Model</h2>
+              <div id="modelSelectContainer" class="model-select-container"></div>
             </div>
+          </div>
+            
+            
+            <div class="input-group input-down">
+              <label for="format-buttons">Image Dimensions:</label>
+              <div class="DimensionsButtons" id="format-buttons-set">
+                <button type="button" onclick="setDimensions(16, 9, this)"><img src="https://static.thenounproject.com/png/5620142-200.png" alt="9:16 size">9:16</button>
+                <button type="button" onclick="setDimensions(9, 16, this)"><img src="https://cdn-icons-png.flaticon.com/512/3172/3172457.png" alt="16:9 size">16:9</button>
+                <button type="button" onclick="setDimensions(10, 10, this)"><img src="https://imgpng.ru/d/square_PNG7.png" alt="1:1 size">1:1</button>
+              </div>
+              <div class="DimensionsButtons" id="format-buttons-show">
+                <button type="button" onclick="updateSize('small', this)"><p>Small</p><span>100x100</span></button>
+                <button type="button" onclick="updateSize('medium', this)"><p>Medium</p><span>300x300</span></button>
+                <button type="button" onclick="updateSize('large', this)"><p>Large</p><span>500x500</span></button>
+              </div>
+            </div>
+
+            <div class="slider-group guidescale">
+              <label for="num-inference-steps-slider">Generation Mode:</label>
+              <div class="DimensionsButtons num-inference-steps-buttons">
+                <button type="button">Speed</button>
+                <button type="button">Balanced</button>
+                <button type="button">Quality</button>
+                <button type="button">Masterpiece</button>
+              </div>
+            </div>
+            
+            <div class="slider-group guidescale">
+              <label for="guidance-scale-slider">Creativity:</label>
+              <div class="DimensionsButtons guidance-scale-buttons">
+                <button type="button">Creative</button>
+                <button type="button">Strict</button>
+              </div>
+            </div>
+            
+            <div class="slider-group batchsize">
+              <label for="batchsize-slider">Batch Size:</label>
+              <div class="DimensionsButtons">
+                <button type="button" data-batchsize="1">1</button>
+                <button type="button" data-batchsize="2">2</button>
+                <button type="button" data-batchsize="3">3</button>
+                <button type="button" data-batchsize="4">4</button>
+                <button type="button" data-batchsize="5">5</button>
+              </div>
+            </div>
+            
+
+            <button class="generate-art-button" id="advanced-button">Advanced Settings</button>
+
+            <div class="hide">
+              <input class="fullhide " type="range" id="batchsize-slider" min="1" max="5" value="1" step="1">
+              <span id="batchsize-value">1</span>
+            </div>
+
+            <div id="advanced-settings" class="hide">
+              <div class="input-group">
+                <label for="width-input">Width:</label>
+                <input type="text" id="width-input" value="300">
+              </div>
+            
+              <div class="input-group">
+                <label for="height-input">Height:</label>
+                <input type="text" id="height-input" value="300">
+              </div>
+            
+              <div class="slider-group">
+                <label for="num-inference-steps-slider">Number of Inference Steps:</label>
+                <input type="range" id="num-inference-steps-slider" min="1" max="100" value="20" step="1">
+                <span id="num-inference-steps-value">20</span>
+              </div>
+            
+              <div class="slider-group">
+                <label for="guidance-scale-slider">Guidance Scale:</label>
+                <input type="range" id="guidance-scale-slider" min="1" max="30" value="7" step="1">
+                <span id="guidance-scale-value">7</span>
+              </div>
+            
+              <div class="slider-group">
+                <label for="eta-slider">Eta:</label>
+                <input type="range" id="eta-slider" min="0" max="2.0" value="0.1" step="0.1">
+                <span id="eta-value">0.1</span>
+              </div>
+            
+              <div class="input-group">
+                <label for="seed-input">Seed:</label>
+                <input type="text" id="seed-input" value="-1">
+              </div>
+            
+              <div class="buttonContainer">
+                <button class="generate-art-button" id="seed-button">Random Seed</button>
+              </div>
+            </div>
+          </div>
+            
+            
+          <div class="art-container">
+            <h2>Generated Art</h2>
 
             <div class="input-group">
               <label for="prompt-input" class="label-multiline">Prompt:</label>
               <div class="textarea-container">
                 <textarea id="prompt-input" placeholder="Enter prompt text" oninput="limitInputTo77Tokens()"></textarea>
                 <span id="word-count" class="word-count"></span>
+                <button class="generate-art-button" onclick="generateArt()" >Generate Art</button>
               </div>
-            </div>            
-            
-          
+            </div>   
+
             <div class="input-group">
               <label for="negative-prompt-input" class="label-multiline">Negative Prompt:</label>
               <textarea id="negative-prompt-input" placeholder="Enter negative prompt text"></textarea>
-            </div>            
-            
-          <div class="input-group">
-            <label for="width-input">Width:</label>
-            <input type="text" id="width-input" value="512">
-          </div>
-          
-          <div class="input-group">
-            <label for="height-input">Height:</label>
-            <input type="text" id="height-input" value="512">
-          </div>
-            
-            <div class="slider-group">
-              <label for="num-inference-steps-slider">Number of Inference Steps:</label>
-              <input type="range" id="num-inference-steps-slider" min="1" max="100" value="20" step="1">
-              <span id="num-inference-steps-value">20</span>
-          </div>
-          
-          <div class="slider-group">
-              <label for="guidance-scale-slider">Guidance Scale:</label>
-              <input type="range" id="guidance-scale-slider" min="1" max="30" value="7" step="1">
-              <span id="guidance-scale-value">7</span>
-          </div>
+            </div>
 
-          <div class="slider-group">
-              <label for="batchsize-slider">Batch Size:</label>
-              <input type="range" id="batchsize-slider" min="1" max="10" value="1" step="1">
-              <span id="batchsize-value">1</span>
-          </div>
-            
-          <div class="input-group">
-            <label for="seed-input">Seed:</label>
-            <input type="text" id="seed-input" value="-1">
-          </div>
-          
-          <div class="slider-group">
-            <label for="eta-slider">Eta:</label>
-            <input type="range" id="eta-slider" min="0" max="2.0" value="0.1" step="0.1">
-            <span id="eta-value">0.1</span>
-        </div>
-
-          <div class="buttonContainer">
-              <button class="generate-art-button" onclick="" >Random Prompt</button>
-              <button class="generate-art-button" id="seed-button" >Random Seed</button>
-              <button class="generate-art-button" onclick="generateArt()" >Generate Art</button>
-          </div>
-
-      </div>
-
-          <div class="art-container">
-            <h2>Generated Art</h2>
-            <img id="generated-art" src="" alt="Generated Art">
+            <img id="generated-art" src="https://img.freepik.com/free-photo/free-photo-black-grunge-abstract-background-pattern-wallpaper_1340-33834.jpg?semt=ais_hybrid" alt="Generated Art">
             <div class="progress-container">
               <div class="progress-bar" id="progress-bar"></div>
               <div class="progress-label" id="progress-label"></div>
               <div class="estimated-time" id="estimated-time"></div>
             </div>
+            <div class="imageTop"><p>Most recent Images:</p><li><a href="{{ url_for('gallery') }}">See More Images</a></li></div>
+            <div class="imageContainer" id="imageContainer2"></div>
           </div>
                 
-          </div>
     </main>
     
 </body>
