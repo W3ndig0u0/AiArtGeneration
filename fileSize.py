@@ -60,6 +60,7 @@ def get_model_image(model_name):
     model_image_map = {
         "models--JingAnimeV2": "/GeneratedImg/196.png",  # Image for JingAnimeV2
         "models--stablediffusionapi--realistic-vision-v51": "/GeneratedImg/20241103_231916.png",  # Image for Realistic Vision V51
+        "models--Ojimi--anime-kawai-diffusion": "/GeneratedImg/20241103_223004.png",  # Image for Realistic Vision V51
     }
 
     # Default to a generic image if model name is not found

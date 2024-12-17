@@ -1,1 +1,1 @@
-JamesFlare/pastel-mix
+stablediffusionapi/realistic-vision-v51
